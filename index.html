@@ -43,15 +43,15 @@
   .side-actions button:active{transform:scale(.94)}
   .traduccion-box{flex-shrink:0;margin-top:8px;padding:12px;border-radius:12px;background:#1a1208;border:1px solid var(--gold2);font-size:.88rem;line-height:1.5;display:none}
   .traduccion-box.show{display:block}
-  .traduccion-box .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:.72rem;color:var(--muted)}
+  .traduccion-box .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.72rem;color:var(--gold);font-weight:700;letter-spacing:.5px}
   .grabar-controls{flex-shrink:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:18px;padding:12px 0 6px}
   .fab{width:min(40vw,150px);height:min(40vw,150px);border-radius:50%;border:3px solid var(--gold2);background:radial-gradient(circle at 50% 30%,#3a2508,#1a1004);color:var(--gold);font-size:1.3rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 30px rgba(255,215,0,.35);touch-action:manipulation;user-select:none}
   .fab small{font-size:.6rem;font-weight:400;letter-spacing:1px;opacity:.8}
-  .fab.rec{background:radial-gradient(circle at 50% 30%,#1e40af,#0f172a);border-color:var(--ia2);color:#dbeafe;box-shadow:0 0 45px rgba(59,130,246,.75), 0 0 20px rgba(96,165,250,.5) inset;animation:pulseIA 1.1s infinite}
+  .fab.rec{background:radial-gradient(circle at 50% 30%,#1e40af,#0f172a);border-color:var(--ia2);color:#dbeafe;box-shadow:0 0 45px rgba(59,130,246,.75),0 0 20px rgba(96,165,250,.5) inset;animation:pulseIA 1.1s infinite}
   .fab.rec small{color:#93c5fd}
   .fab.proc{background:radial-gradient(circle at 50% 30%,#3b2e00,#1a1200);border-color:var(--amber);color:var(--amber);animation:pulse 1.1s infinite}
   @keyframes pulse{50%{box-shadow:0 0 55px rgba(255,215,0,.9)}}
-  @keyframes pulseIA{50%{box-shadow:0 0 70px rgba(59,130,246,.95), 0 0 30px rgba(96,165,250,.7) inset}}
+  @keyframes pulseIA{50%{box-shadow:0 0 70px rgba(59,130,246,.95),0 0 30px rgba(96,165,250,.7) inset}}
   .btn-guardar-grande{width:min(25vw,95px);height:min(25vw,95px);border-radius:20px;border:3px solid var(--gold2);background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004;font-size:1.4rem;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 20px rgba(255,215,0,.35);transition:.15s;user-select:none;touch-action:manipulation}
   .btn-guardar-grande small{font-size:.58rem;font-weight:700;letter-spacing:.5px}
   .btn-guardar-grande:active{transform:scale(.95)}
@@ -83,7 +83,6 @@
   .nota-card .actions button{padding:8px 10px;font-size:1rem;min-width:38px;min-height:38px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
   .nota-card .check{position:absolute;top:12px;right:12px;width:24px;height:24px;accent-color:var(--gold);cursor:pointer}
   .nota-card .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.66rem;background:#3a2508;color:var(--gold);border:1px solid var(--gold2)}
-  /* ===== NUEVO v22: Highlight + Play button ===== */
   .hl-chunk{transition:background-color .2s,color .2s,padding .2s}
   .hl-chunk.hl-activo{background-color:var(--gold2);color:#1a1004;padding:2px 5px;border-radius:4px;font-weight:700;box-shadow:0 0 8px rgba(255,193,7,.6)}
   .nota-play-row{display:flex;gap:8px;align-items:center;margin-top:10px}
@@ -260,7 +259,10 @@
       </div>
     </div>
     <div class="traduccion-box" id="traduccionBox">
-      <div class="head"><span id="traduccionLabel">Traducción</span></div>
+      <div class="head">
+        <span id="traduccionLabel">Traducción</span>
+        <button class="btn ghost small" id="btnCerrarTrad" style="padding:3px 8px">✕</button>
+      </div>
       <div id="traduccionTexto"></div>
     </div>
     <div class="grabar-controls">
@@ -323,7 +325,9 @@
     <label style="margin-top:0">Modo de grabación</label>
     <div class="modo-toggle"><button id="modoVivo">⚡ En vivo<br><small style="font-weight:400;font-size:.68rem">escritorio</small></button><button id="modoEstable">🎯 Estable<br><small style="font-weight:400;font-size:.68rem">móvil · sin ding</small></button></div>
     <p class="hint" id="modoInfo"></p>
-    <label style="margin-top:16px">API Key de Groq</label><input id="apiKey" type="password" placeholder="gsk_..."><button class="btn primary block" id="btnGuardarKey">Guardar API key</button>
+    <label style="margin-top:16px">API Key de Groq <span id="apiKeyStatus" style="color:var(--green);font-weight:600"></span></label>
+    <input id="apiKey" type="password" placeholder="gsk_...">
+    <button class="btn primary block" id="btnGuardarKey">Guardar API key</button>
     <div class="sync-section">
       <h3>🔄 Sincronización GitHub Gist</h3>
       <label>Token de GitHub (scope "gist")</label><input id="syncToken" type="password" placeholder="ghp_...">
@@ -350,45 +354,31 @@
   </section>
 </main>
 
-<div id="focusOverlay">
-  <button class="exit" id="focusExit">✕</button>
-  <div class="contador" id="focusContador">1 de 1</div>
-  <div id="focusContenido"></div>
-</div>
+<div id="focusOverlay"><button class="exit" id="focusExit">✕</button><div class="contador" id="focusContador">1 de 1</div><div id="focusContenido"></div></div>
 
-<div id="modalAdjuntar">
-  <div class="box">
-    <h3>📎 Adjuntar a la nota</h3>
-    <div class="opcion" id="adjOpcFoto"><span class="ico">📷</span> Foto o imagen</div>
-    <div class="opcion" id="adjOpcAudio"><span class="ico">🎵</span> Audio (grabar o elegir)</div>
-    <div class="opcion" id="adjOpcArchivo"><span class="ico">📄</span> Archivo</div>
-    <button class="btn ghost cancelar" id="adjCancelar">Cancelar</button>
-    <input type="file" id="adjInput" accept="image/*,audio/*,*/*">
-  </div>
-</div>
+<div id="modalAdjuntar"><div class="box">
+  <h3>📎 Adjuntar a la nota</h3>
+  <div class="opcion" id="adjOpcFoto"><span class="ico">📷</span> Foto o imagen</div>
+  <div class="opcion" id="adjOpcAudio"><span class="ico">🎵</span> Audio</div>
+  <div class="opcion" id="adjOpcArchivo"><span class="ico">📄</span> Archivo</div>
+  <button class="btn ghost cancelar" id="adjCancelar">Cancelar</button>
+  <input type="file" id="adjInput" accept="image/*,audio/*,*/*">
+</div></div>
 
-<div id="modalCompartir">
-  <div class="box">
-    <h3>📤 Compartir nota</h3>
-    <div id="compartirOpciones"></div>
-    <button class="btn ghost cancelar" id="compartirCancelar">Cancelar</button>
-  </div>
-</div>
+<div id="modalCompartir"><div class="box">
+  <h3>📤 Compartir nota</h3>
+  <div id="compartirOpciones"></div>
+  <button class="btn ghost cancelar" id="compartirCancelar">Cancelar</button>
+</div></div>
 
-<!-- NUEVO: Modal traducir con botones -->
-<div id="modalTraducir">
-  <div class="box">
-    <h3>🌐 Traducir a...</h3>
-    <div class="opcion" data-lang="en"><span class="ico">🇬🇧</span> Inglés</div>
-    <div class="opcion" data-lang="es"><span class="ico">🇪🇸</span> Español</div>
-    <button class="btn ghost cancelar" id="tradCancelar">Cancelar</button>
-  </div>
-</div>
+<div id="modalTraducir"><div class="box">
+  <h3>🌐 Traducir a...</h3>
+  <div class="opcion" data-lang="en"><span class="ico">🇬🇧</span> Inglés</div>
+  <div class="opcion" data-lang="es"><span class="ico">🇪🇸</span> Español</div>
+  <button class="btn ghost cancelar" id="tradCancelar">Cancelar</button>
+</div></div>
 
-<div id="visorAdjunto">
-  <button class="cerrar-vis" id="visorCerrar">✕</button>
-  <div id="visorContenido"></div>
-</div>
+<div id="visorAdjunto"><button class="cerrar-vis" id="visorCerrar">✕</button><div id="visorContenido"></div></div>
 
 <div id="panelGuardado">
   <div class="titulo" id="pgTitulo">✅ Nota guardada</div>
@@ -406,7 +396,7 @@
 
 <script>
 /* =========================================================
-   JARVIS v22 — Traducir con botones + TTS multi-idioma + Highlight + Swipe
+   JARVIS v23 — IDs robustos + apiKey persistente + traducción mejorada
    ========================================================= */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} },
@@ -419,6 +409,97 @@ const SYNC_FILE_KEY = 'jarvis-sync-file';
 const ELIMINADOS_TTL = 90 * 24 * 60 * 60 * 1000;
 const PAPELERA_TTL = 30 * 24 * 60 * 60 * 1000;
 
+/* ===== ID ÚNICO INMUTABLE ===== */
+function nuevoId() {
+  if (crypto.randomUUID) return crypto.randomUUID();
+  return 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11);
+}
+
+/* ===== INDEXEDDB ===== */
+const ADJUNTOS_DB = 'jarvis-adjuntos';
+const ADJUNTOS_STORE = 'archivos';
+let _dbAdj = null;
+
+function abrirDBAdjuntos(){
+  return new Promise((res, rej) => {
+    if (_dbAdj) return res(_dbAdj);
+    const req = indexedDB.open(ADJUNTOS_DB, 2);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(ADJUNTOS_STORE)) db.createObjectStore(ADJUNTOS_STORE);
+    };
+    req.onsuccess = (e) => { _dbAdj = e.target.result; res(_dbAdj); };
+    req.onerror = () => rej(req.error);
+  });
+}
+
+async function idbPut(key, val){
+  const db = await abrirDBAdjuntos();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
+    tx.objectStore(ADJUNTOS_STORE).put(val, key);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+async function idbGet(key){
+  const db = await abrirDBAdjuntos();
+  return new Promise((res, rej) => {
+    const req = db.transaction(ADJUNTOS_STORE, 'readonly').objectStore(ADJUNTOS_STORE).get(key);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+async function idbDelete(key){
+  const db = await abrirDBAdjuntos();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
+    tx.objectStore(ADJUNTOS_STORE).delete(key);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+async function idbClear(){
+  const db = await abrirDBAdjuntos();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
+    tx.objectStore(ADJUNTOS_STORE).clear();
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+/* ===== API KEY PERSISTENTE (localStorage + IndexedDB) ===== */
+async function guardarApiKeyPersistente(key) {
+  LS.set('apiKey', key);
+  try { await idbPut('__apiKey__', key); } catch(e){ console.warn('IDB apiKey save:', e); }
+  actualizarEstadoApiKey();
+}
+
+async function cargarApiKeyPersistente() {
+  let key = LS.get('apiKey', '');
+  if (!key) {
+    try {
+      const idbKey = await idbGet('__apiKey__');
+      if (idbKey) { key = idbKey; LS.set('apiKey', key); }
+    } catch(e){ console.warn('IDB apiKey load:', e); }
+  }
+  actualizarEstadoApiKey();
+  return key;
+}
+
+function actualizarEstadoApiKey() {
+  const el = $('apiKeyStatus');
+  if (!el) return;
+  const key = LS.get('apiKey', '');
+  el.textContent = key ? `✓ Guardada (${key.slice(0, 6)}...)` : '⚠ Sin guardar';
+  el.style.color = key ? 'var(--green)' : 'var(--amber)';
+}
+
+/* ===== DATOS ===== */
 let notas    = LS.get('notas', []);
 let tareas   = LS.get('tareas', []);
 let personas = LS.get('personas', []);
@@ -448,15 +529,11 @@ function toast(msg){
   toastEl._t = setTimeout(()=>toastEl.classList.remove('show'), 2500);
 }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
-
 const eqId = (a, b) => String(a) === String(b);
 
-/* =========================================================
-   DETECCIÓN DE IDIOMA + VOZ POR IDIOMA (NUEVO v22)
-   ========================================================= */
+/* ===== DETECCIÓN IDIOMA + VOZ ===== */
 function detectarIdioma(texto) {
   if (!texto || texto.length < 5) return 'es';
-  // Indicadores fuertes de español
   if (/[ñáéíóú¿¡]/i.test(texto)) return 'es';
   const t = ' ' + texto.toLowerCase().replace(/[.,;:!?"'""()]/g, ' ') + ' ';
   const enWords = [' the ',' and ',' is ',' are ',' was ',' were ',' you ',' have ',' has ',' had ',' that ',' this ',' with ',' for ',' from ',' they ',' their ',' what ',' when ',' where ',' how ',' but ',' not ',' can ',' will ',' would ',' should ',' could ',' about ',' which ',' there ',' been ',' being ',' more ',' most ',' some ',' any ',' than ',' too ',' very ',' just ',' also ',' into ',' your ',' our ',' we ',' he ',' she ',' it ',' them ',' his ',' her ',' its '];
@@ -477,7 +554,6 @@ function mejorVozPorIdioma(idioma) {
   const langs = prefijos[idioma] || [idioma];
   const filtradas = voces.filter(v => v.lang.toLowerCase().startsWith(idioma.toLowerCase()));
   if (!filtradas.length) return null;
-  // Primero buscar local + enhanced/neural
   for (const lang of langs) {
     const local = filtradas.find(v => v.lang === lang && v.localService && /neural|enhanced|premium|siri|google/i.test(v.name));
     if (local) return local;
@@ -493,54 +569,95 @@ function mejorVozPorIdioma(idioma) {
   return filtradas[0];
 }
 
-/* ===== INDEXEDDB PARA ADJUNTOS ===== */
-const ADJUNTOS_DB = 'jarvis-adjuntos';
-const ADJUNTOS_STORE = 'archivos';
-let _dbAdj = null;
+/* ===== TTS CON HIGHLIGHT + MULTI-IDIOMA ===== */
+const TTS = {
+  chunks: [], i: 0, activo: false, pausado: false, idioma: 'es', notaIdActual: null, gen: 0,
+  dividirPalabras(texto, maxLen = 180) {
+    const palabras = String(texto).replace(/\s+/g, ' ').trim().split(' ');
+    const chunks = []; let buf = []; let len = 0;
+    for (const p of palabras) {
+      if (len + p.length + 1 > maxLen && buf.length) { chunks.push(buf.join(' ')); buf = [p]; len = p.length; }
+      else { buf.push(p); len += p.length + 1; }
+    }
+    if (buf.length) chunks.push(buf.join(' '));
+    return chunks;
+  },
+  play(texto, idioma, notaId) {
+    this.stop(); this.gen++;
+    const gen = this.gen;
+    this.idioma = idioma || detectarIdioma(texto);
+    this.notaIdActual = notaId || null;
+    this.chunks = this.dividirPalabras(texto);
+    if (!this.chunks.length) return;
+    this.i = 0; this.activo = true; this.pausado = false;
+    if (notaId) this._prepHL(notaId);
+    $('ttsPlayer').classList.add('show');
+    this._info(); this._next(gen);
+  },
+  _prepHL(notaId) {
+    const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
+    if (!card) return;
+    const t = card.querySelector('.texto'); if (!t) return;
+    if (t.querySelector('.hl-chunk')) return;
+    t.dataset.orig = t.textContent;
+    t.innerHTML = this.chunks.map((c, i) => `<span class="hl-chunk" data-hl="${i}">${escapeHtml(c)}</span> `).join('');
+  },
+  _cleanHL(notaId) {
+    if (!notaId) return;
+    const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
+    if (!card) return;
+    const t = card.querySelector('.texto'); if (!t) return;
+    if (t.dataset.orig) { t.textContent = t.dataset.orig; delete t.dataset.orig; }
+  },
+  _info() { if ($('ttsInfo')) $('ttsInfo').textContent = (this.i + 1) + '/' + this.chunks.length; },
+  _next(gen) {
+    if (gen !== undefined && gen !== this.gen) return;
+    if (!this.activo || this.i >= this.chunks.length) { this._finish(); return; }
+    if (this.notaIdActual) {
+      const card = document.querySelector(`.nota-card[data-id="${this.notaIdActual}"]`);
+      if (card) {
+        const t = card.querySelector('.texto');
+        if (t) {
+          t.querySelectorAll('.hl-chunk').forEach(s => s.classList.remove('hl-activo'));
+          const span = t.querySelector(`.hl-chunk[data-hl="${this.i}"]`);
+          if (span) { span.classList.add('hl-activo'); span.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+        }
+      }
+    }
+    const u = new SpeechSynthesisUtterance(this.chunks[this.i]);
+    u.lang = this.idioma === 'en' ? 'en-US' : 'es-CL';
+    u.rate = 1.05;
+    const v = mejorVozPorIdioma(this.idioma);
+    if (v) u.voice = v;
+    u.onend = () => { if (gen !== this.gen || !this.activo) return; this.i++; this._info(); this._next(gen); };
+    u.onerror = (e) => { if (gen !== this.gen || !this.activo) return; if (e.error === 'interrupted' || e.error === 'canceled') return; this.i++; this._info(); this._next(gen); };
+    try { speechSynthesis.speak(u); } catch(e) { this._finish(); }
+    this._info();
+  },
+  _finish() {
+    this.activo = false; this.pausado = false;
+    $('ttsPlayer').classList.remove('show');
+    if (this.notaIdActual) { this._cleanHL(this.notaIdActual); this.notaIdActual = null; }
+    document.querySelectorAll('.nota-play-btn').forEach(b => {
+      b.classList.remove('playing');
+      b.innerHTML = '▶ Escuchar';
+    });
+  },
+  stop() { this.gen++; try { speechSynthesis.cancel(); } catch(e){} this._finish(); },
+  pauseToggle() { if (speechSynthesis.paused) { speechSynthesis.resume(); this.pausado = false; } else if (speechSynthesis.speaking) { speechSynthesis.pause(); this.pausado = true; } },
+  next() { if (this.i < this.chunks.length - 1) { try { speechSynthesis.cancel(); } catch(e){} this.i++; this.activo = true; this._next(this.gen); } },
+  prev() { if (this.i > 0) { try { speechSynthesis.cancel(); } catch(e){} this.i--; this.activo = true; this._next(this.gen); } }
+};
+$('ttsPause').onclick = () => TTS.pauseToggle();
+$('ttsStop').onclick = () => TTS.stop();
+$('ttsNext').onclick = () => TTS.next();
+$('ttsPrev').onclick = () => TTS.prev();
+if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = () => {}; setTimeout(() => { mejorVozPorIdioma('es'); mejorVozPorIdioma('en'); }, 500); }
 
-function abrirDBAdjuntos(){
-  return new Promise((res, rej) => {
-    if (_dbAdj) return res(_dbAdj);
-    const req = indexedDB.open(ADJUNTOS_DB, 1);
-    req.onupgradeneeded = (e) => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains(ADJUNTOS_STORE)) db.createObjectStore(ADJUNTOS_STORE);
-    };
-    req.onsuccess = (e) => { _dbAdj = e.target.result; res(_dbAdj); };
-    req.onerror = () => rej(req.error);
-  });
-}
-async function guardarAdjuntoBlob(id, blob){
-  const db = await abrirDBAdjuntos();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
-    tx.objectStore(ADJUNTOS_STORE).put(blob, id);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
-  });
-}
-async function obtenerAdjuntoBlob(id){
-  const db = await abrirDBAdjuntos();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(ADJUNTOS_STORE, 'readonly');
-    const req = tx.objectStore(ADJUNTOS_STORE).get(id);
-    req.onsuccess = () => res(req.result);
-    req.onerror = () => rej(req.error);
-  });
-}
-async function eliminarAdjuntoBlob(id){
-  const db = await abrirDBAdjuntos();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
-    tx.objectStore(ADJUNTOS_STORE).delete(id);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
-  });
-}
+/* ===== COMPRESIÓN ===== */
 async function comprimirImagen(blob, maxW, quality) {
   return new Promise((resolve) => {
-    const img = new Image();
-    const url = URL.createObjectURL(blob);
+    const img = new Image(); const url = URL.createObjectURL(blob);
     img.onload = () => {
       URL.revokeObjectURL(url);
       let { width: w, height: h } = img;
@@ -556,40 +673,25 @@ async function comprimirImagen(blob, maxW, quality) {
     img.src = url;
   });
 }
-async function blobADataURL(blob) {
-  return new Promise((res, rej) => {
-    const r = new FileReader();
-    r.onload = () => res(r.result);
-    r.onerror = rej;
-    r.readAsDataURL(blob);
-  });
-}
-async function dataURLABlob(dataURL) {
-  const res = await fetch(dataURL);
-  return await res.blob();
-}
+async function blobADataURL(blob) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob); }); }
+async function dataURLABlob(dataURL) { return await (await fetch(dataURL)).blob(); }
 
 const FERIADOS_CHILE = {
   '2025-01-01':'Año Nuevo','2025-04-18':'Viernes Santo','2025-04-19':'Sábado Santo','2025-05-01':'Día del Trabajo','2025-05-21':'Glorias Navales','2025-06-20':'Pueblos Indígenas','2025-06-29':'San Pedro y San Pablo','2025-07-16':'Virgen del Carmen','2025-08-15':'Asunción','2025-09-18':'Independencia','2025-09-19':'Glorias del Ejército','2025-10-12':'Encuentro Dos Mundos','2025-10-31':'Iglesias Evangélicas','2025-11-01':'Todos los Santos','2025-12-08':'Inmaculada Concepción','2025-12-25':'Navidad',
   '2026-01-01':'Año Nuevo','2026-04-03':'Viernes Santo','2026-04-04':'Sábado Santo','2026-05-01':'Día del Trabajo','2026-05-21':'Glorias Navales','2026-06-21':'Pueblos Indígenas','2026-06-29':'San Pedro y San Pablo','2026-07-16':'Virgen del Carmen','2026-08-15':'Asunción','2026-09-18':'Independencia','2026-09-19':'Glorias del Ejército','2026-10-12':'Encuentro Dos Mundos','2026-10-31':'Iglesias Evangélicas','2026-11-01':'Todos los Santos','2026-12-08':'Inmaculada Concepción','2026-12-25':'Navidad'
 };
 
-/* =========================================================
-   SYNC
-   ========================================================= */
+/* ===== SYNC ===== */
 function getToken(){ return localStorage.getItem(SYNC_TOKEN_KEY) || ''; }
 function getGistId(){ return localStorage.getItem(SYNC_GIST_KEY) || ''; }
 function getNombreArchivo(){ return localStorage.getItem(SYNC_FILE_KEY) || ''; }
 function setNombreArchivo(n){ localStorage.setItem(SYNC_FILE_KEY, n); }
 function tieneSync(){ return !!(getToken() && getGistId()); }
-
-let syncEnProgreso = false;
-let operacionCritica = false;
+let syncEnProgreso = false, operacionCritica = false;
 let ultimaSyncExito = LS.get('ultimaSync', 0);
 
 async function fetchConTimeout(url, opts = {}, ms = 25000) {
-  const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), ms);
+  const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), ms);
   try { const r = await fetch(url, { ...opts, signal: ctrl.signal }); clearTimeout(t); return r; }
   catch (e) { clearTimeout(t); throw e; }
 }
@@ -604,11 +706,7 @@ async function ghRequest(method, path, body) {
       headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined
     });
-  } catch (e) {
-    if (e.name === 'AbortError') throw new Error('Timeout');
-    if (/failed to fetch/i.test(e.message)) throw new Error('Sin conexión');
-    throw e;
-  }
+  } catch (e) { if (e.name === 'AbortError') throw new Error('Timeout'); if (/failed to fetch/i.test(e.message)) throw new Error('Sin conexión'); throw e; }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     let msg = err.message || `HTTP ${res.status}`;
@@ -634,8 +732,7 @@ async function detectarNombreArchivo() {
 }
 
 function actualizarIndicatorSync() {
-  const el = $('syncIndicator');
-  if (!el) return;
+  const el = $('syncIndicator'); if (!el) return;
   if (!tieneSync()) { el.textContent = '— sin sync'; el.style.color = 'var(--muted)'; return; }
   if (syncEnProgreso) { el.textContent = '🔄 sync...'; el.style.color = 'var(--muted)'; return; }
   if (ultimaSyncExito === 0) { el.textContent = '⚠ sin sync'; el.style.color = 'var(--amber)'; return; }
@@ -658,11 +755,9 @@ function iniciarAutoSync() {
 
 function buildDatosNube() {
   const notasSync = notas.map(n => {
-    const copia = { ...n };
-    if (copia.adjuntos) {
-      copia.adjuntos = copia.adjuntos.map(a => ({ id: a.id, tipo: a.tipo, nombre: a.nombre, size: a.size, mime: a.mime, thumb: a.thumb || null }));
-    }
-    return copia;
+    const c = { ...n };
+    if (c.adjuntos) c.adjuntos = c.adjuntos.map(a => ({ id: a.id, tipo: a.tipo, nombre: a.nombre, size: a.size, mime: a.mime, thumb: a.thumb || null }));
+    return c;
   });
   return { version: 2, notas: notasSync, tareas, personas, eliminados, papelera, ultimaActualizacion: Date.now() };
 }
@@ -676,24 +771,13 @@ function mergeArreglos(local, nube, eliminadosArr) {
     const existing = mapa.get(k);
     if (!existing) mapa.set(k, item);
     else {
-      const fLocal = Number(existing.fecha) || 0;
-      const fNube = Number(item.fecha) || 0;
-      if (fNube > fLocal) {
+      const fL = Number(existing.fecha) || 0, fN = Number(item.fecha) || 0;
+      if (fN > fL) {
         if (item.adjuntos && existing.adjuntos) {
-          const merged = existing.adjuntos.map(aL => {
-            const aN = item.adjuntos.find(x => x.id === aL.id);
-            return aN ? { ...aL, thumb: aN.thumb || aL.thumb } : aL;
-          });
+          const merged = existing.adjuntos.map(aL => { const aN = item.adjuntos.find(x => x.id === aL.id); return aN ? { ...aL, thumb: aN.thumb || aL.thumb } : aL; });
           const nuevos = item.adjuntos.filter(aN => !existing.adjuntos.find(aL => aL.id === aN.id));
           mapa.set(k, { ...item, adjuntos: [...merged, ...nuevos] });
         } else mapa.set(k, item);
-      } else if (existing.adjuntos && item.adjuntos) {
-        existing.adjuntos = existing.adjuntos.map(aL => {
-          const aN = item.adjuntos.find(x => x.id === aL.id);
-          return aN ? { ...aL, thumb: aN.thumb || aL.thumb } : aL;
-        });
-        const nuevos = item.adjuntos.filter(aN => !existing.adjuntos.find(aL => aL.id === aN.id));
-        if (nuevos.length) existing.adjuntos.push(...nuevos);
       }
     }
   }
@@ -710,8 +794,7 @@ function mergeEliminados(local, nube) {
 }
 
 function purgarEliminadosViejos() {
-  const ahora = Date.now();
-  const ts = eliminados._ts || {};
+  const ahora = Date.now(); const ts = eliminados._ts || {};
   const nueva = { notas: [], tareas: [], personas: [], _ts: {} };
   for (const tipo of ['notas', 'tareas', 'personas']) {
     for (const id of (eliminados[tipo] || [])) {
@@ -729,7 +812,7 @@ async function sincronizar(silencioso = false) {
   syncEnProgreso = true; actualizarIndicatorSync();
   try {
     const nombreArchivo = await detectarNombreArchivo();
-    if (!nombreArchivo) throw new Error('No se encontró archivo en el Gist');
+    if (!nombreArchivo) throw new Error('No se encontró archivo en Gist');
     const gist = await ghRequest('GET', `/gists/${getGistId()}`);
     const file = gist.files && gist.files[nombreArchivo];
     let nube = { version: 2, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
@@ -743,38 +826,27 @@ async function sincronizar(silencioso = false) {
     eliminados = mergeEliminados(eliminados, nube.eliminados);
     const papeleraMap = new Map();
     for (const p of papelera) papeleraMap.set(p.tipo + '-' + String(p.item.id), p);
-    for (const p of nube.papelera) {
-      const k = p.tipo + '-' + String(p.item.id);
-      if (!papeleraMap.has(k)) papeleraMap.set(k, p);
-    }
+    for (const p of nube.papelera) { const k = p.tipo + '-' + String(p.item.id); if (!papeleraMap.has(k)) papeleraMap.set(k, p); }
     papelera = Array.from(papeleraMap.values());
-    const notasMerge    = mergeArreglos(notas, nube.notas || [], eliminados.notas);
-    const tareasMerge   = mergeArreglos(tareas, nube.tareas || [], eliminados.tareas);
+    const notasMerge = mergeArreglos(notas, nube.notas || [], eliminados.notas);
+    const tareasMerge = mergeArreglos(tareas, nube.tareas || [], eliminados.tareas);
     const personasMerge = mergeArreglos(personas, nube.personas || [], eliminados.personas);
-    notas    = notasMerge.filter(n => !eliminados.notas.some(e => eqId(e, n.id)));
-    tareas   = tareasMerge.filter(t => !eliminados.tareas.some(e => eqId(e, t.id)));
+    notas = notasMerge.filter(n => !eliminados.notas.some(e => eqId(e, n.id)));
+    tareas = tareasMerge.filter(t => !eliminados.tareas.some(e => eqId(e, t.id)));
     personas = personasMerge.filter(p => !eliminados.personas.some(e => eqId(e, p.id)));
     LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
     LS.set('eliminados', eliminados); LS.set('papelera', papelera);
-    const datosNube = buildDatosNube();
-    const contenidoStr = JSON.stringify(datosNube, null, 2);
+    const contenidoStr = JSON.stringify(buildDatosNube(), null, 2);
     const tamañoKB = Math.round(new Blob([contenidoStr]).size / 1024);
     await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { [nombreArchivo]: { content: contenidoStr } } });
     if (Math.random() < 0.1) purgarEliminadosViejos();
-    ultimaSyncExito = Date.now();
-    LS.set('ultimaSync', ultimaSyncExito);
+    ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito);
     renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
     if (!silencioso) toast(`✓ Sincronizado (${tamañoKB}KB)`);
-    const info = $('syncInfo');
-    if (info) info.textContent = `Última sync: ${tamañoKB}KB`;
+    const info = $('syncInfo'); if (info) info.textContent = `Última sync: ${tamañoKB}KB`;
     return true;
-  } catch (e) {
-    console.error('Sync error:', e);
-    if (!silencioso) toast('❌ ' + e.message);
-    return false;
-  } finally {
-    syncEnProgreso = false; actualizarIndicatorSync();
-  }
+  } catch (e) { console.error('Sync:', e); if (!silencioso) toast('❌ ' + e.message); return false; }
+  finally { syncEnProgreso = false; actualizarIndicatorSync(); }
 }
 
 async function pushASync(silencioso = true) {
@@ -799,40 +871,31 @@ function marcarEliminado(tipo, id) {
 setInterval(actualizarIndicatorSync, 1000);
 
 async function diagnostico() {
-  const st = $('syncStatus');
-  st.className = 'sync-status info'; st.textContent = '⏳ Diagnosticando...';
+  const st = $('syncStatus'); st.className = 'sync-status info'; st.textContent = '⏳ Diagnosticando...';
   let log = '';
   try {
     const token = $('syncToken').value.trim() || getToken();
     const gistId = $('syncGistId').value.trim() || getGistId();
     if (!token || !gistId) throw new Error('Falta token o Gist ID');
-    log += `🔑 Token: ${token.slice(0, 8)}...\n📋 Gist ID: ${gistId}\n\n[1] Usuario...\n`;
+    log += `🔑 Token: ${token.slice(0, 8)}...\n📋 Gist: ${gistId}\n\n[1] Usuario...\n`;
     const uRes = await fetch('https://api.github.com/user', { headers: { 'Authorization': `Bearer ${token}` } });
     if (!uRes.ok) throw new Error('Token inválido (HTTP ' + uRes.status + ')');
-    const u = await uRes.json();
-    log += `✅ ${u.login}\n\n[2] Gist...\n`;
+    const u = await uRes.json(); log += `✅ ${u.login}\n\n[2] Gist...\n`;
     const gRes = await fetch(`https://api.github.com/gists/${gistId}`, { headers: { 'Authorization': `Bearer ${token}` } });
     if (!gRes.ok) throw new Error('Gist HTTP ' + gRes.status);
-    const g = await gRes.json();
-    const files = Object.keys(g.files || {});
+    const g = await gRes.json(); const files = Object.keys(g.files || {});
     log += `✅ Archivos: ${files.join(', ') || '(vacío)'}\n\n[3] PATCH...\n`;
     const nombreTest = files[0] || 'jarvis.json';
-    const pRes = await fetch(`https://api.github.com/gists/${gistId}`, {
-      method: 'PATCH',
-      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ files: { [nombreTest]: { content: g.files?.[nombreTest]?.content || '{}' } } })
-    });
-    if (!pRes.ok) {
-      const err = await pRes.json().catch(() => ({}));
-      log += `❌ PATCH HTTP ${pRes.status}: ${err.message || ''}\n`;
-    } else log += `✅ PATCH OK\n`;
+    const pRes = await fetch(`https://api.github.com/gists/${gistId}`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' }, body: JSON.stringify({ files: { [nombreTest]: { content: g.files?.[nombreTest]?.content || '{}' } } }) });
+    if (!pRes.ok) { const err = await pRes.json().catch(() => ({})); log += `❌ PATCH HTTP ${pRes.status}: ${err.message || ''}\n`; }
+    else log += `✅ PATCH OK\n`;
     st.className = 'sync-status ok'; st.textContent = log;
   } catch(e) { st.className = 'sync-status err'; st.textContent = log + `\n❌ ${e.message}`; }
 }
 
-/* ========== PAPELERA ========== */
+/* ===== PAPELERA ===== */
 function moverAPapelera(tipo, item) {
-  papelera.push({ tipo, item, fecha: Date.now() });
+  papelera.push({ tipo, item: JSON.parse(JSON.stringify(item)), fecha: Date.now() });
   LS.set('papelera', papelera);
   marcarEliminado(tipo, item.id);
   purgarPapeleraVieja();
@@ -857,13 +920,17 @@ function restaurarDePapelera(idx) {
   renderPapelera(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario();
   toast('♻️ Restaurado');
 }
-function eliminarDefinitivo(idx) {
-  if (!confirm('¿Eliminar definitivamente? No se puede recuperar')) return;
-  const p = papelera[idx];
-  if (p && p.item && p.item.adjuntos) p.item.adjuntos.forEach(a => { eliminarAdjuntoBlob(a.id).catch(()=>{}); });
+async function eliminarDefinitivo(idx) {
+  const p = papelera[idx]; if (!p) return;
+  if (!confirm('¿Eliminar definitivamente? No se recupera')) return;
+  try {
+    if (p.item && p.item.adjuntos) {
+      for (const a of p.item.adjuntos) { try { await idbDelete(a.id); } catch(e){} }
+    }
+  } catch(e) { console.warn('adj delete:', e); }
   papelera.splice(idx, 1); LS.set('papelera', papelera);
   pushASync(); renderPapelera();
-  toast('🗑️ Eliminado');
+  toast('🗑️ Eliminado definitivamente');
 }
 function renderPapelera() {
   const cont = $('listaPapelera'); if (!cont) return;
@@ -885,21 +952,20 @@ function renderPapelera() {
   cont.querySelectorAll('[data-eliminar-def]').forEach(b => { b.onclick = () => eliminarDefinitivo(+b.dataset.eliminarDef); });
 }
 
-/* ========== EXPORT/IMPORT ========== */
+/* ===== EXPORT/IMPORT ===== */
 function exportarJSON() {
   const data = { version: 2, fecha: new Date().toISOString(), notas, tareas, personas, eliminados, papelera };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = `jarvis-backup-${new Date().toISOString().slice(0,10)}.json`; a.click();
-  URL.revokeObjectURL(url);
-  toast('📥 Descargado');
+  const a = document.createElement('a'); a.href = url; a.download = `jarvis-${new Date().toISOString().slice(0,10)}.json`; a.click();
+  URL.revokeObjectURL(url); toast('📥 Descargado');
 }
 async function importarJSON(file) {
   try {
     const texto = await file.text();
     const data = JSON.parse(texto);
     if (!data.notas && !data.tareas && !data.personas) throw new Error('Formato inválido');
-    if (!confirm('Esto reemplazará TODOS los datos actuales. ¿Continuar?')) return;
+    if (!confirm('Reemplazará TODOS los datos actuales. ¿Continuar?')) return;
     notas = data.notas || []; tareas = data.tareas || []; personas = data.personas || [];
     eliminados = data.eliminados || { notas: [], tareas: [], personas: [], _ts: {} };
     ['notas','tareas','personas'].forEach(tipo => { eliminados[tipo] = (eliminados[tipo]||[]).map(String); });
@@ -924,17 +990,16 @@ function exportarICS() {
   const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = `jarvis-${new Date().toISOString().slice(0,10)}.ics`; a.click();
-  URL.revokeObjectURL(url);
-  toast(`📅 ${tareasConFecha.length} exportadas`);
+  URL.revokeObjectURL(url); toast(`📅 ${tareasConFecha.length} exportadas`);
 }
 
-/* ========== ETIQUETAS ========== */
+/* ===== TAGS ===== */
 function parseTags(str) { if (!str) return []; return str.split(',').map(s => s.trim()).filter(Boolean).slice(0, 5); }
-function renderTagsHTML(tags, editable) {
+function renderTagsHTML(tags) {
   if (!tags || !tags.length) return '';
-  return '<div class="tags-row">' + tags.map(t => `<span class="tag ${editable ? 'clickable' : ''}">🏷️ ${escapeHtml(t)}</span>`).join('') + '</div>';
+  return '<div class="tags-row">' + tags.map(t => `<span class="tag">🏷️ ${escapeHtml(t)}</span>`).join('') + '</div>';
 }
-let tagFiltroNotas = ''; let tagFiltroTareas = '';
+let tagFiltroNotas = '', tagFiltroTareas = '';
 function recolectarTags() {
   const tN = new Set(), tT = new Set();
   notas.forEach(n => (n.tags||[]).forEach(t => tN.add(t)));
@@ -982,7 +1047,7 @@ function proximaFecha(fechaStr, recurrencia) {
   return f.toISOString().slice(0,10);
 }
 
-/* ========== BÚSQUEDA GLOBAL ========== */
+/* ===== BUSCAR ===== */
 function buscarGlobal(q) {
   const query = (q || '').toLowerCase().trim();
   if (!query) return { notas: [], tareas: [], personas: [] };
@@ -1006,7 +1071,7 @@ function renderBusquedaGlobal() {
   cont.innerHTML = html;
 }
 
-/* ========== ESTADÍSTICAS ========== */
+/* ===== STATS ===== */
 function renderEstadisticas() {
   const total = notas.length + tareas.length + personas.length;
   const tareasPend = tareas.filter(t => !t.hecha).length;
@@ -1014,10 +1079,6 @@ function renderEstadisticas() {
   const notasHoy = notas.filter(n => new Date(n.fecha).toDateString() === new Date().toDateString()).length;
   const notasSemana = notas.filter(n => Date.now() - new Date(n.fecha).getTime() < 7*24*60*60*1000).length;
   const adjuntosTotal = notas.reduce((sum, n) => sum + (n.adjuntos?.length || 0), 0);
-  const tagsCount = {};
-  notas.forEach(n => (n.tags||[]).forEach(t => tagsCount[t] = (tagsCount[t]||0) + 1));
-  tareas.forEach(t => (t.tags||[]).forEach(t => tagsCount[t] = (tagsCount[t]||0) + 1));
-  const topTags = Object.entries(tagsCount).sort((a,b) => b[1]-a[1]).slice(0, 8);
   $('statContenido').innerHTML = `
     <div class="stat-grid">
       <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total</div></div>
@@ -1030,12 +1091,10 @@ function renderEstadisticas() {
       <div class="stat-card"><div class="num">${notasSemana}</div><div class="lbl">Esta semana</div></div>
       <div class="stat-card"><div class="num">${adjuntosTotal}</div><div class="lbl">📎 Adjuntos</div></div>
       <div class="stat-card"><div class="num">${papelera.length}</div><div class="lbl">🗑️ Papelera</div></div>
-    </div>
-    ${topTags.length ? `<h3 style="color:var(--gold);font-size:.85rem;margin:20px 0 8px">🏷️ Tags más usados</h3><div class="tags-row">${topTags.map(([t,c]) => `<span class="tag">${escapeHtml(t)} (${c})</span>`).join('')}</div>` : ''}
-  `;
+    </div>`;
 }
 
-/* ========== NOTIFICACIONES ========== */
+/* ===== NOTIFICACIONES ===== */
 async function pedirPermisoNotif() {
   if (!('Notification' in window)) { toast('Sin notificaciones'); return; }
   if (Notification.permission === 'granted') { toast('Ya activadas'); iniciarChequeoNotif(); return; }
@@ -1064,7 +1123,7 @@ function chequearNotif() {
   });
 }
 
-/* ========== VINCULAR PERSONAS ========== */
+/* ===== VINCULAR PERSONAS ===== */
 function buscarPersonaPorNombre(nombre) {
   if (!nombre) return null;
   const low = String(nombre).toLowerCase().trim();
@@ -1080,23 +1139,21 @@ function vincularPersonasPorTexto(nota) {
   const vinculadas = new Set(nota.personasVinculadas || []);
   personas.forEach(p => {
     if (!p.nombre) return;
-    const primerNombre = p.nombre.split(' ')[0];
-    if (primerNombre.length < 3) return;
-    const regex = new RegExp('\\b' + primerNombre + '\\b', 'i');
-    if (regex.test(nota.texto)) vinculadas.add(String(p.id));
+    const pn = p.nombre.split(' ')[0];
+    if (pn.length < 3) return;
+    if (new RegExp('\\b' + pn + '\\b', 'i').test(nota.texto)) vinculadas.add(String(p.id));
   });
   return Array.from(vinculadas);
 }
 function getPersona(id) { return personas.find(p => eqId(p.id, id)); }
 function getNotasDePersona(personaId) { return notas.filter(n => (n.personasVinculadas||[]).some(id => eqId(id, personaId))); }
 function getTareasDePersona(personaId) {
-  const persona = getPersona(personaId);
-  if (!persona) return [];
-  const nombreLow = (persona.nombre||'').toLowerCase();
-  return tareas.filter(t => eqId(t.personaId, personaId) || (t.persona && t.persona.toLowerCase().includes(nombreLow.split(' ')[0].toLowerCase())));
+  const persona = getPersona(personaId); if (!persona) return [];
+  const nL = (persona.nombre||'').toLowerCase();
+  return tareas.filter(t => eqId(t.personaId, personaId) || (t.persona && t.persona.toLowerCase().includes(nL.split(' ')[0].toLowerCase())));
 }
 
-/* ========== MODO FOCUS ========== */
+/* ===== FOCUS ===== */
 let focusActivo = false, focusIdx = 0, focusLista = [];
 function abrirFocusMode() {
   focusLista = tareas.filter(t => !t.hecha).sort((a,b) => ((a.fecha||'9999')+(a.hora||'99:99')).localeCompare((b.fecha||'9999')+(b.hora||'99:99')));
@@ -1117,8 +1174,7 @@ function renderFocus() {
     <h2>${escapeHtml(t.descripcion)}</h2>
     ${t.persona ? `<div class="detail">👤 <b>${escapeHtml(t.persona)}</b></div>` : ''}
     ${t.fecha ? `<div class="detail">📅 ${t.fecha}${t.hora ? ' · 🕐 ' + t.hora : ''}</div>` : ''}
-    ${t.contacto ? `<div class="detail">📞 ${escapeHtml(t.contacto)}</div>` : ''}
-    ${t.tags && t.tags.length ? renderTagsHTML(t.tags, false) : ''}
+    ${t.tags && t.tags.length ? renderTagsHTML(t.tags) : ''}
     <div class="btns">
       <button class="btn primary" id="focusCompletar">✅ Completar</button>
       <button class="btn" id="focusAnterior" ${focusIdx === 0 ? 'disabled style="opacity:.4"' : ''}>⏮ Anterior</button>
@@ -1127,11 +1183,10 @@ function renderFocus() {
   </div>`;
   const btnC = $('focusCompletar');
   if (btnC) btnC.onclick = () => {
-    const tr = tareas.find(x => eqId(x.id, t.id));
-    if (!tr) return;
+    const tr = tareas.find(x => eqId(x.id, t.id)); if (!tr) return;
     tr.hecha = true; tr.completadaEn = new Date().toISOString();
     tr.fecha = tr.fecha || new Date().toISOString();
-    if (tr.recurrencia && tr.fecha) tareas.unshift({ ...tr, id: Date.now() + Math.random(), fecha: proximaFecha(tr.fecha, tr.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
+    if (tr.recurrencia && tr.fecha) tareas.unshift({ ...tr, id: nuevoId(), fecha: proximaFecha(tr.fecha, tr.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
     LS.set('tareas', tareas); pushASync();
     focusLista = focusLista.filter(x => !eqId(x.id, t.id));
     renderTareas(); renderCalendario(); toast('✅ Completada');
@@ -1144,22 +1199,19 @@ function renderFocus() {
 $('btnFocusMode').onclick = abrirFocusMode;
 $('focusExit').onclick = cerrarFocusMode;
 
-/* ========== ADJUNTOS ========== */
-let adjuntoNotaActual = null, adjuntoTipoActual = null;
+/* ===== ADJUNTOS ===== */
+let adjuntoNotaActual = null;
 function abrirModalAdjuntar(notaId) { adjuntoNotaActual = notaId; $('modalAdjuntar').classList.add('show'); }
 $('adjCancelar').onclick = () => $('modalAdjuntar').classList.remove('show');
 $('adjOpcFoto').onclick = () => { $('adjInput').accept = 'image/*'; $('adjInput').click(); };
 $('adjOpcAudio').onclick = () => { $('adjInput').accept = 'audio/*'; $('adjInput').click(); };
 $('adjOpcArchivo').onclick = () => { $('adjInput').accept = '*/*'; $('adjInput').click(); };
 $('adjInput').onchange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  e.target.value = '';
-  $('modalAdjuntar').classList.remove('show');
-  const nota = notas.find(n => eqId(n.id, adjuntoNotaActual));
-  if (!nota) return;
-  if (file.size > 15 * 1024 * 1024) return toast('⚠️ Máximo 15 MB');
-  const adjId = 'adj-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+  const file = e.target.files[0]; if (!file) return;
+  e.target.value = ''; $('modalAdjuntar').classList.remove('show');
+  const nota = notas.find(n => eqId(n.id, adjuntoNotaActual)); if (!nota) return;
+  if (file.size > 15 * 1024 * 1024) return toast('⚠️ Máx 15 MB');
+  const adjId = 'adj-' + nuevoId();
   let tipo = 'file';
   if (file.type.startsWith('image/')) tipo = 'image';
   else if (file.type.startsWith('audio/')) tipo = 'audio';
@@ -1170,11 +1222,8 @@ $('adjInput').onchange = async (e) => {
       const thumb = await comprimirImagen(file, 320, 0.65);
       thumbBase64 = await blobADataURL(thumb);
     } catch(err) { blobFull = file; }
-  } else if (file.size < 500 * 1024) {
-    try { thumbBase64 = await blobADataURL(file); } catch(e){}
-  }
-  try { await guardarAdjuntoBlob(adjId, blobFull); }
-  catch(err) { return toast('❌ Error guardando'); }
+  } else if (file.size < 500 * 1024) { try { thumbBase64 = await blobADataURL(file); } catch(e){} }
+  try { await idbPut(adjId, blobFull); } catch(err) { return toast('❌ Error guardando'); }
   nota.adjuntos = nota.adjuntos || [];
   nota.adjuntos.push({ id: adjId, tipo, nombre: file.name, size: blobFull.size, mime: blobFull.type || file.type, thumb: thumbBase64 });
   nota.fecha = new Date().toISOString();
@@ -1188,7 +1237,7 @@ async function renderAdjuntosHTML(nota) {
   for (const adj of nota.adjuntos) {
     let srcImg = null, esLocal = false;
     if (adj.tipo === 'image') {
-      try { const blob = await obtenerAdjuntoBlob(adj.id); if (blob) { srcImg = URL.createObjectURL(blob); esLocal = true; } } catch(e){}
+      try { const blob = await idbGet(adj.id); if (blob) { srcImg = URL.createObjectURL(blob); esLocal = true; } } catch(e){}
       if (!srcImg && adj.thumb) srcImg = adj.thumb;
       html += `<div class="adjunto" data-adj-id="${adj.id}">
         ${srcImg ? `<img src="${srcImg}" alt="">` : '<span style="color:var(--muted);font-size:.7rem">sin imagen</span>'}
@@ -1207,7 +1256,7 @@ async function renderAdjuntosHTML(nota) {
 
 async function abrirVisorAdjunto(adjId) {
   try {
-    let blob = await obtenerAdjuntoBlob(adjId);
+    let blob = await idbGet(adjId);
     if (!blob) {
       for (const n of notas) {
         const adj = (n.adjuntos||[]).find(a => a.id === adjId);
@@ -1215,8 +1264,7 @@ async function abrirVisorAdjunto(adjId) {
       }
     }
     if (!blob) return toast('⚠️ No disponible');
-    const cont = $('visorContenido');
-    cont.innerHTML = '';
+    const cont = $('visorContenido'); cont.innerHTML = '';
     if (blob.type.startsWith('image/')) cont.innerHTML = `<img src="${URL.createObjectURL(blob)}" alt="">`;
     else if (blob.type.startsWith('audio/')) cont.innerHTML = `<audio controls autoplay src="${URL.createObjectURL(blob)}"></audio>`;
     else cont.innerHTML = `<a href="${URL.createObjectURL(blob)}" download style="color:var(--gold);font-size:1rem;text-decoration:underline">⬇️ Descargar</a>`;
@@ -1227,32 +1275,24 @@ $('visorCerrar').onclick = () => $('visorAdjunto').classList.remove('show');
 
 async function eliminarAdjunto(notaId, adjId) {
   if (!confirm('¿Eliminar adjunto?')) return;
-  const nota = notas.find(n => eqId(n.id, notaId));
-  if (!nota) return;
+  const nota = notas.find(n => eqId(n.id, notaId)); if (!nota) return;
   nota.adjuntos = (nota.adjuntos||[]).filter(a => a.id !== adjId);
   nota.fecha = new Date().toISOString();
-  try { await eliminarAdjuntoBlob(adjId); } catch(e){}
+  try { await idbDelete(adjId); } catch(e){}
   LS.set('notas', notas); pushASync(); renderNotas();
   toast('🗑️ Eliminado');
 }
 
-/* ========== COMPARTIR ========== */
+/* ===== COMPARTIR ===== */
 function abrirModalCompartir(notaId) {
-  const nota = notas.find(n => eqId(n.id, notaId));
-  if (!nota) return;
+  const nota = notas.find(n => eqId(n.id, notaId)); if (!nota) return;
   const cont = $('compartirOpciones');
   cont.innerHTML = `
-    <div class="opcion" data-comp="share"><span class="ico">📱</span> Compartir (WhatsApp, Gmail, etc.)</div>
+    <div class="opcion" data-comp="share"><span class="ico">📱</span> Compartir</div>
     <div class="opcion" data-comp="email"><span class="ico">📧</span> Correo</div>
     <div class="opcion" data-comp="whatsapp"><span class="ico">💬</span> WhatsApp</div>
-    <div class="opcion" data-comp="copiar"><span class="ico">📋</span> Copiar texto</div>
-  `;
-  cont.querySelectorAll('[data-comp]').forEach(b => {
-    b.onclick = async () => {
-      $('modalCompartir').classList.remove('show');
-      await compartirNota(nota, b.dataset.comp);
-    };
-  });
+    <div class="opcion" data-comp="copiar"><span class="ico">📋</span> Copiar texto</div>`;
+  cont.querySelectorAll('[data-comp]').forEach(b => { b.onclick = async () => { $('modalCompartir').classList.remove('show'); await compartirNota(nota, b.dataset.comp); }; });
   $('modalCompartir').classList.add('show');
 }
 $('compartirCancelar').onclick = () => $('modalCompartir').classList.remove('show');
@@ -1265,16 +1305,14 @@ async function compartirNota(nota, modo) {
         const files = [];
         for (const adj of nota.adjuntos) {
           if (adj.tipo === 'image') {
-            let blob = await obtenerAdjuntoBlob(adj.id);
+            let blob = await idbGet(adj.id);
             if (!blob && adj.thumb) blob = await dataURLABlob(adj.thumb);
             if (blob) { try { files.push(new File([blob], adj.nombre || 'foto.jpg', { type: blob.type || 'image/jpeg' })); } catch(e){} }
           }
         }
         if (files.length && navigator.canShare({ files })) data.files = files;
       }
-      await navigator.share(data);
-      toast('📤 Compartido');
-      return;
+      await navigator.share(data); toast('📤 Compartido'); return;
     } catch(e) { if (e.name === 'AbortError') return; }
   }
   if (modo === 'email') { window.location.href = `mailto:?subject=${encodeURIComponent(nota.titulo)}&body=${encodeURIComponent(texto)}`; return; }
@@ -1284,198 +1322,27 @@ async function compartirNota(nota, modo) {
   else { copiar(texto); toast('📋 Copiado'); }
 }
 
-/* =========================================================
-   TTS MULTI-IDIOMA CON HIGHLIGHT (NUEVO v22)
-   ========================================================= */
-const TTS = {
-  chunks: [],
-  i: 0,
-  activo: false,
-  pausado: false,
-  idioma: 'es',
-  notaIdActual: null,
-  gen: 0,
-
-  dividirPalabras(texto, maxLen = 180) {
-    const palabras = String(texto).replace(/\s+/g, ' ').trim().split(' ');
-    const chunks = [];
-    let buf = [];
-    let len = 0;
-    for (const p of palabras) {
-      if (len + p.length + 1 > maxLen && buf.length) {
-        chunks.push(buf.join(' '));
-        buf = [p];
-        len = p.length;
-      } else {
-        buf.push(p);
-        len += p.length + 1;
-      }
-    }
-    if (buf.length) chunks.push(buf.join(' '));
-    return chunks;
-  },
-
-  play(texto, idioma, notaId) {
-    this.stop();
-    this.gen++;
-    const gen = this.gen;
-    this.idioma = idioma || detectarIdioma(texto);
-    this.notaIdActual = notaId || null;
-    this.chunks = this.dividirPalabras(texto);
-    if (!this.chunks.length) return;
-    this.i = 0;
-    this.activo = true;
-    this.pausado = false;
-
-    if (notaId) this._prepararHighlight(notaId);
-
-    $('ttsPlayer').classList.add('show');
-    this._updateInfo();
-    this._next(gen);
-  },
-
-  _prepararHighlight(notaId) {
-    const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
-    if (!card) return;
-    const textoDiv = card.querySelector('.texto');
-    if (!textoDiv) return;
-    if (textoDiv.querySelector('.hl-chunk')) {
-      textoDiv.querySelectorAll('.hl-chunk').forEach(s => s.classList.remove('hl-activo'));
-      return;
-    }
-    const original = textoDiv.textContent;
-    textoDiv.dataset.textoOriginal = original;
-    textoDiv.innerHTML = this.chunks.map((c, i) =>
-      `<span class="hl-chunk" data-hl="${i}">${escapeHtml(c)}</span> `
-    ).join('');
-  },
-
-  _limpiarHighlight(notaId) {
-    if (!notaId) return;
-    const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
-    if (!card) return;
-    const textoDiv = card.querySelector('.texto');
-    if (!textoDiv) return;
-    if (textoDiv.dataset.textoOriginal) {
-      textoDiv.textContent = textoDiv.dataset.textoOriginal;
-      delete textoDiv.dataset.textoOriginal;
-    }
-  },
-
-  _updateInfo() {
-    if ($('ttsInfo')) $('ttsInfo').textContent = (this.i + 1) + '/' + this.chunks.length;
-  },
-
-  _next(gen) {
-    if (gen !== undefined && gen !== this.gen) return;
-    if (!this.activo || this.i >= this.chunks.length) { this._finish(); return; }
-
-    // Highlight
-    if (this.notaIdActual) {
-      const card = document.querySelector(`.nota-card[data-id="${this.notaIdActual}"]`);
-      if (card) {
-        const textoDiv = card.querySelector('.texto');
-        if (textoDiv) {
-          textoDiv.querySelectorAll('.hl-chunk').forEach(s => s.classList.remove('hl-activo'));
-          const span = textoDiv.querySelector(`.hl-chunk[data-hl="${this.i}"]`);
-          if (span) {
-            span.classList.add('hl-activo');
-            span.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-          }
-        }
-      }
-    }
-
-    const u = new SpeechSynthesisUtterance(this.chunks[this.i]);
-    u.lang = this.idioma === 'en' ? 'en-US' : 'es-CL';
-    u.rate = 1.05;
-    const v = mejorVozPorIdioma(this.idioma);
-    if (v) u.voice = v;
-    u.onend = () => {
-      if (gen !== this.gen || !this.activo) return;
-      this.i++;
-      this._updateInfo();
-      this._next(gen);
-    };
-    u.onerror = (e) => {
-      if (gen !== this.gen || !this.activo) return;
-      if (e.error === 'interrupted' || e.error === 'canceled') return;
-      this.i++;
-      this._updateInfo();
-      this._next(gen);
-    };
-    try { speechSynthesis.speak(u); } catch(e) { this._finish(); }
-    this._updateInfo();
-  },
-
-  _finish() {
-    this.activo = false;
-    this.pausado = false;
-    $('ttsPlayer').classList.remove('show');
-    if (this.notaIdActual) {
-      this._limpiarHighlight(this.notaIdActual);
-      this.notaIdActual = null;
-    }
-    // Actualizar botones play de notas
-    document.querySelectorAll('.nota-play-btn').forEach(b => {
-      b.classList.remove('playing');
-      b.innerHTML = '<span>▶</span> Escuchar';
-    });
-  },
-
-  stop() {
-    this.gen++;
-    try { speechSynthesis.cancel(); } catch(e){}
-    this._finish();
-  },
-
-  pauseToggle() {
-    if (speechSynthesis.paused) { speechSynthesis.resume(); this.pausado = false; }
-    else if (speechSynthesis.speaking) { speechSynthesis.pause(); this.pausado = true; }
-  },
-
-  next() {
-    if (this.i < this.chunks.length - 1) {
-      try { speechSynthesis.cancel(); } catch(e){}
-      this.i++; this.activo = true;
-      this._next(this.gen);
-    }
-  },
-
-  prev() {
-    if (this.i > 0) {
-      try { speechSynthesis.cancel(); } catch(e){}
-      this.i--; this.activo = true;
-      this._next(this.gen);
-    }
-  }
-};
-
-$('ttsPause').onclick = () => TTS.pauseToggle();
-$('ttsStop').onclick = () => TTS.stop();
-$('ttsNext').onclick = () => TTS.next();
-$('ttsPrev').onclick = () => TTS.prev();
-
-if ('speechSynthesis' in window) {
-  speechSynthesis.onvoiceschanged = () => {};
-  setTimeout(() => { mejorVozPorIdioma('es'); mejorVozPorIdioma('en'); }, 500);
-}
-
-/* ========== TRADUCIR CON BOTONES (NUEVO v22) ========== */
+/* ===== TRADUCIR CON CONTROLES (v23) ===== */
 $('btnTraducir').onclick = () => {
-  const texto = txt.value.trim();
-  if (!texto) return toast('No hay texto');
+  const t = txt.value.trim(); if (!t) return toast('No hay texto');
+  detenerTodo();  // ⬅ PARAR GRABACIÓN
+  TTS.stop();     // ⬅ PARAR TTS
   $('modalTraducir').classList.add('show');
 };
 $('tradCancelar').onclick = () => $('modalTraducir').classList.remove('show');
 document.querySelectorAll('#modalTraducir [data-lang]').forEach(b => {
-  b.onclick = async () => {
-    $('modalTraducir').classList.remove('show');
-    await ejecutarTraduccion(b.dataset.lang);
-  };
+  b.onclick = async () => { $('modalTraducir').classList.remove('show'); await ejecutarTraduccion(b.dataset.lang); };
 });
 
+$('btnCerrarTrad').onclick = () => {
+  $('traduccionBox').classList.remove('show');
+  $('traduccionTexto').innerHTML = '';
+  TTS.stop();
+};
+
 async function ejecutarTraduccion(code) {
+  detenerTodo();  // Parar grabación por si acaso
+  TTS.stop();
   const texto = txt.value.trim();
   const nombre = code === 'en' ? 'Inglés' : 'Español';
   const bandera = code === 'en' ? '🇬🇧' : '🇪🇸';
@@ -1483,26 +1350,36 @@ async function ejecutarTraduccion(code) {
   const out = $('traduccionTexto');
   $('traduccionLabel').textContent = `${bandera} Traducción a ${nombre}`;
   box.classList.add('show');
-  out.innerHTML = '<div class="traduccion-result">⏳ Traduciendo...</div>';
+  out.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⏳ Traduciendo...</div>';
 
   try {
     const trad = await traducirTexto(texto, code);
-    out.dataset.textoOriginal = trad;
-    out.dataset.idioma = code;
     out.innerHTML = `
       <div class="traduccion-result">${escapeHtml(trad)}</div>
       <div class="traduccion-actions">
-        <button class="btn primary small" id="btnTradEscuchar">🔊 Escuchar en ${nombre}</button>
-        <button class="btn small" id="btnTradCopiar">📋 Copiar</button>
-      </div>
-    `;
-    $('btnTradEscuchar').onclick = () => {
-      TTS.play(trad, code);
-      toast(`🔊 Leyendo en ${nombre}`);
-    };
-    $('btnTradCopiar').onclick = () => copiar(trad);
+        <button class="btn primary small" data-trad="play">▶ Reproducir</button>
+        <button class="btn small" data-trad="pause">⏸ Pausa</button>
+        <button class="btn small" data-trad="stop">⏹ Detener</button>
+        <button class="btn small" data-trad="copiar">📋 Copiar</button>
+      </div>`;
+
+    out.querySelectorAll('[data-trad]').forEach(btn => {
+      btn.onclick = () => {
+        const action = btn.dataset.trad;
+        if (action === 'play') {
+          TTS.play(trad, code);
+          toast(`🔊 Leyendo en ${nombre}`);
+        } else if (action === 'pause') {
+          TTS.pauseToggle();
+        } else if (action === 'stop') {
+          TTS.stop();
+        } else if (action === 'copiar') {
+          copiar(trad);
+        }
+      };
+    });
   } catch(e) {
-    out.innerHTML = '<div class="traduccion-result" style="color:#ff8a80">❌ Error: ' + escapeHtml(e.message) + '</div>';
+    out.innerHTML = '<div style="color:#ff8a80;padding:10px">❌ Error: ' + escapeHtml(e.message) + '</div>';
   }
 }
 
@@ -1514,7 +1391,7 @@ async function traducirTexto(texto, targetLang){
   throw new Error('Respuesta inválida');
 }
 
-/* ========== NAV ========== */
+/* ===== NAV + SWIPE ===== */
 const TABS_ORDEN = ['grabar','notas','calendario','tareas','personas','buscar','stats','config'];
 document.querySelectorAll('nav button').forEach(b=>{
   b.onclick = () => {
@@ -1528,65 +1405,42 @@ document.querySelectorAll('nav button').forEach(b=>{
     if(b.dataset.tab==='personas') renderPersonas();
     if(b.dataset.tab==='buscar') renderBusquedaGlobal();
     if(b.dataset.tab==='stats') renderEstadisticas();
-    if(b.dataset.tab==='config') { renderPapelera(); actualizarIndicatorSync(); }
+    if(b.dataset.tab==='config') { renderPapelera(); actualizarIndicatorSync(); actualizarEstadoApiKey(); }
     if (tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true);
   };
 });
 
-/* ========== SWIPE ENTRE TABS (NUEVO v22) ========== */
 let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
 const modales = ['modalAdjuntar','modalCompartir','modalTraducir','visorAdjunto','focusOverlay','panelDia'];
-
 document.addEventListener('touchstart', (e) => {
   if (modales.some(id => $(id)?.classList.contains('show'))) return;
   if (e.target.closest('textarea') || e.target.closest('input') || e.target.closest('select')) return;
   if (e.target.closest('nav') || e.target.closest('.tabs-tareas') || e.target.closest('.tags-filter') || e.target.closest('.adjuntos-grid') || e.target.closest('.cal-grid')) return;
-  touchStartX = e.touches[0].clientX;
-  touchStartY = e.touches[0].clientY;
-  touchStartTime = Date.now();
+  touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; touchStartTime = Date.now();
 }, { passive: true });
-
 document.addEventListener('touchend', (e) => {
   if (!touchStartX) return;
   const dx = e.changedTouches[0].clientX - touchStartX;
   const dy = e.changedTouches[0].clientY - touchStartY;
   const dt = Date.now() - touchStartTime;
   touchStartX = 0; touchStartY = 0;
-
-  // Solo swipe horizontal: > 80px, más horizontal que vertical, rápido (<600ms)
   if (Math.abs(dx) < 80 || Math.abs(dx) < Math.abs(dy) * 1.5 || dt > 600) return;
-
-  // No swipe si el contenido tiene scroll horizontal (calendario, etc.)
-  const activeTab = document.querySelector('nav button.active');
-  if (!activeTab) return;
-  const currentIdx = TABS_ORDEN.indexOf(activeTab.dataset.tab);
-  if (currentIdx === -1) return;
-
-  let nextIdx;
-  if (dx < 0) {
-    // Swipe izq → siguiente
-    nextIdx = Math.min(currentIdx + 1, TABS_ORDEN.length - 1);
-  } else {
-    // Swipe der → anterior
-    nextIdx = Math.max(currentIdx - 1, 0);
-  }
-
+  const activeTab = document.querySelector('nav button.active'); if (!activeTab) return;
+  const currentIdx = TABS_ORDEN.indexOf(activeTab.dataset.tab); if (currentIdx === -1) return;
+  const nextIdx = dx < 0 ? Math.min(currentIdx + 1, TABS_ORDEN.length - 1) : Math.max(currentIdx - 1, 0);
   if (nextIdx !== currentIdx) {
     document.querySelector(`nav button[data-tab="${TABS_ORDEN[nextIdx]}"]`).click();
     if (navigator.vibrate) navigator.vibrate(15);
   }
 }, { passive: true });
 
-/* ========== VOZ (GRABAR) ========== */
+/* ===== VOZ (GRABAR) ===== */
 let permisoPrimed = false;
 async function asegurarPermisoMic(){
   if(permisoPrimed) return true;
   if(!navigator.mediaDevices?.getUserMedia) return true;
-  try{
-    const s = await navigator.mediaDevices.getUserMedia({audio:true});
-    s.getTracks().forEach(t=>t.stop());
-    permisoPrimed = true; return true;
-  }catch(e){ alert('No pude activar el micrófono. Abre por HTTPS.'); return false; }
+  try{ const s = await navigator.mediaDevices.getUserMedia({audio:true}); s.getTracks().forEach(t=>t.stop()); permisoPrimed = true; return true; }
+  catch(e){ alert('No pude activar el micrófono. Abre por HTTPS.'); return false; }
 }
 const ES_MOVIL = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 function smartAppend(existing, nuevo) {
@@ -1613,14 +1467,9 @@ function smartAppend(existing, nuevo) {
   }
   return existing + (/[.,;:!?]$/.test(existing) ? ' ' : ', ') + clean;
 }
-
 let escuchando = false, capturando = false, modo = 'idle';
 let bufferFinal = '', interimActual = '';
-function renderTexto() {
-  const t = bufferFinal + (interimActual ? (bufferFinal ? ' ' : '') + interimActual : '');
-  txt.value = t; txt.scrollTop = txt.scrollHeight;
-}
-
+function renderTexto() { const t = bufferFinal + (interimActual ? (bufferFinal ? ' ' : '') + interimActual : ''); txt.value = t; txt.scrollTop = txt.scrollHeight; }
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 let rec = null, reiniciando = false, ultimoResultado = Date.now();
 function crearReconocimiento() {
@@ -1644,15 +1493,9 @@ function crearReconocimiento() {
     if (reiniciando) return;
     if (interimActual) { bufferFinal = smartAppend(bufferFinal, interimActual); interimActual = ''; renderTexto(); }
     reiniciando = true;
-    setTimeout(() => {
-      reiniciando = false;
-      if (escuchando) { try { r.start(); } catch (err) { setTimeout(() => { if (escuchando) { try { r.start(); } catch (e2) { detenerVivo(); } } }, 500); } }
-    }, 700);
+    setTimeout(() => { reiniciando = false; if (escuchando) { try { r.start(); } catch (err) { setTimeout(() => { if (escuchando) { try { r.start(); } catch (e2) { detenerVivo(); } } }, 500); } } }, 700);
   };
-  r.onerror = (e) => {
-    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { alert('Permiso denegado.'); detenerVivo(); }
-    if (e.error === 'no-speech' || e.error === 'aborted') return;
-  };
+  r.onerror = (e) => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { alert('Permiso denegado.'); detenerVivo(); } };
   return r;
 }
 async function iniciarVivo() {
@@ -1665,12 +1508,7 @@ async function iniciarVivo() {
   try { rec.start(); } catch (e) { setTimeout(() => { try { rec.start(); } catch (e2) {} }, 300); }
   actualizarUI();
 }
-function detenerVivo() {
-  escuchando = false; capturando = false; modo = 'idle'; reiniciando = false;
-  try { rec && rec.stop(); } catch (e) {}
-  actualizarUI();
-}
-
+function detenerVivo() { escuchando = false; capturando = false; modo = 'idle'; reiniciando = false; try { rec && rec.stop(); } catch (e) {} actualizarUI(); }
 let mediaRecorder = null, audioChunks = [], audioStream = null, grabandoEstable = false;
 async function iniciarEstable() {
   if (!(await asegurarPermisoMic())) return;
@@ -1679,9 +1517,7 @@ async function iniciarEstable() {
   try { audioStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
   catch(e) { alert('Sin acceso al micrófono.'); return; }
   audioChunks = [];
-  const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus'
-                 : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm'
-                 : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+  const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
   try { mediaRecorder = mimeType ? new MediaRecorder(audioStream, { mimeType }) : new MediaRecorder(audioStream); }
   catch(e) { toast('No soportado'); audioStream.getTracks().forEach(t => t.stop()); return; }
   mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
@@ -1704,10 +1540,7 @@ async function iniciarEstable() {
   $('fabLabel').textContent = 'GRABANDO'; $('fabSub').textContent = 'toca para parar';
   toast('🎙️ Grabando...');
 }
-function detenerEstable() {
-  if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
-  grabandoEstable = false; actualizarUI();
-}
+function detenerEstable() { if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop(); grabandoEstable = false; actualizarUI(); }
 async function transcribirConWhisper(blob) {
   const key = LS.get('apiKey','') || $('apiKey').value.trim();
   if (!key) throw new Error('Falta API key');
@@ -1718,19 +1551,12 @@ async function transcribirConWhisper(blob) {
   form.append('response_format', 'json');
   const res = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + key }, body: form });
   if (!res.ok) { const err = await res.text(); throw new Error('Whisper ' + res.status + ': ' + err.slice(0, 200)); }
-  const data = await res.json();
-  return data.text || '';
+  return (await res.json()).text || '';
 }
-
 btnPTT.onclick = async () => {
   TTS.stop();
-  if (modoGrabacion === 'estable') {
-    if (grabandoEstable) detenerEstable();
-    else await iniciarEstable();
-  } else {
-    if (escuchando) detenerVivo();
-    else await iniciarVivo();
-  }
+  if (modoGrabacion === 'estable') { if (grabandoEstable) detenerEstable(); else await iniciarEstable(); }
+  else { if (escuchando) detenerVivo(); else await iniciarVivo(); }
 };
 function detenerTodo() { if (modoGrabacion === 'estable') detenerEstable(); else detenerVivo(); }
 function actualizarUI() {
@@ -1741,52 +1567,32 @@ function actualizarUI() {
     $('fabSub').textContent = modoGrabacion === 'estable' ? 'graba y transcribe' : 'toca para hablar';
   }
 }
-setInterval(() => {
-  if (modoGrabacion !== 'vivo' || !escuchando || !rec || reiniciando) return;
-  if (Date.now() - ultimoResultado > 25000) { try { rec.stop(); } catch (e) {} }
-}, 10000);
-
+setInterval(() => { if (modoGrabacion !== 'vivo' || !escuchando || !rec || reiniciando) return; if (Date.now() - ultimoResultado > 25000) { try { rec.stop(); } catch (e) {} } }, 10000);
 txt.addEventListener('input', () => { bufferFinal = txt.value; interimActual = ''; });
-
 let draftTimer = null;
-txt.addEventListener('input', () => {
-  clearTimeout(draftTimer);
-  draftTimer = setTimeout(() => {
-    const texto = txt.value.trim();
-    if (texto) LS.set('draft', { texto, fecha: Date.now() });
-    else localStorage.removeItem('jarvis_draft');
-  }, 2000);
-});
+txt.addEventListener('input', () => { clearTimeout(draftTimer); draftTimer = setTimeout(() => { const t = txt.value.trim(); if (t) LS.set('draft', { texto: t, fecha: Date.now() }); else localStorage.removeItem('jarvis_draft'); }, 2000); });
 
-/* ========== ACCIONES ========== */
+/* ===== ACCIONES ===== */
 $('btnBorrar').onclick = () => { bufferFinal=''; interimActual=''; txt.value=''; $('traduccionBox').classList.remove('show'); localStorage.removeItem('jarvis_draft'); toast('🧹 Borrado'); };
 async function copiar(texto){
   if(!texto) return toast('Nada que copiar');
   try { await navigator.clipboard.writeText(texto); toast('📋 Copiado'); }
-  catch(e){
-    const ta = document.createElement('textarea'); ta.value = texto; document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); toast('📋 Copiado'); } catch(err){ toast('No se pudo'); }
-    document.body.removeChild(ta);
-  }
+  catch(e){ const ta = document.createElement('textarea'); ta.value = texto; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('📋 Copiado'); } catch(err){ toast('No se pudo'); } document.body.removeChild(ta); }
 }
 $('btnCopiar').onclick = () => copiar(txt.value);
 $('btnPegar').onclick = async () => {
-  try {
-    const texto = await navigator.clipboard.readText();
-    if (texto) { bufferFinal = (bufferFinal ? bufferFinal + ' ' : '') + texto; renderTexto(); toast('📥 Pegado'); }
-    else toast('Portapapeles vacío');
-  } catch(e) { toast('Permite acceso al portapapeles'); }
+  try { const t = await navigator.clipboard.readText(); if (t) { bufferFinal = (bufferFinal ? bufferFinal + ' ' : '') + t; renderTexto(); toast('📥 Pegado'); } else toast('Portapapeles vacío'); } catch(e) { toast('Permite acceso'); }
 };
 
-/* ========== GUARDAR ========== */
+/* ===== GUARDAR ===== */
 let timerPanelGuardado = null;
 function guardarNotaRapida() {
   const texto = txt.value.trim();
   if (!texto) return toast('No hay texto para guardar');
   detenerTodo(); TTS.stop();
   const ahora = new Date();
-  const tituloAuto = `Nota ${ahora.toLocaleDateString('es-CL')} ${ahora.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'})}`;
-  const nueva = { id: Date.now(), titulo: tituloAuto, texto, fecha: ahora.toISOString(), tags: [], adjuntos: [] };
+  const titulo = `Nota ${ahora.toLocaleDateString('es-CL')} ${ahora.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'})}`;
+  const nueva = { id: nuevoId(), titulo, texto, fecha: ahora.toISOString(), tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
   LS.set('notas', notas);
@@ -1798,15 +1604,15 @@ function guardarNotaRapida() {
   timerPanelGuardado = setTimeout(() => $('panelGuardado').classList.remove('show'), 8000);
 }
 $('btnGuardarRapido').onclick = guardarNotaRapida;
-$('pgLimpiar').onclick = () => { bufferFinal = ''; interimActual = ''; txt.value = ''; $('traduccionBox').classList.remove('show'); $('panelGuardado').classList.remove('show'); clearTimeout(timerPanelGuardado); localStorage.removeItem('jarvis_draft'); toast('🧹 Listo'); };
+$('pgLimpiar').onclick = () => { bufferFinal=''; interimActual=''; txt.value=''; $('traduccionBox').classList.remove('show'); $('panelGuardado').classList.remove('show'); clearTimeout(timerPanelGuardado); localStorage.removeItem('jarvis_draft'); toast('🧹 Listo'); };
 $('pgSeguir').onclick = () => { $('panelGuardado').classList.remove('show'); clearTimeout(timerPanelGuardado); toast('✏️ Conservado'); };
 $('btnPasar').onclick = () => {
   const texto = txt.value.trim();
-  if (!texto) return toast('No hay texto para pasar');
+  if (!texto) return toast('No hay texto');
   detenerTodo();
   const ahora = new Date();
-  const tituloAuto = 'Nota ' + ahora.toLocaleDateString('es-CL') + ' ' + ahora.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
-  const nueva = { id: Date.now(), titulo: tituloAuto, texto, fecha: ahora.toISOString(), tags: [], adjuntos: [] };
+  const titulo = 'Nota ' + ahora.toLocaleDateString('es-CL') + ' ' + ahora.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
+  const nueva = { id: nuevoId(), titulo, texto, fecha: ahora.toISOString(), tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
   LS.set('notas', notas);
@@ -1814,11 +1620,11 @@ $('btnPasar').onclick = () => {
   pushASync(true);
   bufferFinal = ''; interimActual = ''; txt.value = '';
   $('traduccionBox').classList.remove('show');
-  toast('📤 Guardada, abriendo Notas...');
+  toast('📤 Abriendo Notas...');
   document.querySelector('nav button[data-tab="notas"]').click();
 };
 
-/* ========== NOTAS ========== */
+/* ===== NOTAS ===== */
 let seleccionadas = new Set();
 async function renderNotas(){
   const filtro = ($('buscarNotas').value || '').toLowerCase();
@@ -1826,126 +1632,74 @@ async function renderNotas(){
   if (tagFiltroNotas) lista = lista.filter(n => (n.tags||[]).includes(tagFiltroNotas));
   const cont = $('listaNotas');
   if (!lista.length) { cont.innerHTML = '<p class="hint">No hay notas.</p>'; return; }
-
   const cards = [];
   for (const n of lista) {
     const sel = seleccionadas.has(String(n.id));
     const estaLeyendo = TTS.activo && eqId(TTS.notaIdActual, n.id);
     const adjuntosHtml = await renderAdjuntosHTML(n);
     const vinculosHtml = (n.personasVinculadas && n.personasVinculadas.length)
-      ? `<div class="vinculos">${n.personasVinculadas.map(pid => {
-          const p = getPersona(pid);
-          return p ? `<span class="vinculo-chip" data-vincular-persona="${pid}">👤 ${escapeHtml(p.nombre)}</span>` : '';
-        }).join('')}</div>`
+      ? `<div class="vinculos">${n.personasVinculadas.map(pid => { const p = getPersona(pid); return p ? `<span class="vinculo-chip" data-vincular-persona="${pid}">👤 ${escapeHtml(p.nombre)}</span>` : ''; }).join('')}</div>`
       : '';
-
-    // Texto con o sin highlight
     let textoHtml;
     if (estaLeyendo && TTS.chunks.length) {
-      textoHtml = TTS.chunks.map((c, i) =>
-        `<span class="hl-chunk ${i === TTS.i ? 'hl-activo' : ''}" data-hl="${i}">${escapeHtml(c)}</span> `
-      ).join('');
-    } else {
-      textoHtml = escapeHtml(n.texto);
-    }
-
+      textoHtml = TTS.chunks.map((c, i) => `<span class="hl-chunk ${i === TTS.i ? 'hl-activo' : ''}" data-hl="${i}">${escapeHtml(c)}</span> `).join('');
+    } else textoHtml = escapeHtml(n.texto);
     cards.push(`
     <div class="nota-card ${sel?'sel':''}" data-id="${n.id}">
       <input type="checkbox" class="check" data-check="${n.id}" ${sel?'checked':''}>
       <h3>${escapeHtml(n.titulo)}</h3>
       <div class="texto" data-texto-nota="${n.id}">${textoHtml}</div>
       <div class="nota-play-row">
-        <button class="nota-play-btn ${estaLeyendo ? 'playing' : ''}" data-play-nota="${n.id}">
-          ${estaLeyendo ? '⏹ Detener' : '▶ Escuchar nota'}
-        </button>
+        <button class="nota-play-btn ${estaLeyendo ? 'playing' : ''}" data-play-nota="${n.id}">${estaLeyendo ? '⏹ Detener' : '▶ Escuchar nota'}</button>
       </div>
-      ${renderTagsHTML(n.tags, false)}
+      ${renderTagsHTML(n.tags)}
       ${adjuntosHtml}
       ${vinculosHtml}
-      <div class="meta">
-        <span>📅 ${new Date(n.fecha).toLocaleString('es-CL')}</span>
-        ${n.concatenadaDe ? `<span class="badge">🔗 Unión de ${n.concatenadaDe.length}</span>` : ''}
-      </div>
-      <button class="adjuntar-btn" data-adjuntar="${n.id}">📎 Adjuntar foto/audio/archivo</button>
+      <div class="meta"><span>📅 ${new Date(n.fecha).toLocaleString('es-CL')}</span>${n.concatenadaDe ? `<span class="badge">🔗 Unión de ${n.concatenadaDe.length}</span>` : ''}</div>
+      <button class="adjuntar-btn" data-adjuntar="${n.id}">📎 Adjuntar</button>
       <div class="actions">
-        <button data-accion="copiar" data-id="${n.id}" title="Copiar">📋</button>
-        <button data-accion="leer" data-id="${n.id}" title="Escuchar">🔊</button>
-        <button data-accion="analizar" data-id="${n.id}" title="Analizar">🤖</button>
-        <button data-accion="compartir" data-id="${n.id}" title="Compartir">📤</button>
-        <button data-accion="calendario" data-id="${n.id}" title="A calendario">📅</button>
-        <button data-accion="tarea" data-id="${n.id}" title="Crear tarea">✅</button>
-        <button data-accion="resumir" data-id="${n.id}" title="Resumir">📝</button>
-        <button data-accion="concatenar" data-id="${n.id}" title="Unir">🔗</button>
-        <button data-accion="tags" data-id="${n.id}" title="Etiquetas">🏷️</button>
-        <button data-accion="editar" data-id="${n.id}" title="Editar">✏️</button>
-        <button data-accion="eliminar" data-id="${n.id}" title="Eliminar">🗑️</button>
+        <button data-accion="copiar" data-id="${n.id}">📋</button>
+        <button data-accion="leer" data-id="${n.id}">🔊</button>
+        <button data-accion="analizar" data-id="${n.id}">🤖</button>
+        <button data-accion="compartir" data-id="${n.id}">📤</button>
+        <button data-accion="calendario" data-id="${n.id}">📅</button>
+        <button data-accion="tarea" data-id="${n.id}">✅</button>
+        <button data-accion="resumir" data-id="${n.id}">📝</button>
+        <button data-accion="concatenar" data-id="${n.id}">🔗</button>
+        <button data-accion="tags" data-id="${n.id}">🏷️</button>
+        <button data-accion="editar" data-id="${n.id}">✏️</button>
+        <button data-accion="eliminar" data-id="${n.id}">🗑️</button>
       </div>
       <div class="analisis-panel" id="panel-${n.id}"></div>
     </div>`);
   }
   cont.innerHTML = cards.join('');
-
-  cont.querySelectorAll('[data-check]').forEach(c => {
-    c.onchange = () => {
-      const idStr = String(c.dataset.check);
-      if (c.checked) seleccionadas.add(idStr); else seleccionadas.delete(idStr);
-      renderBarraSeleccion(); renderNotas();
-    };
-  });
-  cont.querySelectorAll('[data-accion]').forEach(b => {
-    b.onclick = () => manejarAccionNota(b.dataset.accion, b.dataset.id);
-  });
-  cont.querySelectorAll('[data-play-nota]').forEach(b => {
-    b.onclick = () => togglePlayNota(b.dataset.playNota);
-  });
-  cont.querySelectorAll('[data-adjuntar]').forEach(b => {
-    b.onclick = () => abrirModalAdjuntar(b.dataset.adjuntar);
-  });
-  cont.querySelectorAll('[data-del-adj]').forEach(b => {
-    b.onclick = (e) => { e.stopPropagation(); eliminarAdjunto(b.dataset.notaId, b.dataset.delAdj); };
-  });
-  cont.querySelectorAll('[data-adj-id]').forEach(b => {
-    b.onclick = (e) => { if (e.target.classList.contains('x-adj')) return; abrirVisorAdjunto(b.dataset.adjId); };
-  });
-  cont.querySelectorAll('[data-vincular-persona]').forEach(b => {
-    b.onclick = () => {
-      document.querySelector('nav button[data-tab="personas"]').click();
-      setTimeout(() => {
-        const pid = b.dataset.vincularPersona;
-        document.querySelectorAll('.persona-card').forEach(c => {
-          if (c.querySelector(`[data-edit="${pid}"]`)) c.scrollIntoView({behavior:'smooth',block:'center'});
-        });
-      }, 200);
-    };
-  });
+  cont.querySelectorAll('[data-check]').forEach(c => { c.onchange = () => { const idStr = String(c.dataset.check); if (c.checked) seleccionadas.add(idStr); else seleccionadas.delete(idStr); renderBarraSeleccion(); renderNotas(); }; });
+  cont.querySelectorAll('[data-accion]').forEach(b => { b.onclick = () => manejarAccionNota(b.dataset.accion, b.dataset.id); });
+  cont.querySelectorAll('[data-play-nota]').forEach(b => { b.onclick = () => togglePlayNota(b.dataset.playNota); });
+  cont.querySelectorAll('[data-adjuntar]').forEach(b => { b.onclick = () => abrirModalAdjuntar(b.dataset.adjuntar); });
+  cont.querySelectorAll('[data-del-adj]').forEach(b => { b.onclick = (e) => { e.stopPropagation(); eliminarAdjunto(b.dataset.notaId, b.dataset.delAdj); }; });
+  cont.querySelectorAll('[data-adj-id]').forEach(b => { b.onclick = (e) => { if (e.target.classList.contains('x-adj')) return; abrirVisorAdjunto(b.dataset.adjId); }; });
+  cont.querySelectorAll('[data-vincular-persona]').forEach(b => { b.onclick = () => { document.querySelector('nav button[data-tab="personas"]').click(); setTimeout(() => { document.querySelectorAll('.persona-card').forEach(c => { if (c.querySelector(`[data-edit="${b.dataset.vincularPersona}"]`)) c.scrollIntoView({behavior:'smooth',block:'center'}); }); }, 200); }; });
 }
 
 function togglePlayNota(notaId) {
-  const nota = notas.find(n => eqId(n.id, notaId));
-  if (!nota) return;
-  if (TTS.activo && eqId(TTS.notaIdActual, nota.id)) {
-    TTS.stop();
-    return;
-  }
+  const nota = notas.find(n => eqId(n.id, notaId)); if (!nota) return;
+  if (TTS.activo && eqId(TTS.notaIdActual, nota.id)) { TTS.stop(); return; }
   const idioma = detectarIdioma(nota.texto);
   TTS.play(nota.texto, idioma, nota.id);
   toast(`🔊 Leyendo (${idioma.toUpperCase()})`);
 }
 
-function renderBarraSeleccion(){
-  const n = seleccionadas.size;
-  const barra = $('barraSeleccion');
-  if (n >= 2) { barra.classList.add('show'); $('selCount').textContent = n + ' seleccionadas'; }
-  else { barra.classList.remove('show'); }
-}
+function renderBarraSeleccion(){ const n = seleccionadas.size; const barra = $('barraSeleccion'); if (n >= 2) { barra.classList.add('show'); $('selCount').textContent = n + ' seleccionadas'; } else barra.classList.remove('show'); }
 $('btnCancelarSel').onclick = () => { seleccionadas.clear(); renderBarraSeleccion(); renderNotas(); };
 $('btnUnirSel').onclick = () => {
   if (seleccionadas.size < 2) return;
   const titulo = prompt('Título unificado:');
-  if (!titulo || !titulo.trim()) return toast('❌ Título obligatorio');
+  if (!titulo || !titulo.trim()) return toast('❌ Obligatorio');
   const seleccionadasNotas = notas.filter(n => seleccionadas.has(String(n.id)));
   const textoUnido = seleccionadasNotas.map(n => `[${n.titulo}]\n${n.texto}`).join('\n\n---\n\n');
-  const nueva = { id: Date.now(), titulo: titulo.trim(), texto: textoUnido, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [], adjuntos: [] };
+  const nueva = { id: nuevoId(), titulo: titulo.trim(), texto: textoUnido, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
   LS.set('notas', notas); pushASync();
@@ -1956,8 +1710,9 @@ $('buscarNotas').oninput = renderNotas;
 
 function manejarAccionNota(accion, id) {
   const idStr = String(id);
-  const nota = notas.find(n => eqId(n.id, idStr));
-  if (!nota) return;
+  const idx = notas.findIndex(n => eqId(n.id, idStr));
+  if (idx === -1) { toast('⚠️ Nota no encontrada'); renderNotas(); return; }
+  const nota = notas[idx];
   switch(accion) {
     case 'copiar': copiar(nota.texto); break;
     case 'leer': togglePlayNota(nota.id); break;
@@ -1973,19 +1728,19 @@ function manejarAccionNota(accion, id) {
       if (nuevoTitulo && nuevoTitulo.trim()) {
         nota.titulo = nuevoTitulo.trim();
         nota.fecha = new Date().toISOString();
-        LS.set('notas', notas); pushASync(); renderNotas();
-        toast('✏️ Actualizado');
+        LS.set('notas', notas); pushASync(); renderNotas(); toast('✏️ Actualizado');
       }
       break;
     case 'eliminar':
-      if (confirm('¿Mover a papelera?')) {
-        (nota.adjuntos||[]).forEach(async a => { try { await eliminarAdjuntoBlob(a.id); } catch(e){} });
-        moverAPapelera('notas', nota);
-        notas = notas.filter(n => !eqId(n.id, idStr));
-        LS.set('notas', notas); pushASync();
-        renderNotas(); renderPapelera();
-        toast('🗑️ Eliminada');
-      }
+      if (!confirm('¿Mover a papelera?')) return;
+      // Copia antes de borrar (para papelera)
+      const copiaParaPapelera = JSON.parse(JSON.stringify(nota));
+      moverAPapelera('notas', copiaParaPapelera);
+      notas.splice(idx, 1);
+      LS.set('notas', notas);
+      renderNotas(); renderPapelera();
+      pushASync();
+      toast('🗑️ Eliminada');
       break;
   }
 }
@@ -2001,26 +1756,22 @@ function concatenarCon(nota) {
   const otra = otras[idx];
   const titulo = prompt('Título unificado:');
   if (!titulo || !titulo.trim()) return toast('❌ Obligatorio');
-  const nueva = { id: Date.now(), titulo: titulo.trim(), texto: `[${nota.titulo}]\n${nota.texto}\n\n---\n\n[${otra.titulo}]\n${otra.texto}`, fecha: new Date().toISOString(), concatenadaDe: [nota.id, otra.id], tags: [], adjuntos: [] };
+  const nueva = { id: nuevoId(), titulo: titulo.trim(), texto: `[${nota.titulo}]\n${nota.texto}\n\n---\n\n[${otra.titulo}]\n${otra.texto}`, fecha: new Date().toISOString(), concatenadaDe: [nota.id, otra.id], tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
-  LS.set('notas', notas); pushASync(); renderNotas();
-  toast('🔗 Unificada');
+  LS.set('notas', notas); pushASync(); renderNotas(); toast('🔗 Unificada');
 }
 
 function guardarNotaEnCalendario(nota) {
   const fecha = prompt('¿Qué día? (YYYY-MM-DD)', new Date().toISOString().slice(0,10));
   if (!fecha) return;
-  tareas.unshift({ id: Date.now() + Math.random(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha, hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
+  tareas.unshift({ id: nuevoId(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha, hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
   LS.set('tareas', tareas); pushASync();
-  renderTareas(); renderCalendario();
-  toast('📅 Guardado');
+  renderTareas(); renderCalendario(); toast('📅 Guardado');
 }
-
 function crearTareaDesdeNota(nota) {
-  tareas.unshift({ id: Date.now() + Math.random(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha: '', hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
-  LS.set('tareas', tareas); pushASync(); renderTareas();
-  toast('✅ Tarea creada');
+  tareas.unshift({ id: nuevoId(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha: '', hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
+  LS.set('tareas', tareas); pushASync(); renderTareas(); toast('✅ Tarea creada');
 }
 
 async function analizarNota(nota) {
@@ -2080,11 +1831,7 @@ function renderAnalisis(data, nota) {
   if (data.soluciones && data.soluciones.length) html += `<div class="seccion"><h4>💡 SOLUCIONES</h4><div class="txt">${data.soluciones.map(s=>'• '+escapeHtml(s)).join('\n')}</div></div>`;
   if (data.recordatorios && data.recordatorios.length) html += `<div class="seccion"><h4>⏰ RECORDATORIOS</h4><div class="txt">${data.recordatorios.map(s=>'• '+escapeHtml(s)).join('\n')}</div></div>`;
   if (data.riesgos && data.riesgos.length) html += `<div class="seccion"><h4>⚠️ RIESGOS</h4><div class="txt">${data.riesgos.map(s=>'• '+escapeHtml(s)).join('\n')}</div></div>`;
-  html += `<div class="acciones-finales">
-    <button class="btn primary" data-af="escuchar">🔊 Escuchar</button>
-    <button class="btn" data-af="copiar">📋</button>
-    <button class="btn ghost" data-af="cerrar">❌</button>
-  </div>`;
+  html += `<div class="acciones-finales"><button class="btn primary" data-af="escuchar">🔊 Escuchar</button><button class="btn" data-af="copiar">📋</button><button class="btn ghost" data-af="cerrar">❌</button></div>`;
   return html;
 }
 
@@ -2093,16 +1840,13 @@ function bindAnalisis(panel, data, nota) {
     b.onclick = () => {
       const idx = +b.dataset.accionT;
       const tipo = b.dataset.tipo;
-      const t = data.tareas[idx];
-      if (!t) return;
+      const t = data.tareas[idx]; if (!t) return;
       if (tipo === 'cal') agregarTarea(t, nota, true);
       if (tipo === 'tarea') agregarTarea(t, nota, false);
       if (tipo === 'record') {
         const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
-        tareas.unshift({ id: Date.now() + Math.random(), descripcion: '🔔 ' + t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: t.fecha || '', hora: t.hora || '', hecha: false, completadaEn: null, recordatorio: true, fechaCreacion: Date.now(), tags: [] });
-        LS.set('tareas', tareas); pushASync();
-        renderTareas(); renderCalendario();
-        toast('🔔 Recordatorio');
+        tareas.unshift({ id: nuevoId(), descripcion: '🔔 ' + t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: t.fecha || '', hora: t.hora || '', hecha: false, completadaEn: null, recordatorio: true, fechaCreacion: Date.now(), tags: [] });
+        LS.set('tareas', tareas); pushASync(); renderTareas(); renderCalendario(); toast('🔔 Recordatorio');
       }
       b.textContent = '✓'; b.disabled = true;
     };
@@ -2110,10 +1854,7 @@ function bindAnalisis(panel, data, nota) {
   panel.querySelectorAll('[data-af]').forEach(b => {
     b.onclick = () => {
       const a = b.dataset.af;
-      if (a === 'escuchar') {
-        const texto = panel.querySelector('.txt')?.textContent || '';
-        TTS.play(texto, detectarIdioma(texto));
-      }
+      if (a === 'escuchar') { const t = panel.querySelector('.txt')?.textContent || ''; TTS.play(t, detectarIdioma(t)); }
       if (a === 'copiar') copiar(panel.textContent);
       if (a === 'cerrar') panel.classList.remove('show');
     };
@@ -2122,7 +1863,7 @@ function bindAnalisis(panel, data, nota) {
 
 function agregarTarea(t, nota, conFecha) {
   const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
-  tareas.unshift({ id: Date.now() + Math.random(), descripcion: t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: conFecha ? (t.fecha || new Date().toISOString().slice(0,10)) : '', hora: t.hora || '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), recurrencia: t.recurrencia || '', tags: [] });
+  tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: conFecha ? (t.fecha || new Date().toISOString().slice(0,10)) : '', hora: t.hora || '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), recurrencia: t.recurrencia || '', tags: [] });
   LS.set('tareas', tareas); pushASync();
   renderTareas(); renderCalendario();
   toast(conFecha ? '📅 Tarea con fecha' : '✅ Tarea');
@@ -2137,19 +1878,12 @@ async function resumirNota(nota) {
     panel.innerHTML = `<div class="seccion"><h4>📝 RESUMEN</h4><div class="txt">${escapeHtml(raw)}</div></div>
       <div class="acciones-finales"><button class="btn primary" data-res="escuchar">🔊</button><button class="btn" data-res="copiar">📋</button><button class="btn ghost" data-res="cerrar">❌</button></div>`;
     panel.querySelectorAll('[data-res]').forEach(b => {
-      b.onclick = () => {
-        const a = b.dataset.res;
-        if (a === 'escuchar') { const txt2 = raw; TTS.play(txt2, detectarIdioma(txt2)); }
-        if (a === 'copiar') copiar(raw);
-        if (a === 'cerrar') panel.classList.remove('show');
-      };
+      b.onclick = () => { const a = b.dataset.res; if (a === 'escuchar') TTS.play(raw, detectarIdioma(raw)); if (a === 'copiar') copiar(raw); if (a === 'cerrar') panel.classList.remove('show'); };
     });
   } catch(e) { panel.innerHTML = '<div class="txt">❌ ' + escapeHtml(e.message) + '</div>'; }
 }
 
-/* ========== GROQ ========== */
-$('apiKey').value = LS.get('apiKey','');
-$('btnGuardarKey').onclick = () => { LS.set('apiKey', $('apiKey').value.trim()); toast('🔑 Guardada'); };
+/* ===== GROQ ===== */
 const GROQ_MODEL = 'openai/gpt-oss-120b';
 const GROQ_RESPALDO = 'llama-3.1-8b-instant';
 async function llamarGroqUna(prompt2, model) {
@@ -2159,11 +1893,7 @@ async function llamarGroqUna(prompt2, model) {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({ model, messages: [{ role: 'system', content: 'Eres JARVIS, asistente personal. Respondes en español.' }, { role: 'user', content: prompt2 }], temperature: 0.4, max_tokens: 1500 })
   });
-  if (!res.ok) {
-    const e = await res.text();
-    if (res.status === 404) { const err = new Error('MODEL_NOT_FOUND'); err.detalle = e; throw err; }
-    throw new Error('Error ' + res.status + ': ' + e.slice(0,200));
-  }
+  if (!res.ok) { const e = await res.text(); if (res.status === 404) { const err = new Error('MODEL_NOT_FOUND'); err.detalle = e; throw err; } throw new Error('Error ' + res.status + ': ' + e.slice(0,200)); }
   const data = await res.json();
   return (data.choices?.[0]?.message?.content || '').trim() || '(sin respuesta)';
 }
@@ -2172,7 +1902,7 @@ async function llamarGroq(prompt2) {
   catch (e) { if (e.message === 'MODEL_NOT_FOUND') return await llamarGroqUna(prompt2, GROQ_RESPALDO); throw e; }
 }
 
-/* ========== CALENDARIO ========== */
+/* ===== CALENDARIO ===== */
 let calAnio, calMes;
 { const hoy = new Date(); calAnio = hoy.getFullYear(); calMes = hoy.getMonth(); }
 function fmtISO(d){ const p = n => String(n).padStart(2,'0'); return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()); }
@@ -2232,7 +1962,7 @@ function abrirPanelDia(iso){
     if (!desc) return toast('Escribe descripción');
     const personaTxt = $('pdPersona').value.trim();
     const pObj = personaTxt ? buscarPersonaPorNombre(personaTxt) : null;
-    tareas.unshift({ id: Date.now() + Math.random(), descripcion: desc, persona: personaTxt, contacto: pObj ? (pObj.whatsapp || pObj.telefono || '') : '', personaId: pObj ? pObj.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), recurrencia: $('pdRecur').value, tags: parseTags($('pdTags').value) });
+    tareas.unshift({ id: nuevoId(), descripcion: desc, persona: personaTxt, contacto: pObj ? (pObj.whatsapp || pObj.telefono || '') : '', personaId: pObj ? pObj.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), recurrencia: $('pdRecur').value, tags: parseTags($('pdTags').value) });
     LS.set('tareas', tareas); pushASync();
     renderCalendario(); renderTareas(); renderTagsFilter();
     abrirPanelDia(iso);
@@ -2244,7 +1974,7 @@ $('cerrarPanelDia').onclick = () => $('panelDia').classList.remove('show');
 $('mesPrev').onclick = () => { calMes--; if(calMes<0){calMes=11;calAnio--;} renderCalendario(); };
 $('mesNext').onclick = () => { calMes++; if(calMes>11){calMes=0;calAnio++;} renderCalendario(); };
 
-/* ========== TAREAS ========== */
+/* ===== TAREAS ===== */
 function renderTareaHTML(t){
   const hechaTag = (t.hecha && t.completadaEn) ? `<div class="t-done-tag">✓ ${new Date(t.completadaEn).toLocaleString('es-CL')}</div>` : '';
   const pObj = t.personaId ? getPersona(t.personaId) : null;
@@ -2252,7 +1982,7 @@ function renderTareaHTML(t){
     <input type="checkbox" ${t.hecha?'checked':''} data-check="${t.id}">
     <div style="flex:1">
       <div class="t-desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄 ${t.recurrencia}</span>` : ''}</div>
-      ${renderTagsHTML(t.tags, false)}
+      ${renderTagsHTML(t.tags)}
       <div class="t-meta">
         ${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}
         ${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}
@@ -2270,21 +2000,18 @@ function renderTareaHTML(t){
 function bindTareas(cont, isoPanel){
   cont.querySelectorAll('[data-check]').forEach(c=>{
     c.onchange = () => {
-      const idStr = String(c.dataset.check);
-      const t = tareas.find(x => eqId(x.id, idStr));
-      if(t){
-        t.hecha = c.checked;
-        t.completadaEn = c.checked ? new Date().toISOString() : null;
-        t.fecha = t.fecha || new Date().toISOString();
-        if (c.checked && t.recurrencia && t.fecha) {
-          const next = { ...t, id: Date.now() + Math.random(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() };
-          tareas.unshift(next);
-          toast('🔄 Siguiente creada');
-        }
-        LS.set('tareas', tareas); pushASync();
-        renderCalendario(); renderTareas();
-        if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
+      const t = tareas.find(x => eqId(x.id, c.dataset.check));
+      if(!t) return;
+      t.hecha = c.checked;
+      t.completadaEn = c.checked ? new Date().toISOString() : null;
+      t.fecha = t.fecha || new Date().toISOString();
+      if (c.checked && t.recurrencia && t.fecha) {
+        tareas.unshift({ ...t, id: nuevoId(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
+        toast('🔄 Siguiente creada');
       }
+      LS.set('tareas', tareas); pushASync();
+      renderCalendario(); renderTareas();
+      if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
     };
   });
   cont.querySelectorAll('[data-tags-t]').forEach(b=>{
@@ -2293,14 +2020,16 @@ function bindTareas(cont, isoPanel){
   cont.querySelectorAll('[data-delT]').forEach(b=>{
     b.onclick = () => {
       if(!confirm('¿Mover a papelera?')) return;
-      const idStr = String(b.dataset.delT);
-      const tarea = tareas.find(x => eqId(x.id, idStr));
-      if (!tarea) { toast('⚠️ No encontrada'); return; }
-      moverAPapelera('tareas', tarea);
-      tareas = tareas.filter(x => !eqId(x.id, idStr));
-      LS.set('tareas', tareas); pushASync();
+      const idx = tareas.findIndex(x => eqId(x.id, b.dataset.delT));
+      if (idx === -1) { toast('⚠️ Ya no existe'); renderTareas(); return; }
+      const tarea = tareas[idx];
+      const copia = JSON.parse(JSON.stringify(tarea));
+      moverAPapelera('tareas', copia);
+      tareas.splice(idx, 1);
+      LS.set('tareas', tareas);
       renderCalendario(); renderTareas(); renderPapelera();
       if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
+      pushASync();
       toast('🗑️ Eliminada');
     };
   });
@@ -2328,7 +2057,7 @@ function renderTareas(){
   bindTareas(cont, null);
 }
 
-/* ========== PERSONAS ========== */
+/* ===== PERSONAS ===== */
 $('btnNuevaPersona').onclick = () => {
   $('formPersona').classList.add('show');
   $('pId').value = '';
@@ -2340,10 +2069,9 @@ $('btnGuardarPersona').onclick = () => {
   if (!nombre) return toast('Nombre obligatorio');
   const idRaw = $('pId').value;
   const existente = idRaw ? personas.findIndex(p => eqId(p.id, idRaw)) : -1;
-  const id = idRaw ? personas[existente]?.id || idRaw : Date.now();
+  const id = idRaw && existente >= 0 ? personas[existente].id : nuevoId();
   const persona = { id, nombre, telefono: $('pTel').value.trim(), whatsapp: $('pWa').value.trim(), correo: $('pCorreo').value.trim(), empresa: $('pEmpresa').value.trim(), cargo: $('pCargo').value.trim(), cumpleanos: $('pCumple').value, fecha: new Date().toISOString() };
-  if (existente >= 0) personas[existente] = persona;
-  else personas.unshift(persona);
+  if (existente >= 0) personas[existente] = persona; else personas.unshift(persona);
   LS.set('personas', personas); pushASync();
   $('formPersona').classList.remove('show');
   renderPersonas(); renderCalendario(); renderNotas();
@@ -2358,16 +2086,8 @@ function renderPersonas(){
     let relHtml = '';
     if (notasRel.length || tareasRel.length) {
       relHtml += `<div class="relacionadas">`;
-      if (notasRel.length) {
-        relHtml += `<h4>📝 Notas (${notasRel.length})</h4>`;
-        relHtml += notasRel.slice(0,3).map(n => `<div class="rel-item"><div class="rel-title">${escapeHtml(n.titulo.slice(0,60))}</div><div class="rel-fecha">${new Date(n.fecha).toLocaleDateString('es-CL')}</div></div>`).join('');
-        if (notasRel.length > 3) relHtml += `<div class="hint">+${notasRel.length - 3} más</div>`;
-      }
-      if (tareasRel.length) {
-        relHtml += `<h4>✅ Tareas (${tareasRel.length})</h4>`;
-        relHtml += tareasRel.slice(0,3).map(t => `<div class="rel-item"><div class="rel-title">${escapeHtml(t.descripcion.slice(0,60))}</div><div class="rel-fecha">${t.fecha || 'sin fecha'}${t.hecha ? ' · ✓' : ''}</div></div>`).join('');
-        if (tareasRel.length > 3) relHtml += `<div class="hint">+${tareasRel.length - 3} más</div>`;
-      }
+      if (notasRel.length) { relHtml += `<h4>📝 Notas (${notasRel.length})</h4>`; relHtml += notasRel.slice(0,3).map(n => `<div class="rel-item"><div class="rel-title">${escapeHtml(n.titulo.slice(0,60))}</div><div class="rel-fecha">${new Date(n.fecha).toLocaleDateString('es-CL')}</div></div>`).join(''); if (notasRel.length > 3) relHtml += `<div class="hint">+${notasRel.length - 3} más</div>`; }
+      if (tareasRel.length) { relHtml += `<h4>✅ Tareas (${tareasRel.length})</h4>`; relHtml += tareasRel.slice(0,3).map(t => `<div class="rel-item"><div class="rel-title">${escapeHtml(t.descripcion.slice(0,60))}</div><div class="rel-fecha">${t.fecha || 'sin fecha'}${t.hecha ? ' · ✓' : ''}</div></div>`).join(''); if (tareasRel.length > 3) relHtml += `<div class="hint">+${tareasRel.length - 3} más</div>`; }
       relHtml += `</div>`;
     }
     return `<div class="persona-card">
@@ -2384,37 +2104,25 @@ function renderPersonas(){
       <div class="acciones"><button data-edit="${p.id}">✏️</button><button data-del-p="${p.id}">🗑️</button></div>
     </div>`;
   }).join('');
-  cont.querySelectorAll('[data-edit]').forEach(b => {
-    b.onclick = () => {
-      const p = personas.find(x => eqId(x.id, b.dataset.edit));
-      if (!p) return;
-      $('pId').value = p.id;
-      $('pNombre').value = p.nombre || '';
-      $('pTel').value = p.telefono || '';
-      $('pWa').value = p.whatsapp || '';
-      $('pCorreo').value = p.correo || '';
-      $('pEmpresa').value = p.empresa || '';
-      $('pCargo').value = p.cargo || '';
-      $('pCumple').value = p.cumpleanos || '';
-      $('formPersona').classList.add('show');
-      $('formPersona').scrollIntoView({behavior:'smooth'});
-    };
-  });
+  cont.querySelectorAll('[data-edit]').forEach(b => { b.onclick = () => { const p = personas.find(x => eqId(x.id, b.dataset.edit)); if (!p) return; $('pId').value = p.id; $('pNombre').value = p.nombre || ''; $('pTel').value = p.telefono || ''; $('pWa').value = p.whatsapp || ''; $('pCorreo').value = p.correo || ''; $('pEmpresa').value = p.empresa || ''; $('pCargo').value = p.cargo || ''; $('pCumple').value = p.cumpleanos || ''; $('formPersona').classList.add('show'); $('formPersona').scrollIntoView({behavior:'smooth'}); }; });
   cont.querySelectorAll('[data-del-p]').forEach(b => {
     b.onclick = () => {
       if (!confirm('¿Mover a papelera?')) return;
-      const p = personas.find(x => eqId(x.id, b.dataset.delP));
-      if (!p) return;
-      moverAPapelera('personas', p);
-      personas = personas.filter(x => !eqId(x.id, b.dataset.delP));
-      LS.set('personas', personas); pushASync();
+      const idx = personas.findIndex(x => eqId(x.id, b.dataset.delP));
+      if (idx === -1) { toast('⚠️ Ya no existe'); renderPersonas(); return; }
+      const p = personas[idx];
+      const copia = JSON.parse(JSON.stringify(p));
+      moverAPapelera('personas', copia);
+      personas.splice(idx, 1);
+      LS.set('personas', personas);
       renderPersonas(); renderCalendario(); renderPapelera();
+      pushASync();
       toast('🗑️ Eliminada');
     };
   });
 }
 
-/* ========== MODOS DE GRABACIÓN ========== */
+/* ===== MODOS ===== */
 function actualizarModoToggle(){
   $('modoVivo').classList.toggle('activo', modoGrabacion === 'vivo');
   $('modoEstable').classList.toggle('activo', modoGrabacion === 'estable');
@@ -2424,9 +2132,15 @@ function actualizarModoToggle(){
 $('modoVivo').onclick = () => { modoGrabacion = 'vivo'; LS.set('modoGrabacion','vivo'); detenerTodo(); actualizarModoToggle(); };
 $('modoEstable').onclick = () => { modoGrabacion = 'estable'; LS.set('modoGrabacion','estable'); detenerTodo(); actualizarModoToggle(); };
 
-/* ========== SYNC UI ========== */
+/* ===== CONFIG ===== */
 $('syncToken').value = getToken();
 $('syncGistId').value = getGistId();
+$('btnGuardarKey').onclick = async () => {
+  const key = $('apiKey').value.trim();
+  if (!key) return toast('Escribe la API key');
+  await guardarApiKeyPersistente(key);
+  toast('🔑 Guardada (persistente)');
+};
 $('btnGuardarSync').onclick = async () => {
   const token = $('syncToken').value.trim();
   const gistId = $('syncGistId').value.trim();
@@ -2449,25 +2163,19 @@ $('btnProbarSync').onclick = async () => {
   try {
     const res = await fetch(`https://api.github.com/gists/${gistId}`, { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const g = await res.json();
-    const files = Object.keys(g.files || {});
-    st.className = 'sync-status ok';
-    st.textContent = `✅ OK\nArchivos: ${files.join(', ')}\nSe usará: ${files.includes('jarvis.json') ? 'jarvis.json' : (files[0] || 'ninguno')}`;
+    const g = await res.json(); const files = Object.keys(g.files || {});
+    st.className = 'sync-status ok'; st.textContent = `✅ OK\nArchivos: ${files.join(', ')}\nSe usará: ${files.includes('jarvis.json') ? 'jarvis.json' : (files[0] || 'ninguno')}`;
   } catch (e) { st.className = 'sync-status err'; st.textContent = '❌ ' + e.message; }
 };
 $('btnSyncAhora').onclick = async () => { await sincronizar(false); };
 $('btnDiagnostico').onclick = diagnostico;
 $('btnBorrarSync').onclick = () => {
   if (!confirm('¿Borrar config de sync?')) return;
-  localStorage.removeItem(SYNC_TOKEN_KEY);
-  localStorage.removeItem(SYNC_GIST_KEY);
-  localStorage.removeItem(SYNC_FILE_KEY);
+  localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY); localStorage.removeItem(SYNC_FILE_KEY);
   $('syncToken').value = ''; $('syncGistId').value = '';
   $('syncStatus').className = 'sync-status'; $('syncStatus').textContent = '';
-  if (autoSyncTimer) clearInterval(autoSyncTimer);
-  autoSyncTimer = null;
-  actualizarIndicatorSync();
-  toast('Config borrada');
+  if (autoSyncTimer) clearInterval(autoSyncTimer); autoSyncTimer = null;
+  actualizarIndicatorSync(); toast('Config borrada');
 };
 $('btnExportJSON').onclick = exportarJSON;
 $('btnImportJSON').onclick = () => $('fileImportJSON').click();
@@ -2479,16 +2187,25 @@ if ('Notification' in window) {
   else if (Notification.permission === 'denied') { $('notifInfo').textContent = '❌ Denegadas'; }
 }
 $('buscarGlobal').oninput = renderBusquedaGlobal;
-$('btnReset').onclick = () => {
-  if(!confirm('¿Borrar TODOS los datos locales? (Nube NO)')) return;
-  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera','sync-file'].forEach(k=>localStorage.removeItem('jarvis_'+k));
+
+/* ===== RESET MEJORADO ===== */
+$('btnReset').onclick = async () => {
+  if (!confirm('⚠️ Borrar TODOS los datos LOCALES:\n\n• Notas, tareas, personas\n• Papelera\n• API key\n• Config sync\n• Adjuntos en IndexedDB\n\n(Los datos en la nube NO se borran)\n\n¿Continuar?')) return;
+  if (!confirm('⚠️ CONFIRMAR: ¿Realmente borrar todo el contenido local?')) return;
+  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera','sync-file','notifHechas'].forEach(k => localStorage.removeItem('jarvis_' + k));
+  localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY);
+  try { await idbClear(); } catch(e){}
+  if (autoSyncTimer) clearInterval(autoSyncTimer);
+  autoSyncTimer = null;
   notas = []; tareas = []; personas = []; papelera = [];
   eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
+  $('apiKey').value = ''; $('syncToken').value = ''; $('syncGistId').value = '';
+  actualizarEstadoApiKey(); actualizarIndicatorSync();
   renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
   toast('🗑️ Todo borrado');
 };
 
-/* ========== EVENTOS GLOBALES ========== */
+/* ===== EVENTOS GLOBALES ===== */
 document.addEventListener('visibilitychange', () => { if (!document.hidden && tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true); });
 window.addEventListener('focus', () => { if (tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true); });
 window.addEventListener('online', () => { if (tieneSync() && !operacionCritica) sincronizar(true); });
@@ -2496,38 +2213,39 @@ window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica
 window.addEventListener('beforeunload', () => { if (tieneSync() && !operacionCritica) pushASync(true); });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if ($('focusOverlay').classList.contains('show')) cerrarFocusMode();
-    if ($('visorAdjunto').classList.contains('show')) $('visorAdjunto').classList.remove('show');
-    if ($('modalAdjuntar').classList.contains('show')) $('modalAdjuntar').classList.remove('show');
-    if ($('modalCompartir').classList.contains('show')) $('modalCompartir').classList.remove('show');
-    if ($('modalTraducir').classList.contains('show')) $('modalTraducir').classList.remove('show');
+    ['focusOverlay','visorAdjunto','modalAdjuntar','modalCompartir','modalTraducir','panelDia'].forEach(id => { if ($(id)?.classList.contains('show')) $(id).classList.remove('show'); });
+    if (focusActivo) cerrarFocusMode();
   }
 });
 
-/* ========== INIT ========== */
-renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
-renderTagsFilter(); renderPapelera();
-actualizarModoToggle();
-actualizarIndicatorSync();
-if(window.speechSynthesis){ speechSynthesis.onvoiceschanged = () => {}; }
-setTimeout(() => {
-  const draft = LS.get('draft', null);
-  if (draft && draft.texto && !txt.value.trim()) {
-    const edad = Date.now() - draft.fecha;
-    if (edad < 24 * 60 * 60 * 1000) {
-      const hora = new Date(draft.fecha).toLocaleString('es-CL');
-      if (confirm(`¿Recuperar borrador del ${hora}?`)) { txt.value = draft.texto; bufferFinal = draft.texto; toast('📝 Recuperado'); }
-      else localStorage.removeItem('jarvis_draft');
+/* ===== INIT ===== */
+(async function init() {
+  const apiKeyGuardada = await cargarApiKeyPersistente();
+  if (apiKeyGuardada) $('apiKey').value = apiKeyGuardada;
+  renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
+  renderTagsFilter(); renderPapelera();
+  actualizarModoToggle();
+  actualizarIndicatorSync();
+  if (window.speechSynthesis) { speechSynthesis.onvoiceschanged = () => {}; }
+  setTimeout(() => {
+    const draft = LS.get('draft', null);
+    if (draft && draft.texto && !txt.value.trim()) {
+      const edad = Date.now() - draft.fecha;
+      if (edad < 24 * 60 * 60 * 1000) {
+        const hora = new Date(draft.fecha).toLocaleString('es-CL');
+        if (confirm(`¿Recuperar borrador del ${hora}?`)) { txt.value = draft.texto; bufferFinal = draft.texto; toast('📝 Recuperado'); }
+        else localStorage.removeItem('jarvis_draft');
+      }
     }
+  }, 1500);
+  if (tieneSync()) { sincronizar(true); iniciarAutoSync(); }
+  if ('serviceWorker' in navigator) {
+    let refreshing = false;
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (refreshing) return; refreshing = true; if (hadController) window.location.reload(); });
+    navigator.serviceWorker.register('./sw.js').then(reg => { setInterval(() => reg.update(), 60000); }).catch(e => console.warn('SW', e));
   }
-}, 1500);
-if (tieneSync()) { sincronizar(true); iniciarAutoSync(); }
-if ('serviceWorker' in navigator) {
-  let refreshing = false;
-  const hadController = !!navigator.serviceWorker.controller;
-  navigator.serviceWorker.addEventListener('controllerchange', () => { if (refreshing) return; refreshing = true; if (hadController) window.location.reload(); });
-  navigator.serviceWorker.register('./sw.js').then(reg => { setInterval(() => reg.update(), 60000); }).catch(e => console.warn('SW', e));
-}
+})();
 </script>
 </body>
 </html>
