@@ -1,26 +1,16 @@
 {
   "name": "JARVIS — Notas y Tareas",
   "short_name": "JARVIS",
-  "description": "Asistente personal para notas, tareas y calendario con IA.",
+  "description": "Asistente personal: notas, tareas, calendario, personas e IA.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0a0e14",
-  "theme_color": "#00e5ff",
+  "background_color": "#0a0806",
+  "theme_color": "#FFD700",
   "orientation": "portrait",
   "lang": "es-CL",
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
