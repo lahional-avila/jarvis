@@ -13,7 +13,7 @@
 <link rel="icon" sizes="192x192" href="./icon-192.png">
 <link rel="apple-touch-icon" sizes="192x192" href="./icon-192.png">
 <style>
-  :root{--bg:#0a0806;--bg2:#15100a;--panel:#1e1608;--line:#3a2a10;--gold:#FFD700;--gold2:#FFC107;--amber:#FFB300;--txt:#f0e6d0;--muted:#a08a60;--green:#66BB6A;--red:#e53935;--finde:#2a1a08;--finde-line:#6a4a10;}
+  :root{--bg:#0a0806;--bg2:#15100a;--panel:#1e1608;--line:#3a2a10;--gold:#FFD700;--gold2:#FFC107;--amber:#FFB300;--txt:#f0e6d0;--muted:#a08a60;--green:#66BB6A;--red:#e53935;--finde:#2a1a08;--finde-line:#6a4a10;--ia:#3B82F6;--ia2:#60A5FA;}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;margin:0;overflow:hidden}
   body{display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:radial-gradient(circle at 50% -10%,#2a1808 0%,var(--bg) 55%);color:var(--txt)}
@@ -47,9 +47,12 @@
   .grabar-controls{flex-shrink:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:18px;padding:12px 0 6px}
   .fab{width:min(40vw,150px);height:min(40vw,150px);border-radius:50%;border:3px solid var(--gold2);background:radial-gradient(circle at 50% 30%,#3a2508,#1a1004);color:var(--gold);font-size:1.3rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 30px rgba(255,215,0,.35);touch-action:manipulation;user-select:none}
   .fab small{font-size:.6rem;font-weight:400;letter-spacing:1px;opacity:.8}
-  .fab.rec{background:radial-gradient(circle at 50% 30%,#5a1414,#2a0808);border-color:var(--red);color:#ff8a80;box-shadow:0 0 40px rgba(229,57,53,.6);animation:pulse 1.1s infinite}
+  /* ===== FAB AZUL IA CUANDO GRABA ===== */
+  .fab.rec{background:radial-gradient(circle at 50% 30%,#1e40af,#0f172a);border-color:var(--ia2);color:#dbeafe;box-shadow:0 0 45px rgba(59,130,246,.75), 0 0 20px rgba(96,165,250,.5) inset;animation:pulseIA 1.1s infinite}
+  .fab.rec small{color:#93c5fd}
   .fab.proc{background:radial-gradient(circle at 50% 30%,#3b2e00,#1a1200);border-color:var(--amber);color:var(--amber);animation:pulse 1.1s infinite}
   @keyframes pulse{50%{box-shadow:0 0 55px rgba(255,215,0,.9)}}
+  @keyframes pulseIA{50%{box-shadow:0 0 70px rgba(59,130,246,.95), 0 0 30px rgba(96,165,250,.7) inset}}
   .btn-guardar-grande{width:min(25vw,95px);height:min(25vw,95px);border-radius:20px;border:3px solid var(--gold2);background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004;font-size:1.4rem;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 20px rgba(255,215,0,.35);transition:.15s;user-select:none;touch-action:manipulation}
   .btn-guardar-grande small{font-size:.58rem;font-weight:700;letter-spacing:.5px}
   .btn-guardar-grande:active{transform:scale(.95)}
@@ -166,6 +169,62 @@
   .search-input-wrap{position:relative;margin-bottom:12px}
   .search-input-wrap input{padding-left:40px;font-size:1rem;padding-top:14px;padding-bottom:14px}
   .search-input-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+  /* ===== NUEVO v20 ===== */
+  /* Modo Focus */
+  #focusOverlay{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,#1a1208 0%,#000 90%);display:none;flex-direction:column;z-index:400;padding:30px 20px;overflow-y:auto}
+  #focusOverlay.show{display:flex}
+  #focusOverlay .exit{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.3rem;cursor:pointer}
+  #focusOverlay .exit:hover{color:var(--gold);border-color:var(--gold2)}
+  #focusOverlay .contador{text-align:center;font-size:.75rem;color:var(--muted);letter-spacing:2px;margin-bottom:20px;text-transform:uppercase}
+  #focusOverlay .tarea-foco{background:var(--panel);border:2px solid var(--gold2);border-radius:20px;padding:30px 24px;box-shadow:0 0 60px rgba(255,215,0,.25);max-width:600px;margin:0 auto;width:100%}
+  #focusOverlay .tarea-foco.done{opacity:.5}
+  #focusOverlay .tarea-foco h2{margin:0 0 16px;color:var(--gold);font-size:1.5rem;line-height:1.3}
+  #focusOverlay .tarea-foco .detail{font-size:1rem;color:var(--txt);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  #focusOverlay .tarea-foco .detail b{color:var(--amber)}
+  #focusOverlay .tarea-foco .tags-row{margin:16px 0 24px}
+  #focusOverlay .tarea-foco .btns{display:flex;gap:10px;flex-direction:column}
+  #focusOverlay .tarea-foco .btns button{padding:16px;font-size:1rem;font-weight:700;border-radius:12px}
+  #focusOverlay .empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:1.1rem}
+  /* Botón de modo focus en tareas */
+  .focus-btn{background:linear-gradient(135deg,#3B82F6,#60A5FA)!important;color:#fff!important;border-color:#60A5FA!important;font-weight:700}
+  /* Adjuntos */
+  .adjuntos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:10px}
+  .adjunto{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#0a0806;aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .adjunto img{width:100%;height:100%;object-fit:cover;display:block}
+  .adjunto.audio{aspect-ratio:auto;padding:14px 10px;flex-direction:column;gap:6px}
+  .adjunto.audio .icono{font-size:1.8rem}
+  .adjunto.audio .nombre{font-size:.65rem;color:var(--muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+  .adjunto .x-adj{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:rgba(229,57,53,.9);color:#fff;border:none;font-size:.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .adjunto .local-badge{position:absolute;bottom:3px;left:3px;font-size:.55rem;background:rgba(0,0,0,.8);color:var(--gold);padding:1px 5px;border-radius:4px;font-weight:700}
+  .adjuntar-btn{padding:10px;border-radius:10px;border:1px dashed var(--gold2);background:transparent;color:var(--gold);font-size:.82rem;cursor:pointer;width:100%;margin-top:8px;font-weight:600}
+  .adjuntar-btn:hover{background:rgba(255,193,7,.08)}
+  /* Personas vinculadas en nota */
+  .vinculos{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+  .vinculo-chip{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;padding:4px 10px;border-radius:14px;background:rgba(59,130,246,.12);color:var(--ia2);border:1px solid var(--ia);font-weight:600;cursor:pointer}
+  .vinculo-chip:hover{background:rgba(59,130,246,.25)}
+  /* Notas/tareas relacionadas en persona */
+  .relacionadas{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .relacionadas h4{font-size:.72rem;color:var(--muted);margin:8px 0 6px;letter-spacing:.5px;text-transform:uppercase}
+  .rel-item{background:rgba(255,193,7,.06);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:4px;font-size:.82rem;cursor:pointer}
+  .rel-item:hover{border-color:var(--gold2)}
+  .rel-item .rel-title{color:var(--gold);font-weight:600;margin-bottom:2px}
+  .rel-item .rel-fecha{font-size:.65rem;color:var(--muted)}
+  /* Modal adjuntar */
+  #modalAdjuntar{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}
+  #modalAdjuntar.show{display:flex}
+  #modalAdjuntar .box{background:var(--panel);border:2px solid var(--gold2);border-radius:16px;padding:20px;max-width:400px;width:100%;box-shadow:0 10px 40px rgba(255,215,0,.4)}
+  #modalAdjuntar h3{margin:0 0 14px;color:var(--gold);font-size:1rem}
+  #modalAdjuntar .opcion{padding:14px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600}
+  #modalAdjuntar .opcion:hover{border-color:var(--gold2);background:#2a1a08}
+  #modalAdjuntar .opcion .ico{font-size:1.4rem}
+  #modalAdjuntar .cancelar{width:100%;margin-top:6px}
+  #modalAdjuntar input[type=file]{display:none}
+  /* Visor de adjunto */
+  #visorAdjunto{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;z-index:600;padding:20px;flex-direction:column;gap:20px}
+  #visorAdjunto.show{display:flex}
+  #visorAdjunto img{max-width:95vw;max-height:80vh;border-radius:8px}
+  #visorAdjunto audio{width:90vw;max-width:500px}
+  #visorAdjunto .cerrar-vis{position:absolute;top:20px;right:20px;width:50px;height:50px;border-radius:50%;border:1px solid var(--gold2);background:rgba(58,37,8,.9);color:var(--gold);font-size:1.5rem;cursor:pointer}
 </style>
 </head>
 <body>
@@ -226,6 +285,7 @@
       <button id="tabHist">📜 Historial (0)</button>
       <button id="tabTodas">📋 Todas (0)</button>
     </div>
+    <button class="btn focus-btn block" id="btnFocusMode" style="margin-bottom:12px">🎯 Modo Focus</button>
     <div class="tags-filter" id="tagsFilterTareas"></div>
     <div id="listaTareas"></div>
   </section>
@@ -287,6 +347,31 @@
   </section>
 </main>
 
+<!-- Overlay MODO FOCUS -->
+<div id="focusOverlay">
+  <button class="exit" id="focusExit">✕</button>
+  <div class="contador" id="focusContador">1 de 1</div>
+  <div id="focusContenido"></div>
+</div>
+
+<!-- Modal ADJUNTAR -->
+<div id="modalAdjuntar">
+  <div class="box">
+    <h3>📎 Adjuntar a la nota</h3>
+    <div class="opcion" id="adjOpcFoto"><span class="ico">📷</span> Foto o imagen</div>
+    <div class="opcion" id="adjOpcAudio"><span class="ico">🎵</span> Audio (grabar o elegir)</div>
+    <div class="opcion" id="adjOpcArchivo"><span class="ico">📄</span> Archivo</div>
+    <button class="btn ghost cancelar" id="adjCancelar">Cancelar</button>
+    <input type="file" id="adjInput" accept="image/*,audio/*,*/*">
+  </div>
+</div>
+
+<!-- Visor de adjunto -->
+<div id="visorAdjunto">
+  <button class="cerrar-vis" id="visorCerrar">✕</button>
+  <div id="visorContenido"></div>
+</div>
+
 <div id="panelGuardado">
   <div class="titulo" id="pgTitulo">✅ Nota guardada</div>
   <div class="subtitulo">¿Empezar una nueva?</div>
@@ -303,7 +388,7 @@
 
 <script>
 /* =========================================================
-   JARVIS v19 — FIX crítico: comparación de IDs con String()
+   JARVIS v20 — FAB azul IA + Focus Mode + Vincular personas + Adjuntos
    ========================================================= */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} },
@@ -327,8 +412,6 @@ if (!eliminados._ts) eliminados._ts = {};
 if (!eliminados.notas) eliminados.notas = [];
 if (!eliminados.tareas) eliminados.tareas = [];
 if (!eliminados.personas) eliminados.personas = [];
-
-/* ===== MIGRACIÓN CRÍTICA: normalizar TODOS los eliminados a String ===== */
 ['notas', 'tareas', 'personas'].forEach(tipo => {
   eliminados[tipo] = (eliminados[tipo] || []).map(x => String(x));
 });
@@ -347,8 +430,55 @@ function toast(msg){
 }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
-/* ===== HELPER CRÍTICO: comparación robusta de IDs ===== */
 const eqId = (a, b) => String(a) === String(b);
+
+/* ===== INDEXEDDB PARA ADJUNTOS ===== */
+const ADJUNTOS_DB = 'jarvis-adjuntos';
+const ADJUNTOS_STORE = 'archivos';
+let _dbAdj = null;
+
+function abrirDBAdjuntos(){
+  return new Promise((res, rej) => {
+    if (_dbAdj) return res(_dbAdj);
+    const req = indexedDB.open(ADJUNTOS_DB, 1);
+    req.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(ADJUNTOS_STORE)) db.createObjectStore(ADJUNTOS_STORE);
+    };
+    req.onsuccess = (e) => { _dbAdj = e.target.result; res(_dbAdj); };
+    req.onerror = () => rej(req.error);
+  });
+}
+
+async function guardarAdjuntoBlob(id, blob){
+  const db = await abrirDBAdjuntos();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
+    tx.objectStore(ADJUNTOS_STORE).put(blob, id);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
+
+async function obtenerAdjuntoBlob(id){
+  const db = await abrirDBAdjuntos();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(ADJUNTOS_STORE, 'readonly');
+    const req = tx.objectStore(ADJUNTOS_STORE).get(id);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+async function eliminarAdjuntoBlob(id){
+  const db = await abrirDBAdjuntos();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
+    tx.objectStore(ADJUNTOS_STORE).delete(id);
+    tx.oncomplete = () => res();
+    tx.onerror = () => rej(tx.error);
+  });
+}
 
 const FERIADOS_CHILE = {
   '2025-01-01':'Año Nuevo','2025-04-18':'Viernes Santo','2025-04-19':'Sábado Santo','2025-05-01':'Día del Trabajo','2025-05-21':'Glorias Navales','2025-06-20':'Pueblos Indígenas','2025-06-29':'San Pedro y San Pablo','2025-07-16':'Virgen del Carmen','2025-08-15':'Asunción','2025-09-18':'Independencia','2025-09-19':'Glorias del Ejército','2025-10-12':'Encuentro Dos Mundos','2025-10-31':'Iglesias Evangélicas','2025-11-01':'Todos los Santos','2025-12-08':'Inmaculada Concepción','2025-12-25':'Navidad',
@@ -359,7 +489,6 @@ const FERIADOS_CHILE = {
 function getToken(){ return localStorage.getItem(SYNC_TOKEN_KEY) || ''; }
 function getGistId(){ return localStorage.getItem(SYNC_GIST_KEY) || ''; }
 function tieneSync(){ return !!(getToken() && getGistId()); }
-
 let syncEnProgreso = false;
 let operacionCritica = false;
 let ultimaSyncExito = LS.get('ultimaSync', 0);
@@ -427,14 +556,9 @@ function buildDatosNube() {
 function mergeArreglos(local, nube, eliminadosArr) {
   const setElim = new Set((eliminadosArr || []).map(String));
   const mapa = new Map();
-  for (const item of local) {
-    const k = String(item.id);
-    if (setElim.has(k)) continue;
-    mapa.set(k, item);
-  }
+  for (const item of local) { const k = String(item.id); if (setElim.has(k)) continue; mapa.set(k, item); }
   for (const item of nube) {
-    const k = String(item.id);
-    if (setElim.has(k)) continue;
+    const k = String(item.id); if (setElim.has(k)) continue;
     const existing = mapa.get(k);
     if (!existing) mapa.set(k, item);
     else {
@@ -461,21 +585,18 @@ function purgarEliminadosViejos() {
   const nueva = { notas: [], tareas: [], personas: [], _ts: {} };
   for (const tipo of ['notas', 'tareas', 'personas']) {
     for (const id of (eliminados[tipo] || [])) {
-      const idStr = String(id);
-      const t = ts[idStr] || ahora;
+      const idStr = String(id); const t = ts[idStr] || ahora;
       if (ahora - t < ELIMINADOS_TTL) { nueva[tipo].push(idStr); nueva._ts[idStr] = t; }
     }
   }
-  eliminados = nueva;
-  LS.set('eliminados', eliminados);
+  eliminados = nueva; LS.set('eliminados', eliminados);
 }
 
 async function sincronizar(silencioso = false) {
   if (operacionCritica) { if (!silencioso) toast('Operación en curso…'); return false; }
   if (!tieneSync()) { if (!silencioso) toast('Configurá sync primero'); return false; }
   if (syncEnProgreso) return false;
-  syncEnProgreso = true;
-  actualizarIndicatorSync();
+  syncEnProgreso = true; actualizarIndicatorSync();
   try {
     const gist = await ghRequest('GET', `/gists/${getGistId()}`);
     const file = gist.files && gist.files['jarvis.json'];
@@ -526,7 +647,6 @@ async function sincronizar(silencioso = false) {
     }
 
     if (Math.random() < 0.1) purgarEliminadosViejos();
-
     ultimaSyncExito = Date.now();
     LS.set('ultimaSync', ultimaSyncExito);
     renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
@@ -537,8 +657,7 @@ async function sincronizar(silencioso = false) {
     if (!silencioso) toast('Error sync: ' + e.message);
     return false;
   } finally {
-    syncEnProgreso = false;
-    actualizarIndicatorSync();
+    syncEnProgreso = false; actualizarIndicatorSync();
   }
 }
 
@@ -546,20 +665,14 @@ async function pushASync(silencioso = true) {
   if (!tieneSync() || operacionCritica) return;
   try {
     await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { 'jarvis.json': { content: JSON.stringify(buildDatosNube(), null, 2) } } });
-    ultimaSyncExito = Date.now();
-    LS.set('ultimaSync', ultimaSyncExito);
-    actualizarIndicatorSync();
-  } catch (e) {
-    if (!silencioso) toast('Error al guardar en nube');
-  }
+    ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito); actualizarIndicatorSync();
+  } catch (e) { if (!silencioso) toast('Error al guardar en nube'); }
 }
 
 function marcarEliminado(tipo, id) {
   const idStr = String(id);
   if (!eliminados[tipo]) eliminados[tipo] = [];
-  if (!eliminados[tipo].some(x => eqId(x, idStr))) {
-    eliminados[tipo].push(idStr);
-  }
+  if (!eliminados[tipo].some(x => eqId(x, idStr))) eliminados[tipo].push(idStr);
   if (!eliminados._ts) eliminados._ts = {};
   eliminados._ts[idStr] = Date.now();
   LS.set('eliminados', eliminados);
@@ -583,10 +696,8 @@ function purgarPapeleraVieja() {
 }
 
 function restaurarDePapelera(idx) {
-  const p = papelera[idx];
-  if (!p) return;
-  papelera.splice(idx, 1);
-  LS.set('papelera', papelera);
+  const p = papelera[idx]; if (!p) return;
+  papelera.splice(idx, 1); LS.set('papelera', papelera);
   const arr = eliminados[p.tipo] || [];
   eliminados[p.tipo] = arr.filter(x => !eqId(x, p.item.id));
   LS.set('eliminados', eliminados);
@@ -601,16 +712,13 @@ function restaurarDePapelera(idx) {
 
 function eliminarDefinitivo(idx) {
   if (!confirm('¿Eliminar definitivamente? No se puede recuperar')) return;
-  papelera.splice(idx, 1);
-  LS.set('papelera', papelera);
-  pushASync();
-  renderPapelera();
+  papelera.splice(idx, 1); LS.set('papelera', papelera);
+  pushASync(); renderPapelera();
   toast('🗑️ Eliminado definitivamente');
 }
 
 function renderPapelera() {
-  const cont = $('listaPapelera');
-  if (!cont) return;
+  const cont = $('listaPapelera'); if (!cont) return;
   purgarPapeleraVieja();
   if (!papelera.length) { cont.innerHTML = '<p class="hint">Papelera vacía</p>'; return; }
   cont.innerHTML = papelera.map((p, i) => {
@@ -622,10 +730,7 @@ function renderPapelera() {
     return `<div class="papelera-item">
       <div class="title">${tipoLabel}: ${escapeHtml(String(titulo).slice(0,60))}</div>
       <div class="body">Eliminado ${fecha} · quedan ${diasRestantes}d</div>
-      <div class="btns">
-        <button class="btn primary small" data-restaurar="${i}">♻️ Restaurar</button>
-        <button class="btn danger small" data-eliminar-def="${i}">🗑️ Definitivo</button>
-      </div>
+      <div class="btns"><button class="btn primary small" data-restaurar="${i}">♻️ Restaurar</button><button class="btn danger small" data-eliminar-def="${i}">🗑️ Definitivo</button></div>
     </div>`;
   }).join('');
   cont.querySelectorAll('[data-restaurar]').forEach(b => { b.onclick = () => restaurarDePapelera(+b.dataset.restaurar); });
@@ -648,9 +753,7 @@ async function importarJSON(file) {
     const data = JSON.parse(texto);
     if (!data.notas && !data.tareas && !data.personas) throw new Error('Formato inválido');
     if (!confirm('Esto reemplazará TODOS los datos actuales. ¿Continuar?')) return;
-    notas = data.notas || [];
-    tareas = data.tareas || [];
-    personas = data.personas || [];
+    notas = data.notas || []; tareas = data.tareas || []; personas = data.personas || [];
     eliminados = data.eliminados || { notas: [], tareas: [], personas: [], _ts: {} };
     ['notas','tareas','personas'].forEach(tipo => { eliminados[tipo] = (eliminados[tipo]||[]).map(String); });
     papelera = data.papelera || [];
@@ -727,10 +830,8 @@ function renderTagsFilter() {
 function editarTagsNota(nota) {
   const nuevo = prompt('Etiquetas separadas por coma (máx 5):', (nota.tags||[]).join(', '));
   if (nuevo === null) return;
-  nota.tags = parseTags(nuevo);
-  nota.fecha = new Date().toISOString();
-  LS.set('notas', notas);
-  pushASync();
+  nota.tags = parseTags(nuevo); nota.fecha = new Date().toISOString();
+  LS.set('notas', notas); pushASync();
   renderNotas(); renderTagsFilter();
   toast('🏷️ Tags actualizados');
 }
@@ -738,10 +839,8 @@ function editarTagsNota(nota) {
 function editarTagsTarea(t) {
   const nuevo = prompt('Etiquetas separadas por coma (máx 5):', (t.tags||[]).join(', '));
   if (nuevo === null) return;
-  t.tags = parseTags(nuevo);
-  t.fecha = t.fecha || new Date().toISOString();
-  LS.set('tareas', tareas);
-  pushASync();
+  t.tags = parseTags(nuevo); t.fecha = t.fecha || new Date().toISOString();
+  LS.set('tareas', tareas); pushASync();
   renderTareas(); renderTagsFilter();
   toast('🏷️ Tags actualizados');
 }
@@ -802,7 +901,7 @@ function renderEstadisticas() {
   notas.forEach(n => (n.tags||[]).forEach(t => tagsCount[t] = (tagsCount[t]||0) + 1));
   tareas.forEach(t => (t.tags||[]).forEach(t => tagsCount[t] = (tagsCount[t]||0) + 1));
   const topTags = Object.entries(tagsCount).sort((a,b) => b[1]-a[1]).slice(0, 8);
-  const html = `
+  $('statContenido').innerHTML = `
     <div class="stat-grid">
       <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total</div></div>
       <div class="stat-card"><div class="num">${notas.length}</div><div class="lbl">📝 Notas</div></div>
@@ -816,7 +915,6 @@ function renderEstadisticas() {
     </div>
     ${topTags.length ? `<h3 style="color:var(--gold);font-size:.85rem;margin:20px 0 8px">🏷️ Tags más usados</h3><div class="tags-row">${topTags.map(([t,c]) => `<span class="tag">${escapeHtml(t)} (${c})</span>`).join('')}</div>` : ''}
   `;
-  $('statContenido').innerHTML = html;
 }
 
 /* ========== NOTIFICACIONES ========== */
@@ -827,15 +925,12 @@ async function pedirPermisoNotif() {
   if (p === 'granted') { toast('🔔 Activadas'); iniciarChequeoNotif(); $('notifInfo').textContent = '✅ Activadas'; }
   else { toast('❌ Denegadas'); $('notifInfo').textContent = '❌ Denegadas'; }
 }
-
 let notifTimer = null;
 function iniciarChequeoNotif() {
   if (notifTimer) clearInterval(notifTimer);
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
-  notifTimer = setInterval(chequearNotif, 60000);
-  chequearNotif();
+  notifTimer = setInterval(chequearNotif, 60000); chequearNotif();
 }
-
 function chequearNotif() {
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
   const yaNotif = LS.get('notifHechas', []);
@@ -846,10 +941,258 @@ function chequearNotif() {
     const diff = (fh - ahora) / 60000;
     if (diff > 0 && diff <= 15) {
       try { new Notification('⏰ ' + (t.descripcion || 'Tarea'), { body: (t.hora || t.fecha) + (t.persona ? ' · ' + t.persona : ''), tag: 'j' + t.id }); } catch(e){}
-      yaNotif.push(String(t.id));
-      LS.set('notifHechas', yaNotif);
+      yaNotif.push(String(t.id)); LS.set('notifHechas', yaNotif);
     }
   });
+}
+
+/* ========== VINCULAR NOTAS ↔ PERSONAS ========== */
+function buscarPersonaPorNombre(nombre) {
+  if (!nombre) return null;
+  const low = String(nombre).toLowerCase().trim();
+  if (!low) return null;
+  const exactos = personas.filter(p => (p.nombre||'').toLowerCase() === low);
+  if (exactos.length === 1) return exactos[0];
+  const parciales = personas.filter(p => (p.nombre||'').toLowerCase().includes(low) || low.includes((p.nombre||'').toLowerCase().split(' ')[0]));
+  if (parciales.length === 1) return parciales[0];
+  return null;
+}
+
+function vincularPersonasPorTexto(nota) {
+  if (!nota || !nota.texto) return [];
+  const vinculadas = new Set(nota.personasVinculadas || []);
+  // Buscar nombres de personas en el texto
+  personas.forEach(p => {
+    if (!p.nombre) return;
+    const primerNombre = p.nombre.split(' ')[0];
+    if (primerNombre.length < 3) return;
+    const regex = new RegExp('\\b' + primerNombre + '\\b', 'i');
+    if (regex.test(nota.texto)) {
+      vinculadas.add(String(p.id));
+    }
+  });
+  return Array.from(vinculadas);
+}
+
+function getPersona(id) {
+  return personas.find(p => eqId(p.id, id));
+}
+
+function getNotasDePersona(personaId) {
+  return notas.filter(n => (n.personasVinculadas||[]).some(id => eqId(id, personaId)));
+}
+
+function getTareasDePersona(personaId) {
+  const persona = getPersona(personaId);
+  if (!persona) return [];
+  const nombreLow = (persona.nombre||'').toLowerCase();
+  return tareas.filter(t => eqId(t.personaId, personaId) || (t.persona && t.persona.toLowerCase().includes(nombreLow.split(' ')[0].toLowerCase())));
+}
+
+/* ========== MODO FOCUS ========== */
+let focusActivo = false;
+let focusIdx = 0;
+let focusLista = [];
+
+function abrirFocusMode() {
+  focusLista = tareas.filter(t => !t.hecha).sort((a,b) => {
+    const fa = (a.fecha||'9999')+(a.hora||'99:99');
+    const fb = (b.fecha||'9999')+(b.hora||'99:99');
+    return fa.localeCompare(fb);
+  });
+  if (!focusLista.length) return toast('No hay tareas pendientes');
+  focusIdx = 0;
+  focusActivo = true;
+  $('focusOverlay').classList.add('show');
+  renderFocus();
+}
+
+function cerrarFocusMode() {
+  focusActivo = false;
+  $('focusOverlay').classList.remove('show');
+}
+
+function renderFocus() {
+  if (!focusActivo) return;
+  const cont = $('focusContenido');
+  if (!focusLista.length) {
+    cont.innerHTML = '<div class="empty">🎉 ¡Todo listo! No quedan tareas pendientes.</div>';
+    $('focusContador').textContent = 'Completado';
+    return;
+  }
+  if (focusIdx >= focusLista.length) focusIdx = focusLista.length - 1;
+  if (focusIdx < 0) focusIdx = 0;
+  const t = focusLista[focusIdx];
+  $('focusContador').textContent = (focusIdx + 1) + ' de ' + focusLista.length;
+
+  let html = `<div class="tarea-foco ${t.hecha ? 'done' : ''}">
+    <h2>${escapeHtml(t.descripcion)}</h2>
+    ${t.persona ? `<div class="detail">👤 <b>${escapeHtml(t.persona)}</b></div>` : ''}
+    ${t.fecha ? `<div class="detail">📅 ${t.fecha}${t.hora ? ' · 🕐 ' + t.hora : ''}</div>` : ''}
+    ${t.contacto ? `<div class="detail">📞 ${escapeHtml(t.contacto)}</div>` : ''}
+    ${t.tags && t.tags.length ? renderTagsHTML(t.tags, false) : ''}
+    <div class="btns">
+      ${!t.hecha ? `<button class="btn primary" id="focusCompletar">✅ Completar tarea</button>` : ''}
+      <button class="btn" id="focusAnterior" ${focusIdx === 0 ? 'disabled style="opacity:.4"' : ''}>⏮ Anterior</button>
+      <button class="btn" id="focusSiguiente" ${focusIdx >= focusLista.length - 1 ? 'disabled style="opacity:.4"' : ''}>Siguiente ⏭</button>
+    </div>
+  </div>`;
+  cont.innerHTML = html;
+
+  const btnCompletar = $('focusCompletar');
+  if (btnCompletar) {
+    btnCompletar.onclick = () => {
+      const tareaReal = tareas.find(x => eqId(x.id, t.id));
+      if (!tareaReal) return;
+      tareaReal.hecha = true;
+      tareaReal.completadaEn = new Date().toISOString();
+      tareaReal.fecha = tareaReal.fecha || new Date().toISOString();
+      if (tareaReal.recurrencia && tareaReal.fecha) {
+        tareas.unshift({ ...tareaReal, id: Date.now() + Math.random(), fecha: proximaFecha(tareaReal.fecha, tareaReal.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
+      }
+      LS.set('tareas', tareas);
+      pushASync();
+      focusLista = focusLista.filter(x => !eqId(x.id, t.id));
+      renderTareas(); renderCalendario();
+      toast('✅ Completada');
+      if (focusIdx >= focusLista.length) focusIdx = Math.max(0, focusLista.length - 1);
+      renderFocus();
+    };
+  }
+  const btnAnt = $('focusAnterior');
+  if (btnAnt) btnAnt.onclick = () => { if (focusIdx > 0) { focusIdx--; renderFocus(); } };
+  const btnSig = $('focusSiguiente');
+  if (btnSig) btnSig.onclick = () => { if (focusIdx < focusLista.length - 1) { focusIdx++; renderFocus(); } };
+}
+
+$('btnFocusMode').onclick = abrirFocusMode;
+$('focusExit').onclick = cerrarFocusMode;
+
+/* ========== ADJUNTOS ========== */
+let adjuntoNotaActual = null;
+let adjuntoTipoActual = null;
+
+function abrirModalAdjuntar(notaId) {
+  adjuntoNotaActual = notaId;
+  $('modalAdjuntar').classList.add('show');
+}
+
+$('adjCancelar').onclick = () => $('modalAdjuntar').classList.remove('show');
+$('adjOpcFoto').onclick = () => {
+  adjuntoTipoActual = 'image';
+  const input = $('adjInput');
+  input.accept = 'image/*';
+  input.click();
+};
+$('adjOpcAudio').onclick = () => {
+  adjuntoTipoActual = 'audio';
+  const input = $('adjInput');
+  input.accept = 'audio/*';
+  input.click();
+};
+$('adjOpcArchivo').onclick = () => {
+  adjuntoTipoActual = 'file';
+  const input = $('adjInput');
+  input.accept = '*/*';
+  input.click();
+};
+
+$('adjInput').onchange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  e.target.value = '';
+  $('modalAdjuntar').classList.remove('show');
+
+  const nota = notas.find(n => eqId(n.id, adjuntoNotaActual));
+  if (!nota) return;
+
+  if (file.size > 5 * 1024 * 1024) return toast('⚠️ Máximo 5 MB por adjunto');
+
+  const adjId = 'adj-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
+  try {
+    await guardarAdjuntoBlob(adjId, file);
+  } catch(err) {
+    return toast('❌ Error al guardar archivo');
+  }
+
+  let tipo = 'file';
+  if (file.type.startsWith('image/')) tipo = 'image';
+  else if (file.type.startsWith('audio/')) tipo = 'audio';
+
+  nota.adjuntos = nota.adjuntos || [];
+  nota.adjuntos.push({ id: adjId, tipo, nombre: file.name, size: file.size, mime: file.type });
+  nota.fecha = new Date().toISOString();
+  LS.set('notas', notas);
+  pushASync();
+  renderNotas();
+  toast('📎 Adjunto agregado');
+};
+
+async function renderAdjuntosHTML(nota) {
+  if (!nota.adjuntos || !nota.adjuntos.length) return '';
+  let html = '<div class="adjuntos-grid">';
+  for (const adj of nota.adjuntos) {
+    if (adj.tipo === 'image') {
+      let url = '';
+      try {
+        const blob = await obtenerAdjuntoBlob(adj.id);
+        if (blob) url = URL.createObjectURL(blob);
+      } catch(e){}
+      html += `<div class="adjunto" data-adj-id="${adj.id}" data-adj-tipo="image" title="${escapeHtml(adj.nombre)}">
+        ${url ? `<img src="${url}" alt="">` : '<span style="color:var(--muted);font-size:.7rem">(no local)</span>'}
+        <span class="local-badge">LOCAL</span>
+        <button class="x-adj" data-del-adj="${adj.id}" data-nota-id="${nota.id}">✕</button>
+      </div>`;
+    } else if (adj.tipo === 'audio') {
+      html += `<div class="adjunto audio" data-adj-id="${adj.id}" data-adj-tipo="audio">
+        <div class="icono">🎵</div>
+        <div class="nombre">${escapeHtml(adj.nombre.slice(0,20))}</div>
+        <button class="x-adj" data-del-adj="${adj.id}" data-nota-id="${nota.id}">✕</button>
+      </div>`;
+    } else {
+      html += `<div class="adjunto audio" data-adj-id="${adj.id}" data-adj-tipo="file">
+        <div class="icono">📄</div>
+        <div class="nombre">${escapeHtml(adj.nombre.slice(0,20))}</div>
+        <button class="x-adj" data-del-adj="${adj.id}" data-nota-id="${nota.id}">✕</button>
+      </div>`;
+    }
+  }
+  html += '</div>';
+  return html;
+}
+
+async function abrirVisorAdjunto(adjId) {
+  try {
+    const blob = await obtenerAdjuntoBlob(adjId);
+    if (!blob) return toast('⚠️ Adjunto no disponible en este dispositivo');
+    const cont = $('visorContenido');
+    cont.innerHTML = '';
+    if (blob.type.startsWith('image/')) {
+      const url = URL.createObjectURL(blob);
+      cont.innerHTML = `<img src="${url}" alt="">`;
+    } else if (blob.type.startsWith('audio/')) {
+      const url = URL.createObjectURL(blob);
+      cont.innerHTML = `<audio controls autoplay src="${url}"></audio>`;
+    } else {
+      const url = URL.createObjectURL(blob);
+      cont.innerHTML = `<a href="${url}" download style="color:var(--gold);font-size:1rem;text-decoration:underline">⬇️ Descargar archivo</a>`;
+    }
+    $('visorAdjunto').classList.add('show');
+  } catch(e) { toast('Error al abrir'); }
+}
+$('visorCerrar').onclick = () => $('visorAdjunto').classList.remove('show');
+
+async function eliminarAdjunto(notaId, adjId) {
+  if (!confirm('¿Eliminar este adjunto?')) return;
+  const nota = notas.find(n => eqId(n.id, notaId));
+  if (!nota) return;
+  nota.adjuntos = (nota.adjuntos||[]).filter(a => a.id !== adjId);
+  nota.fecha = new Date().toISOString();
+  try { await eliminarAdjuntoBlob(adjId); } catch(e){}
+  LS.set('notas', notas);
+  pushASync();
+  renderNotas();
+  toast('🗑️ Adjunto eliminado');
 }
 
 /* ========== NAV ========== */
@@ -878,8 +1221,7 @@ async function asegurarPermisoMic(){
   try{
     const s = await navigator.mediaDevices.getUserMedia({audio:true});
     s.getTracks().forEach(t=>t.stop());
-    permisoPrimed = true;
-    return true;
+    permisoPrimed = true; return true;
   }catch(e){ alert('No pude activar el micrófono. Abre por HTTPS.'); return false; }
 }
 const ES_MOVIL = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
@@ -1106,11 +1448,12 @@ let timerPanelGuardado = null;
 function guardarNotaRapida() {
   const texto = txt.value.trim();
   if (!texto) return toast('No hay texto para guardar');
-  detenerTodo();
-  TTS.stop();
+  detenerTodo(); TTS.stop();
   const ahora = new Date();
   const tituloAuto = `Nota ${ahora.toLocaleDateString('es-CL')} ${ahora.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'})}`;
-  notas.unshift({ id: Date.now(), titulo: tituloAuto, texto, fecha: ahora.toISOString(), tags: [] });
+  const nueva = { id: Date.now(), titulo: tituloAuto, texto, fecha: ahora.toISOString(), tags: [], adjuntos: [] };
+  nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
+  notas.unshift(nueva);
   LS.set('notas', notas);
   localStorage.removeItem('jarvis_draft');
   pushASync(true);
@@ -1142,7 +1485,9 @@ $('btnPasar').onclick = () => {
   detenerTodo();
   const ahora = new Date();
   const tituloAuto = 'Nota ' + ahora.toLocaleDateString('es-CL') + ' ' + ahora.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
-  notas.unshift({ id: Date.now(), titulo: tituloAuto, texto, fecha: ahora.toISOString(), tags: [] });
+  const nueva = { id: Date.now(), titulo: tituloAuto, texto, fecha: ahora.toISOString(), tags: [], adjuntos: [] };
+  nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
+  notas.unshift(nueva);
   LS.set('notas', notas);
   localStorage.removeItem('jarvis_draft');
   pushASync(true);
@@ -1155,24 +1500,36 @@ $('btnPasar').onclick = () => {
 /* ========== NOTAS ========== */
 let seleccionadas = new Set();
 
-function renderNotas(){
+async function renderNotas(){
   const filtro = ($('buscarNotas').value || '').toLowerCase();
   let lista = notas.filter(n => !filtro || (n.titulo||'').toLowerCase().includes(filtro) || (n.texto||'').toLowerCase().includes(filtro));
   if (tagFiltroNotas) lista = lista.filter(n => (n.tags||[]).includes(tagFiltroNotas));
   const cont = $('listaNotas');
   if (!lista.length) { cont.innerHTML = '<p class="hint">No hay notas.</p>'; return; }
-  cont.innerHTML = lista.map(n => {
+
+  const cards = [];
+  for (const n of lista) {
     const sel = seleccionadas.has(String(n.id));
-    return `
+    const adjuntosHtml = await renderAdjuntosHTML(n);
+    const vinculosHtml = (n.personasVinculadas && n.personasVinculadas.length)
+      ? `<div class="vinculos">${n.personasVinculadas.map(pid => {
+          const p = getPersona(pid);
+          return p ? `<span class="vinculo-chip" data-vincular-persona="${pid}">👤 ${escapeHtml(p.nombre)}</span>` : '';
+        }).join('')}</div>`
+      : '';
+    cards.push(`
     <div class="nota-card ${sel?'sel':''}" data-id="${n.id}">
       <input type="checkbox" class="check" data-check="${n.id}" ${sel?'checked':''}>
       <h3>${escapeHtml(n.titulo)}</h3>
       <div class="texto">${escapeHtml(n.texto)}</div>
       ${renderTagsHTML(n.tags, false)}
+      ${adjuntosHtml}
+      ${vinculosHtml}
       <div class="meta">
         <span>📅 ${new Date(n.fecha).toLocaleString('es-CL')}</span>
         ${n.concatenadaDe ? `<span class="badge">🔗 Unión de ${n.concatenadaDe.length}</span>` : ''}
       </div>
+      <button class="adjuntar-btn" data-adjuntar="${n.id}">📎 Adjuntar foto/audio/archivo</button>
       <div class="actions">
         <button data-accion="copiar" data-id="${n.id}" title="Copiar">📋</button>
         <button data-accion="leer" data-id="${n.id}" title="Leer">🔊</button>
@@ -1186,20 +1543,43 @@ function renderNotas(){
         <button data-accion="eliminar" data-id="${n.id}" title="Eliminar">🗑️</button>
       </div>
       <div class="analisis-panel" id="panel-${n.id}"></div>
-    </div>`;
-  }).join('');
+    </div>`);
+  }
+  cont.innerHTML = cards.join('');
 
   cont.querySelectorAll('[data-check]').forEach(c => {
     c.onchange = () => {
       const idStr = String(c.dataset.check);
       if (c.checked) seleccionadas.add(idStr); else seleccionadas.delete(idStr);
-      renderBarraSeleccion();
-      renderNotas();
+      renderBarraSeleccion(); renderNotas();
     };
   });
-
   cont.querySelectorAll('[data-accion]').forEach(b => {
     b.onclick = () => manejarAccionNota(b.dataset.accion, b.dataset.id);
+  });
+  cont.querySelectorAll('[data-adjuntar]').forEach(b => {
+    b.onclick = () => abrirModalAdjuntar(b.dataset.adjuntar);
+  });
+  cont.querySelectorAll('[data-del-adj]').forEach(b => {
+    b.onclick = (e) => { e.stopPropagation(); eliminarAdjunto(b.dataset.notaId, b.dataset.delAdj); };
+  });
+  cont.querySelectorAll('[data-adj-id]').forEach(b => {
+    b.onclick = (e) => {
+      if (e.target.classList.contains('x-adj')) return;
+      abrirVisorAdjunto(b.dataset.adjId);
+    };
+  });
+  cont.querySelectorAll('[data-vincular-persona]').forEach(b => {
+    b.onclick = () => {
+      document.querySelector('nav button[data-tab="personas"]').click();
+      setTimeout(() => {
+        const pid = b.dataset.vincularPersona;
+        const cards = document.querySelectorAll('.persona-card');
+        cards.forEach(c => {
+          if (c.querySelector(`[data-edit="${pid}"]`)) c.scrollIntoView({behavior:'smooth',block:'center'});
+        });
+      }, 200);
+    };
   });
 }
 
@@ -1216,12 +1596,11 @@ $('btnUnirSel').onclick = () => {
   if (!titulo || !titulo.trim()) return toast('❌ Título obligatorio');
   const seleccionadasNotas = notas.filter(n => seleccionadas.has(String(n.id)));
   const textoUnido = seleccionadasNotas.map(n => `[${n.titulo}]\n${n.texto}`).join('\n\n---\n\n');
-  notas.unshift({ id: Date.now(), titulo: titulo.trim(), texto: textoUnido, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [] });
-  LS.set('notas', notas);
-  pushASync();
-  seleccionadas.clear();
-  renderBarraSeleccion();
-  renderNotas();
+  const nueva = { id: Date.now(), titulo: titulo.trim(), texto: textoUnido, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [], adjuntos: [] };
+  nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
+  notas.unshift(nueva);
+  LS.set('notas', notas); pushASync();
+  seleccionadas.clear(); renderBarraSeleccion(); renderNotas();
   toast('🔗 Nota unificada');
 };
 
@@ -1245,18 +1624,17 @@ function manejarAccionNota(accion, id) {
       if (nuevoTitulo && nuevoTitulo.trim()) {
         nota.titulo = nuevoTitulo.trim();
         nota.fecha = new Date().toISOString();
-        LS.set('notas', notas);
-        pushASync();
-        renderNotas();
+        LS.set('notas', notas); pushASync(); renderNotas();
         toast('✏️ Actualizado');
       }
       break;
     case 'eliminar':
       if (confirm('¿Mover nota a papelera?')) {
+        // Eliminar adjuntos asociados
+        (nota.adjuntos||[]).forEach(async a => { try { await eliminarAdjuntoBlob(a.id); } catch(e){} });
         moverAPapelera('notas', nota);
         notas = notas.filter(n => !eqId(n.id, idStr));
-        LS.set('notas', notas);
-        pushASync();
+        LS.set('notas', notas); pushASync();
         renderNotas(); renderPapelera();
         toast('🗑️ Movida a papelera');
       }
@@ -1275,10 +1653,10 @@ function concatenarCon(nota) {
   const otra = otras[idx];
   const titulo = prompt('Título de la nota unificada:');
   if (!titulo || !titulo.trim()) return toast('❌ Título obligatorio');
-  notas.unshift({ id: Date.now(), titulo: titulo.trim(), texto: `[${nota.titulo}]\n${nota.texto}\n\n---\n\n[${otra.titulo}]\n${otra.texto}`, fecha: new Date().toISOString(), concatenadaDe: [nota.id, otra.id], tags: [] });
-  LS.set('notas', notas);
-  pushASync();
-  renderNotas();
+  const nueva = { id: Date.now(), titulo: titulo.trim(), texto: `[${nota.titulo}]\n${nota.texto}\n\n---\n\n[${otra.titulo}]\n${otra.texto}`, fecha: new Date().toISOString(), concatenadaDe: [nota.id, otra.id], tags: [], adjuntos: [] };
+  nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
+  notas.unshift(nueva);
+  LS.set('notas', notas); pushASync(); renderNotas();
   toast('🔗 Nota unificada');
 }
 
@@ -1286,17 +1664,14 @@ function guardarNotaEnCalendario(nota) {
   const fecha = prompt('¿Qué día? (YYYY-MM-DD)', new Date().toISOString().slice(0,10));
   if (!fecha) return;
   tareas.unshift({ id: Date.now() + Math.random(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha, hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
-  LS.set('tareas', tareas);
-  pushASync();
+  LS.set('tareas', tareas); pushASync();
   renderTareas(); renderCalendario();
   toast('📅 Guardado en calendario');
 }
 
 function crearTareaDesdeNota(nota) {
   tareas.unshift({ id: Date.now() + Math.random(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha: '', hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
-  LS.set('tareas', tareas);
-  pushASync();
-  renderTareas();
+  LS.set('tareas', tareas); pushASync(); renderTareas();
   toast('✅ Tarea creada');
 }
 
@@ -1318,8 +1693,21 @@ NOTA:
     if (ini !== -1 && fin !== -1) limpio = limpio.slice(ini, fin + 1);
     let data;
     try { data = JSON.parse(limpio); } catch(e) { panel.innerHTML = `<div class="txt">${escapeHtml(raw)}</div>`; return; }
+    // Vincular personas de las tareas detectadas
+    if (data.tareas) {
+      const vinculadas = new Set(nota.personasVinculadas || []);
+      data.tareas.forEach(t => {
+        if (t.persona) {
+          const p = buscarPersonaPorNombre(t.persona);
+          if (p) vinculadas.add(String(p.id));
+        }
+      });
+      nota.personasVinculadas = Array.from(vinculadas);
+      LS.set('notas', notas);
+    }
     panel.innerHTML = renderAnalisis(data, nota);
     bindAnalisis(panel, data, nota);
+    renderNotas();
   } catch(e) { panel.innerHTML = '<div class="txt">❌ ' + escapeHtml(e.message) + '</div>'; }
 }
 
@@ -1329,10 +1717,11 @@ function renderAnalisis(data, nota) {
   if (data.tareas && data.tareas.length) {
     html += `<div class="seccion"><h4>✅ TAREAS (${data.tareas.length})</h4>`;
     data.tareas.forEach((t,i) => {
+      const pMatch = t.persona ? buscarPersonaPorNombre(t.persona) : null;
       html += `<div class="tarea-item">
         <div class="desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄 ${t.recurrencia}</span>` : ''}</div>
         <div class="meta">
-          ${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b></span>` : ''}
+          ${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pMatch ? ' ✓' : ''}</span>` : ''}
           ${t.fecha ? `<span>📅 ${escapeHtml(t.fecha)}</span>` : ''}
           ${t.hora ? `<span>🕐 ${escapeHtml(t.hora)}</span>` : ''}
           ${t.prioridad ? `<span>⚡ ${escapeHtml(t.prioridad)}</span>` : ''}
@@ -1367,7 +1756,8 @@ function bindAnalisis(panel, data, nota) {
       if (tipo === 'cal') agregarTarea(t, nota, true);
       if (tipo === 'tarea') agregarTarea(t, nota, false);
       if (tipo === 'record') {
-        tareas.unshift({ id: Date.now() + Math.random(), descripcion: '🔔 ' + t.descripcion, persona: t.persona || '', contacto: t.contacto || '', fecha: t.fecha || '', hora: t.hora || '', hecha: false, completadaEn: null, recordatorio: true, fechaCreacion: Date.now(), tags: [] });
+        const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
+        tareas.unshift({ id: Date.now() + Math.random(), descripcion: '🔔 ' + t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: t.fecha || '', hora: t.hora || '', hecha: false, completadaEn: null, recordatorio: true, fechaCreacion: Date.now(), tags: [] });
         LS.set('tareas', tareas); pushASync();
         renderTareas(); renderCalendario();
         toast('🔔 Recordatorio creado');
@@ -1386,9 +1776,10 @@ function bindAnalisis(panel, data, nota) {
 }
 
 function agregarTarea(t, nota, conFecha) {
+  const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
   tareas.unshift({
     id: Date.now() + Math.random(),
-    descripcion: t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: null,
+    descripcion: t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null,
     fecha: conFecha ? (t.fecha || new Date().toISOString().slice(0,10)) : '',
     hora: t.hora || '', hecha: false, completadaEn: null,
     notaId: nota.id, fechaCreacion: Date.now(),
@@ -1508,18 +1899,19 @@ function abrirPanelDia(iso){
   $('pdGuardar').onclick = () => {
     const desc = $('pdDesc').value.trim();
     if (!desc) return toast('Escribe descripción');
+    const personaTxt = $('pdPersona').value.trim();
+    const pObj = personaTxt ? buscarPersonaPorNombre(personaTxt) : null;
     tareas.unshift({
       id: Date.now() + Math.random(),
-      descripcion: desc, persona: $('pdPersona').value.trim(),
-      contacto: '', personaId: null,
+      descripcion: desc, persona: personaTxt,
+      contacto: pObj ? (pObj.whatsapp || pObj.telefono || '') : '', personaId: pObj ? pObj.id : null,
       fecha: iso, hora: $('pdHora').value,
       hecha: false, completadaEn: null,
       fechaCreacion: Date.now(),
       recurrencia: $('pdRecur').value,
       tags: parseTags($('pdTags').value)
     });
-    LS.set('tareas', tareas);
-    pushASync();
+    LS.set('tareas', tareas); pushASync();
     renderCalendario(); renderTareas(); renderTagsFilter();
     abrirPanelDia(iso);
     toast('✅ Tarea agregada');
@@ -1530,16 +1922,17 @@ $('cerrarPanelDia').onclick = () => $('panelDia').classList.remove('show');
 $('mesPrev').onclick = () => { calMes--; if(calMes<0){calMes=11;calAnio--;} renderCalendario(); };
 $('mesNext').onclick = () => { calMes++; if(calMes>11){calMes=0;calAnio++;} renderCalendario(); };
 
-/* ========== TAREAS — FIX PRINCIPAL AQUÍ ========== */
+/* ========== TAREAS ========== */
 function renderTareaHTML(t){
   const hechaTag = (t.hecha && t.completadaEn) ? `<div class="t-done-tag">✓ ${new Date(t.completadaEn).toLocaleString('es-CL')}</div>` : '';
+  const pObj = t.personaId ? getPersona(t.personaId) : null;
   return `<div class="task-item ${t.hecha?'done':''}" data-id="${t.id}">
     <input type="checkbox" ${t.hecha?'checked':''} data-check="${t.id}">
     <div style="flex:1">
       <div class="t-desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄 ${t.recurrencia}</span>` : ''}</div>
       ${renderTagsHTML(t.tags, false)}
       <div class="t-meta">
-        ${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b></span>` : ''}
+        ${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}
         ${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}
         ${t.fecha ? `<span>📅 ${t.fecha}</span>` : ''}
         ${t.recordatorio ? `<span>🔔</span>` : ''}
@@ -1554,7 +1947,6 @@ function renderTareaHTML(t){
 }
 
 function bindTareas(cont, isoPanel){
-  /* FIX: check con eqId */
   cont.querySelectorAll('[data-check]').forEach(c=>{
     c.onchange = () => {
       const idStr = String(c.dataset.check);
@@ -1568,14 +1960,12 @@ function bindTareas(cont, isoPanel){
           tareas.unshift(next);
           toast('🔄 Siguiente instancia creada');
         }
-        LS.set('tareas', tareas);
-        pushASync();
+        LS.set('tareas', tareas); pushASync();
         renderCalendario(); renderTareas();
         if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
       }
     };
   });
-  /* FIX: tags con eqId */
   cont.querySelectorAll('[data-tags-t]').forEach(b=>{
     b.onclick = () => {
       const idStr = String(b.dataset.tagsT);
@@ -1583,7 +1973,6 @@ function bindTareas(cont, isoPanel){
       if (t) editarTagsTarea(t);
     };
   });
-  /* FIX PRINCIPAL: eliminar con eqId */
   cont.querySelectorAll('[data-delT]').forEach(b=>{
     b.onclick = () => {
       if(!confirm('¿Mover tarea a papelera?')) return;
@@ -1592,8 +1981,7 @@ function bindTareas(cont, isoPanel){
       if (!tarea) { toast('⚠️ No se encontró la tarea'); return; }
       moverAPapelera('tareas', tarea);
       tareas = tareas.filter(x => !eqId(x.id, idStr));
-      LS.set('tareas', tareas);
-      pushASync();
+      LS.set('tareas', tareas); pushASync();
       renderCalendario(); renderTareas(); renderPapelera();
       if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
       toast('🗑️ Movida a papelera');
@@ -1643,29 +2031,37 @@ $('btnGuardarPersona').onclick = () => {
   const idRaw = $('pId').value;
   const existente = idRaw ? personas.findIndex(p => eqId(p.id, idRaw)) : -1;
   const id = idRaw ? personas[existente]?.id || idRaw : Date.now();
-  const persona = {
-    id, nombre,
-    telefono: $('pTel').value.trim(),
-    whatsapp: $('pWa').value.trim(),
-    correo: $('pCorreo').value.trim(),
-    empresa: $('pEmpresa').value.trim(),
-    cargo: $('pCargo').value.trim(),
-    cumpleanos: $('pCumple').value,
-    fecha: new Date().toISOString()
-  };
+  const persona = { id, nombre, telefono: $('pTel').value.trim(), whatsapp: $('pWa').value.trim(), correo: $('pCorreo').value.trim(), empresa: $('pEmpresa').value.trim(), cargo: $('pCargo').value.trim(), cumpleanos: $('pCumple').value, fecha: new Date().toISOString() };
   if (existente >= 0) personas[existente] = persona;
   else personas.unshift(persona);
-  LS.set('personas', personas);
-  pushASync();
+  LS.set('personas', personas); pushASync();
   $('formPersona').classList.remove('show');
-  renderPersonas(); renderCalendario();
+  renderPersonas(); renderCalendario(); renderNotas();
   toast('👥 Persona guardada');
 };
 
 function renderPersonas(){
   const cont = $('listaPersonas');
   if (!personas.length) { cont.innerHTML = '<p class="hint">No hay personas.</p>'; return; }
-  cont.innerHTML = personas.map(p => `
+  cont.innerHTML = personas.map(p => {
+    const notasRel = getNotasDePersona(p.id);
+    const tareasRel = getTareasDePersona(p.id);
+    let relHtml = '';
+    if (notasRel.length || tareasRel.length) {
+      relHtml += `<div class="relacionadas">`;
+      if (notasRel.length) {
+        relHtml += `<h4>📝 Notas (${notasRel.length})</h4>`;
+        relHtml += notasRel.slice(0,3).map(n => `<div class="rel-item" data-go-nota="${n.id}"><div class="rel-title">${escapeHtml(n.titulo.slice(0,60))}</div><div class="rel-fecha">${new Date(n.fecha).toLocaleDateString('es-CL')}</div></div>`).join('');
+        if (notasRel.length > 3) relHtml += `<div class="hint">+${notasRel.length - 3} más</div>`;
+      }
+      if (tareasRel.length) {
+        relHtml += `<h4>✅ Tareas (${tareasRel.length})</h4>`;
+        relHtml += tareasRel.slice(0,3).map(t => `<div class="rel-item"><div class="rel-title">${escapeHtml(t.descripcion.slice(0,60))}</div><div class="rel-fecha">${t.fecha || 'sin fecha'}${t.hecha ? ' · ✓' : ''}</div></div>`).join('');
+        if (tareasRel.length > 3) relHtml += `<div class="hint">+${tareasRel.length - 3} más</div>`;
+      }
+      relHtml += `</div>`;
+    }
+    return `
     <div class="persona-card">
       <h3>${escapeHtml(p.nombre)}</h3>
       <div class="info">
@@ -1676,9 +2072,11 @@ function renderPersonas(){
         ${p.cargo ? `<div>💼 ${escapeHtml(p.cargo)}</div>` : ''}
         ${p.cumpleanos ? `<div>🎂 ${new Date(p.cumpleanos + 'T12:00:00').toLocaleDateString('es-CL')}</div>` : ''}
       </div>
+      ${relHtml}
       <div class="acciones"><button data-edit="${p.id}">✏️</button><button data-del-p="${p.id}">🗑️</button></div>
     </div>
-  `).join('');
+  `;
+  }).join('');
   cont.querySelectorAll('[data-edit]').forEach(b => {
     b.onclick = () => {
       const idStr = String(b.dataset.edit);
@@ -1704,10 +2102,14 @@ function renderPersonas(){
       if (!p) { toast('⚠️ No se encontró la persona'); return; }
       moverAPapelera('personas', p);
       personas = personas.filter(x => !eqId(x.id, idStr));
-      LS.set('personas', personas);
-      pushASync();
+      LS.set('personas', personas); pushASync();
       renderPersonas(); renderCalendario(); renderPapelera();
       toast('🗑️ Movida a papelera');
+    };
+  });
+  cont.querySelectorAll('[data-go-nota]').forEach(b => {
+    b.onclick = () => {
+      document.querySelector('nav button[data-tab="notas"]').click();
     };
   });
 }
@@ -1852,6 +2254,15 @@ window.addEventListener('focus', () => { if (tieneSync() && !operacionCritica &&
 window.addEventListener('online', () => { if (tieneSync() && !operacionCritica) sincronizar(true); });
 window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica) pushASync(true); });
 window.addEventListener('beforeunload', () => { if (tieneSync() && !operacionCritica) pushASync(true); });
+
+// Escape para cerrar Focus y visor
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if ($('focusOverlay').classList.contains('show')) cerrarFocusMode();
+    if ($('visorAdjunto').classList.contains('show')) $('visorAdjunto').classList.remove('show');
+    if ($('modalAdjuntar').classList.contains('show')) $('modalAdjuntar').classList.remove('show');
+  }
+});
 
 /* ========== INIT ========== */
 renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
