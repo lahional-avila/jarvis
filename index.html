@@ -47,7 +47,6 @@
   .grabar-controls{flex-shrink:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:18px;padding:12px 0 6px}
   .fab{width:min(40vw,150px);height:min(40vw,150px);border-radius:50%;border:3px solid var(--gold2);background:radial-gradient(circle at 50% 30%,#3a2508,#1a1004);color:var(--gold);font-size:1.3rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 30px rgba(255,215,0,.35);touch-action:manipulation;user-select:none}
   .fab small{font-size:.6rem;font-weight:400;letter-spacing:1px;opacity:.8}
-  /* ===== FAB AZUL IA CUANDO GRABA ===== */
   .fab.rec{background:radial-gradient(circle at 50% 30%,#1e40af,#0f172a);border-color:var(--ia2);color:#dbeafe;box-shadow:0 0 45px rgba(59,130,246,.75), 0 0 20px rgba(96,165,250,.5) inset;animation:pulseIA 1.1s infinite}
   .fab.rec small{color:#93c5fd}
   .fab.proc{background:radial-gradient(circle at 50% 30%,#3b2e00,#1a1200);border-color:var(--amber);color:var(--amber);animation:pulse 1.1s infinite}
@@ -66,7 +65,7 @@
   .sync-section{background:var(--panel);border:1px solid var(--gold2);border-radius:12px;padding:14px;margin-top:14px}
   .sync-section h3{margin:0 0 10px;font-size:.85rem;color:var(--gold);letter-spacing:.5px}
   .sync-section .row{display:flex;gap:8px;margin-top:8px}
-  .sync-status{padding:8px 12px;border-radius:8px;font-size:.78rem;margin-top:8px;display:none}
+  .sync-status{padding:8px 12px;border-radius:8px;font-size:.78rem;margin-top:8px;display:none;white-space:pre-wrap;font-family:ui-monospace,monospace}
   .sync-status.ok{background:rgba(102,187,106,.15);color:var(--green);border:1px solid var(--green);display:block}
   .sync-status.err{background:rgba(229,57,53,.12);color:#ff8a80;border:1px solid var(--red);display:block}
   .sync-status.info{background:rgba(255,193,7,.12);color:var(--gold);border:1px solid var(--gold2);display:block}
@@ -169,8 +168,6 @@
   .search-input-wrap{position:relative;margin-bottom:12px}
   .search-input-wrap input{padding-left:40px;font-size:1rem;padding-top:14px;padding-bottom:14px}
   .search-input-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
-  /* ===== NUEVO v20 ===== */
-  /* Modo Focus */
   #focusOverlay{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,#1a1208 0%,#000 90%);display:none;flex-direction:column;z-index:400;padding:30px 20px;overflow-y:auto}
   #focusOverlay.show{display:flex}
   #focusOverlay .exit{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.3rem;cursor:pointer}
@@ -185,31 +182,27 @@
   #focusOverlay .tarea-foco .btns{display:flex;gap:10px;flex-direction:column}
   #focusOverlay .tarea-foco .btns button{padding:16px;font-size:1rem;font-weight:700;border-radius:12px}
   #focusOverlay .empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:1.1rem}
-  /* Botón de modo focus en tareas */
   .focus-btn{background:linear-gradient(135deg,#3B82F6,#60A5FA)!important;color:#fff!important;border-color:#60A5FA!important;font-weight:700}
-  /* Adjuntos */
   .adjuntos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:10px}
   .adjunto{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#0a0806;aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer}
   .adjunto img{width:100%;height:100%;object-fit:cover;display:block}
   .adjunto.audio{aspect-ratio:auto;padding:14px 10px;flex-direction:column;gap:6px}
   .adjunto.audio .icono{font-size:1.8rem}
   .adjunto.audio .nombre{font-size:.65rem;color:var(--muted);text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
-  .adjunto .x-adj{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:rgba(229,57,53,.9);color:#fff;border:none;font-size:.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .adjunto .x-adj{position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:rgba(229,57,53,.9);color:#fff;border:none;font-size:.72rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2}
   .adjunto .local-badge{position:absolute;bottom:3px;left:3px;font-size:.55rem;background:rgba(0,0,0,.8);color:var(--gold);padding:1px 5px;border-radius:4px;font-weight:700}
+  .adjunto .sync-badge{position:absolute;bottom:3px;right:3px;font-size:.55rem;background:rgba(59,130,246,.85);color:#fff;padding:1px 5px;border-radius:4px;font-weight:700}
   .adjuntar-btn{padding:10px;border-radius:10px;border:1px dashed var(--gold2);background:transparent;color:var(--gold);font-size:.82rem;cursor:pointer;width:100%;margin-top:8px;font-weight:600}
   .adjuntar-btn:hover{background:rgba(255,193,7,.08)}
-  /* Personas vinculadas en nota */
   .vinculos{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
   .vinculo-chip{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;padding:4px 10px;border-radius:14px;background:rgba(59,130,246,.12);color:var(--ia2);border:1px solid var(--ia);font-weight:600;cursor:pointer}
   .vinculo-chip:hover{background:rgba(59,130,246,.25)}
-  /* Notas/tareas relacionadas en persona */
   .relacionadas{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
   .relacionadas h4{font-size:.72rem;color:var(--muted);margin:8px 0 6px;letter-spacing:.5px;text-transform:uppercase}
   .rel-item{background:rgba(255,193,7,.06);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:4px;font-size:.82rem;cursor:pointer}
   .rel-item:hover{border-color:var(--gold2)}
   .rel-item .rel-title{color:var(--gold);font-weight:600;margin-bottom:2px}
   .rel-item .rel-fecha{font-size:.65rem;color:var(--muted)}
-  /* Modal adjuntar */
   #modalAdjuntar{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}
   #modalAdjuntar.show{display:flex}
   #modalAdjuntar .box{background:var(--panel);border:2px solid var(--gold2);border-radius:16px;padding:20px;max-width:400px;width:100%;box-shadow:0 10px 40px rgba(255,215,0,.4)}
@@ -219,12 +212,18 @@
   #modalAdjuntar .opcion .ico{font-size:1.4rem}
   #modalAdjuntar .cancelar{width:100%;margin-top:6px}
   #modalAdjuntar input[type=file]{display:none}
-  /* Visor de adjunto */
   #visorAdjunto{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;z-index:600;padding:20px;flex-direction:column;gap:20px}
   #visorAdjunto.show{display:flex}
   #visorAdjunto img{max-width:95vw;max-height:80vh;border-radius:8px}
   #visorAdjunto audio{width:90vw;max-width:500px}
   #visorAdjunto .cerrar-vis{position:absolute;top:20px;right:20px;width:50px;height:50px;border-radius:50%;border:1px solid var(--gold2);background:rgba(58,37,8,.9);color:var(--gold);font-size:1.5rem;cursor:pointer}
+  #modalCompartir{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:550;padding:20px}
+  #modalCompartir.show{display:flex}
+  #modalCompartir .box{background:var(--panel);border:2px solid var(--gold2);border-radius:16px;padding:20px;max-width:400px;width:100%}
+  #modalCompartir h3{margin:0 0 14px;color:var(--gold);font-size:1rem}
+  #modalCompartir .opcion{padding:14px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);cursor:pointer;margin-bottom:8px;display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:600}
+  #modalCompartir .opcion:hover{border-color:var(--gold2);background:#2a1a08}
+  #modalCompartir .opcion .ico{font-size:1.4rem}
 </style>
 </head>
 <body>
@@ -328,7 +327,8 @@
       <label>ID del Gist secreto</label><input id="syncGistId" type="text" placeholder="2decf6c462d9b4418f2">
       <div class="sync-status" id="syncStatus"></div>
       <div class="row"><button class="btn primary" id="btnGuardarSync">💾 Guardar</button><button class="btn" id="btnProbarSync">🧪 Probar</button></div>
-      <div class="row"><button class="btn" id="btnSyncAhora" style="flex:1">🔄 Sync ahora</button><button class="btn ghost small" id="btnBorrarSync">🗑️</button></div>
+      <div class="row"><button class="btn" id="btnSyncAhora" style="flex:1">🔄 Sync ahora</button><button class="btn ghost small" id="btnDiagnostico">🩺</button><button class="btn ghost small" id="btnBorrarSync">🗑️</button></div>
+      <p class="hint" id="syncInfo"></p>
     </div>
     <div class="sync-section">
       <h3>💾 Respaldo</h3>
@@ -347,14 +347,12 @@
   </section>
 </main>
 
-<!-- Overlay MODO FOCUS -->
 <div id="focusOverlay">
   <button class="exit" id="focusExit">✕</button>
   <div class="contador" id="focusContador">1 de 1</div>
   <div id="focusContenido"></div>
 </div>
 
-<!-- Modal ADJUNTAR -->
 <div id="modalAdjuntar">
   <div class="box">
     <h3>📎 Adjuntar a la nota</h3>
@@ -366,7 +364,14 @@
   </div>
 </div>
 
-<!-- Visor de adjunto -->
+<div id="modalCompartir">
+  <div class="box">
+    <h3>📤 Compartir nota</h3>
+    <div id="compartirOpciones"></div>
+    <button class="btn ghost" id="compartirCancelar" style="width:100%;margin-top:8px">Cancelar</button>
+  </div>
+</div>
+
 <div id="visorAdjunto">
   <button class="cerrar-vis" id="visorCerrar">✕</button>
   <div id="visorContenido"></div>
@@ -388,7 +393,7 @@
 
 <script>
 /* =========================================================
-   JARVIS v20 — FAB azul IA + Focus Mode + Vincular personas + Adjuntos
+   JARVIS v21 — Fix sync robusto + Imágenes sincronizadas + Compartir
    ========================================================= */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} },
@@ -397,6 +402,7 @@ const LS = {
 
 const SYNC_TOKEN_KEY = 'jarvis-sync-token';
 const SYNC_GIST_KEY = 'jarvis-sync-gist';
+const SYNC_FILE_KEY = 'jarvis-sync-file'; // nombre del archivo del gist
 const ELIMINADOS_TTL = 90 * 24 * 60 * 60 * 1000;
 const PAPELERA_TTL = 30 * 24 * 60 * 60 * 1000;
 
@@ -426,7 +432,7 @@ function toast(msg){
   toastEl.textContent = msg;
   toastEl.classList.add('show');
   clearTimeout(toastEl._t);
-  toastEl._t = setTimeout(()=>toastEl.classList.remove('show'), 2200);
+  toastEl._t = setTimeout(()=>toastEl.classList.remove('show'), 2500);
 }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
@@ -480,20 +486,60 @@ async function eliminarAdjuntoBlob(id){
   });
 }
 
+/* ===== COMPRESIÓN DE IMÁGENES ===== */
+async function comprimirImagen(blob, maxW, quality) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(blob);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width: w, height: h } = img;
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, w, h);
+      canvas.toBlob((out) => resolve(out || blob), 'image/jpeg', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(blob); };
+    img.src = url;
+  });
+}
+
+async function blobADataURL(blob) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = rej;
+    r.readAsDataURL(blob);
+  });
+}
+
+async function dataURLABlob(dataURL) {
+  const res = await fetch(dataURL);
+  return await res.blob();
+}
+
 const FERIADOS_CHILE = {
   '2025-01-01':'Año Nuevo','2025-04-18':'Viernes Santo','2025-04-19':'Sábado Santo','2025-05-01':'Día del Trabajo','2025-05-21':'Glorias Navales','2025-06-20':'Pueblos Indígenas','2025-06-29':'San Pedro y San Pablo','2025-07-16':'Virgen del Carmen','2025-08-15':'Asunción','2025-09-18':'Independencia','2025-09-19':'Glorias del Ejército','2025-10-12':'Encuentro Dos Mundos','2025-10-31':'Iglesias Evangélicas','2025-11-01':'Todos los Santos','2025-12-08':'Inmaculada Concepción','2025-12-25':'Navidad',
   '2026-01-01':'Año Nuevo','2026-04-03':'Viernes Santo','2026-04-04':'Sábado Santo','2026-05-01':'Día del Trabajo','2026-05-21':'Glorias Navales','2026-06-21':'Pueblos Indígenas','2026-06-29':'San Pedro y San Pablo','2026-07-16':'Virgen del Carmen','2026-08-15':'Asunción','2026-09-18':'Independencia','2026-09-19':'Glorias del Ejército','2026-10-12':'Encuentro Dos Mundos','2026-10-31':'Iglesias Evangélicas','2026-11-01':'Todos los Santos','2026-12-08':'Inmaculada Concepción','2026-12-25':'Navidad'
 };
 
-/* ========== SYNC ========== */
+/* =========================================================
+   SYNC v21 — Auto-detección de archivo + diagnóstico robusto
+   ========================================================= */
 function getToken(){ return localStorage.getItem(SYNC_TOKEN_KEY) || ''; }
 function getGistId(){ return localStorage.getItem(SYNC_GIST_KEY) || ''; }
+function getNombreArchivo(){ return localStorage.getItem(SYNC_FILE_KEY) || ''; }
+function setNombreArchivo(n){ localStorage.setItem(SYNC_FILE_KEY, n); }
 function tieneSync(){ return !!(getToken() && getGistId()); }
+
 let syncEnProgreso = false;
 let operacionCritica = false;
 let ultimaSyncExito = LS.get('ultimaSync', 0);
 
-async function fetchConTimeout(url, opts = {}, ms = 20000) {
+async function fetchConTimeout(url, opts = {}, ms = 25000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), ms);
   try { const r = await fetch(url, { ...opts, signal: ctrl.signal }); clearTimeout(t); return r; }
@@ -507,23 +553,47 @@ async function ghRequest(method, path, body) {
   try {
     res = await fetchConTimeout(`https://api.github.com${path}`, {
       method,
-      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json'
+      },
       body: body ? JSON.stringify(body) : undefined
     });
   } catch (e) {
-    if (e.name === 'AbortError') throw new Error('Timeout');
-    if (/failed to fetch/i.test(e.message)) throw new Error('Sin conexión');
+    if (e.name === 'AbortError') throw new Error('Timeout — el Gist no respondió');
+    if (/failed to fetch/i.test(e.message)) throw new Error('Sin conexión a GitHub');
     throw e;
   }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     let msg = err.message || `HTTP ${res.status}`;
-    if (res.status === 401) msg = 'Token inválido';
-    if (res.status === 403) msg = 'Token sin scope "gist"';
-    if (res.status === 404) msg = 'Gist no encontrado';
+    if (err.errors && err.errors.length) msg += ': ' + err.errors.map(x => x.message || x.field || x.code || JSON.stringify(x)).join(', ');
+    if (res.status === 401) msg = 'Token inválido o expirado';
+    if (res.status === 403) msg = 'Token sin scope "gist" (revisa github.com/settings/tokens)';
+    if (res.status === 404) msg = 'Gist no encontrado (ID incorrecto?)';
+    if (res.status === 422) msg = 'Contenido inválido: ' + msg;
+    console.error('GH error:', res.status, err);
     throw new Error(msg);
   }
   return res.json();
+}
+
+async function detectarNombreArchivo() {
+  const cached = getNombreArchivo();
+  if (cached) return cached;
+  try {
+    const gist = await ghRequest('GET', `/gists/${getGistId()}`);
+    const files = Object.keys(gist.files || {});
+    if (!files.length) return null;
+    // Preferir jarvis.json
+    const nombre = files.includes('jarvis.json') ? 'jarvis.json' : files[0];
+    setNombreArchivo(nombre);
+    return nombre;
+  } catch (e) {
+    return null;
+  }
 }
 
 function actualizarIndicatorSync() {
@@ -550,7 +620,18 @@ function iniciarAutoSync() {
 }
 
 function buildDatosNube() {
-  return { version: 1, notas, tareas, personas, eliminados, papelera, ultimaActualizacion: Date.now() };
+  // Adjuntos se sincronizan SOLO con thumbnail base64, no el blob completo
+  const notasSync = notas.map(n => {
+    const copia = { ...n };
+    if (copia.adjuntos) {
+      copia.adjuntos = copia.adjuntos.map(a => ({
+        id: a.id, tipo: a.tipo, nombre: a.nombre, size: a.size, mime: a.mime,
+        thumb: a.thumb || null // base64 solo si existe
+      }));
+    }
+    return copia;
+  });
+  return { version: 2, notas: notasSync, tareas, personas, eliminados, papelera, ultimaActualizacion: Date.now() };
 }
 
 function mergeArreglos(local, nube, eliminadosArr) {
@@ -564,7 +645,27 @@ function mergeArreglos(local, nube, eliminadosArr) {
     else {
       const fLocal = Number(existing.fecha) || 0;
       const fNube = Number(item.fecha) || 0;
-      if (fNube > fLocal) mapa.set(k, item);
+      if (fNube > fLocal) {
+        // Merge especial para adjuntos: si el local tiene más, conservar thumbs del local
+        if (item.adjuntos && existing.adjuntos) {
+          const merged = existing.adjuntos.map(aLocal => {
+            const aNube = item.adjuntos.find(x => x.id === aLocal.id);
+            return aNube ? { ...aLocal, thumb: aNube.thumb || aLocal.thumb } : aLocal;
+          });
+          const nuevosNube = item.adjuntos.filter(aN => !existing.adjuntos.find(aL => aL.id === aN.id));
+          mapa.set(k, { ...item, adjuntos: [...merged, ...nuevosNube] });
+        } else {
+          mapa.set(k, item);
+        }
+      } else if (existing.adjuntos && item.adjuntos) {
+        // Conservar thumbs de la nube en el existing
+        existing.adjuntos = existing.adjuntos.map(aLocal => {
+          const aNube = item.adjuntos.find(x => x.id === aLocal.id);
+          return aNube ? { ...aLocal, thumb: aNube.thumb || aLocal.thumb } : aLocal;
+        });
+        const nuevosNube = item.adjuntos.filter(aN => !existing.adjuntos.find(aL => aL.id === aN.id));
+        if (nuevosNube.length) existing.adjuntos.push(...nuevosNube);
+      }
     }
   }
   return Array.from(mapa.values());
@@ -598,12 +699,17 @@ async function sincronizar(silencioso = false) {
   if (syncEnProgreso) return false;
   syncEnProgreso = true; actualizarIndicatorSync();
   try {
+    // 1. Auto-detectar nombre del archivo
+    const nombreArchivo = await detectarNombreArchivo();
+    if (!nombreArchivo) throw new Error('No se encontró archivo en el Gist');
+
+    // 2. GET del Gist
     const gist = await ghRequest('GET', `/gists/${getGistId()}`);
-    const file = gist.files && gist.files['jarvis.json'];
-    let nube = { version: 1, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
-    if (file) {
+    const file = gist.files && gist.files[nombreArchivo];
+    let nube = { version: 2, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
+    if (file && file.content) {
       const contenido = file.truncated ? await (await fetchConTimeout(file.raw_url)).text() : file.content;
-      try { nube = JSON.parse(contenido); } catch(e){ console.warn('JSON inválido', e); }
+      try { nube = JSON.parse(contenido); } catch(e){ console.warn('JSON inválido en nube', e); }
     }
     if (!nube.eliminados) nube.eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
     if (!nube.eliminados._ts) nube.eliminados._ts = {};
@@ -619,18 +725,7 @@ async function sincronizar(silencioso = false) {
     }
     papelera = Array.from(papeleraMap.values());
 
-    const elimNube = nube.eliminados || { notas: [], tareas: [], personas: [] };
-    const hayEliminadosNuevos =
-      (eliminados.notas || []).some(id => !(elimNube.notas || []).some(x => eqId(x, id))) ||
-      (eliminados.tareas || []).some(id => !(elimNube.tareas || []).some(x => eqId(x, id))) ||
-      (eliminados.personas || []).some(id => !(elimNube.personas || []).some(x => eqId(x, id)));
-
-    if (hayEliminadosNuevos) {
-      try {
-        await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { 'jarvis.json': { content: JSON.stringify({ ...nube, eliminados, papelera }, null, 2) } } });
-      } catch (e) { console.warn('PATCH eliminados falló:', e.message); }
-    }
-
+    // 3. Merge de arreglos
     const notasMerge    = mergeArreglos(notas, nube.notas || [], eliminados.notas);
     const tareasMerge   = mergeArreglos(tareas, nube.tareas || [], eliminados.tareas);
     const personasMerge = mergeArreglos(personas, nube.personas || [], eliminados.personas);
@@ -642,19 +737,30 @@ async function sincronizar(silencioso = false) {
     LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
     LS.set('eliminados', eliminados); LS.set('papelera', papelera);
 
-    if (!hayEliminadosNuevos) {
-      await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { 'jarvis.json': { content: JSON.stringify(buildDatosNube(), null, 2) } } });
+    // 4. PATCH con el nombre correcto del archivo
+    const datosNube = buildDatosNube();
+    const contenidoStr = JSON.stringify(datosNube, null, 2);
+    const tamañoKB = Math.round(new Blob([contenidoStr]).size / 1024);
+
+    if (tamañoKB > 900) {
+      console.warn('⚠️ Datos cercanos al límite de Gist (1MB):', tamañoKB, 'KB');
     }
+
+    await ghRequest('PATCH', `/gists/${getGistId()}`, {
+      files: { [nombreArchivo]: { content: contenidoStr } }
+    });
 
     if (Math.random() < 0.1) purgarEliminadosViejos();
     ultimaSyncExito = Date.now();
     LS.set('ultimaSync', ultimaSyncExito);
     renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
-    if (!silencioso) toast('✓ Sincronizado');
+    if (!silencioso) toast(`✓ Sincronizado (${tamañoKB}KB)`);
+    const info = $('syncInfo');
+    if (info) info.textContent = `Última sync: ${tamañoKB}KB en gist`;
     return true;
   } catch (e) {
     console.error('Sync error:', e);
-    if (!silencioso) toast('Error sync: ' + e.message);
+    if (!silencioso) toast('❌ ' + e.message);
     return false;
   } finally {
     syncEnProgreso = false; actualizarIndicatorSync();
@@ -664,9 +770,13 @@ async function sincronizar(silencioso = false) {
 async function pushASync(silencioso = true) {
   if (!tieneSync() || operacionCritica) return;
   try {
-    await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { 'jarvis.json': { content: JSON.stringify(buildDatosNube(), null, 2) } } });
+    const nombreArchivo = getNombreArchivo() || await detectarNombreArchivo() || 'jarvis.json';
+    const contenidoStr = JSON.stringify(buildDatosNube(), null, 2);
+    await ghRequest('PATCH', `/gists/${getGistId()}`, {
+      files: { [nombreArchivo]: { content: contenidoStr } }
+    });
     ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito); actualizarIndicatorSync();
-  } catch (e) { if (!silencioso) toast('Error al guardar en nube'); }
+  } catch (e) { if (!silencioso) toast('⚠ Sync: ' + e.message); }
 }
 
 function marcarEliminado(tipo, id) {
@@ -679,6 +789,60 @@ function marcarEliminado(tipo, id) {
 }
 
 setInterval(actualizarIndicatorSync, 1000);
+
+/* ========== DIAGNÓSTICO ========== */
+async function diagnostico() {
+  const st = $('syncStatus');
+  st.className = 'sync-status info';
+  st.textContent = '⏳ Diagnosticando...';
+  let log = '';
+  try {
+    const token = $('syncToken').value.trim() || getToken();
+    const gistId = $('syncGistId').value.trim() || getGistId();
+    if (!token || !gistId) throw new Error('Falta token o Gist ID');
+    log += `🔑 Token: ${token.slice(0, 8)}... (${token.length} chars)\n`;
+    log += `📋 Gist ID: ${gistId}\n`;
+
+    // 1. Verificar usuario
+    log += `\n[1] Verificando usuario...\n`;
+    const uRes = await fetch('https://api.github.com/user', { headers: { 'Authorization': `Bearer ${token}` } });
+    if (!uRes.ok) throw new Error('Token inválido (HTTP ' + uRes.status + ')');
+    const u = await uRes.json();
+    log += `✅ Usuario: ${u.login}\n`;
+
+    // 2. Verificar gist
+    log += `\n[2] Verificando Gist...\n`;
+    const gRes = await fetch(`https://api.github.com/gists/${gistId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+    if (!gRes.ok) throw new Error('Gist no accesible (HTTP ' + gRes.status + ')');
+    const g = await gRes.json();
+    const files = Object.keys(g.files || {});
+    log += `✅ Gist OK. Archivos: ${files.join(', ') || '(vacío)'}\n`;
+    log += `📝 Archivo a usar: ${files.includes('jarvis.json') ? 'jarvis.json' : (files[0] || 'ninguno')}\n`;
+
+    // 3. Probar PATCH
+    log += `\n[3] Probando PATCH...\n`;
+    const nombreTest = files[0] || 'jarvis.json';
+    const pRes = await fetch(`https://api.github.com/gists/${gistId}`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ files: { [nombreTest]: { content: g.files?.[nombreTest]?.content || '{}' } } })
+    });
+    if (!pRes.ok) {
+      const err = await pRes.json().catch(() => ({}));
+      log += `❌ PATCH falló (HTTP ${pRes.status}): ${err.message || JSON.stringify(err)}\n`;
+      if (pRes.status === 403) log += `💡 Causa probable: el token no tiene scope "gist" o el Gist es de otra cuenta\n`;
+      if (pRes.status === 422) log += `💡 Causa probable: contenido inválido o límite de tamaño excedido\n`;
+    } else {
+      log += `✅ PATCH OK — el sync debería funcionar\n`;
+    }
+
+    st.className = 'sync-status ok';
+    st.textContent = log;
+  } catch(e) {
+    st.className = 'sync-status err';
+    st.textContent = log + `\n❌ ERROR: ${e.message}`;
+  }
+}
 
 /* ========== PAPELERA ========== */
 function moverAPapelera(tipo, item) {
@@ -712,6 +876,10 @@ function restaurarDePapelera(idx) {
 
 function eliminarDefinitivo(idx) {
   if (!confirm('¿Eliminar definitivamente? No se puede recuperar')) return;
+  const p = papelera[idx];
+  if (p && p.item && p.item.adjuntos) {
+    p.item.adjuntos.forEach(a => { eliminarAdjuntoBlob(a.id).catch(()=>{}); });
+  }
   papelera.splice(idx, 1); LS.set('papelera', papelera);
   pushASync(); renderPapelera();
   toast('🗑️ Eliminado definitivamente');
@@ -739,7 +907,7 @@ function renderPapelera() {
 
 /* ========== EXPORT/IMPORT ========== */
 function exportarJSON() {
-  const data = { version: 1, fecha: new Date().toISOString(), notas, tareas, personas, eliminados, papelera };
+  const data = { version: 2, fecha: new Date().toISOString(), notas, tareas, personas, eliminados, papelera };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = `jarvis-backup-${new Date().toISOString().slice(0,10)}.json`; a.click();
@@ -897,6 +1065,7 @@ function renderEstadisticas() {
   const tareasHechas = tareas.filter(t => t.hecha).length;
   const notasHoy = notas.filter(n => new Date(n.fecha).toDateString() === new Date().toDateString()).length;
   const notasSemana = notas.filter(n => Date.now() - new Date(n.fecha).getTime() < 7*24*60*60*1000).length;
+  const adjuntosTotal = notas.reduce((sum, n) => sum + (n.adjuntos?.length || 0), 0);
   const tagsCount = {};
   notas.forEach(n => (n.tags||[]).forEach(t => tagsCount[t] = (tagsCount[t]||0) + 1));
   tareas.forEach(t => (t.tags||[]).forEach(t => tagsCount[t] = (tagsCount[t]||0) + 1));
@@ -911,6 +1080,7 @@ function renderEstadisticas() {
       <div class="stat-card"><div class="num">${tareasHechas}</div><div class="lbl">✓ Completadas</div></div>
       <div class="stat-card"><div class="num">${notasHoy}</div><div class="lbl">Hoy</div></div>
       <div class="stat-card"><div class="num">${notasSemana}</div><div class="lbl">Esta semana</div></div>
+      <div class="stat-card"><div class="num">${adjuntosTotal}</div><div class="lbl">📎 Adjuntos</div></div>
       <div class="stat-card"><div class="num">${papelera.length}</div><div class="lbl">🗑️ Papelera</div></div>
     </div>
     ${topTags.length ? `<h3 style="color:var(--gold);font-size:.85rem;margin:20px 0 8px">🏷️ Tags más usados</h3><div class="tags-row">${topTags.map(([t,c]) => `<span class="tag">${escapeHtml(t)} (${c})</span>`).join('')}</div>` : ''}
@@ -946,7 +1116,7 @@ function chequearNotif() {
   });
 }
 
-/* ========== VINCULAR NOTAS ↔ PERSONAS ========== */
+/* ========== VINCULAR PERSONAS ========== */
 function buscarPersonaPorNombre(nombre) {
   if (!nombre) return null;
   const low = String(nombre).toLowerCase().trim();
@@ -961,22 +1131,17 @@ function buscarPersonaPorNombre(nombre) {
 function vincularPersonasPorTexto(nota) {
   if (!nota || !nota.texto) return [];
   const vinculadas = new Set(nota.personasVinculadas || []);
-  // Buscar nombres de personas en el texto
   personas.forEach(p => {
     if (!p.nombre) return;
     const primerNombre = p.nombre.split(' ')[0];
     if (primerNombre.length < 3) return;
     const regex = new RegExp('\\b' + primerNombre + '\\b', 'i');
-    if (regex.test(nota.texto)) {
-      vinculadas.add(String(p.id));
-    }
+    if (regex.test(nota.texto)) vinculadas.add(String(p.id));
   });
   return Array.from(vinculadas);
 }
 
-function getPersona(id) {
-  return personas.find(p => eqId(p.id, id));
-}
+function getPersona(id) { return personas.find(p => eqId(p.id, id)); }
 
 function getNotasDePersona(personaId) {
   return notas.filter(n => (n.personasVinculadas||[]).some(id => eqId(id, personaId)));
@@ -1001,8 +1166,7 @@ function abrirFocusMode() {
     return fa.localeCompare(fb);
   });
   if (!focusLista.length) return toast('No hay tareas pendientes');
-  focusIdx = 0;
-  focusActivo = true;
+  focusIdx = 0; focusActivo = true;
   $('focusOverlay').classList.add('show');
   renderFocus();
 }
@@ -1024,8 +1188,7 @@ function renderFocus() {
   if (focusIdx < 0) focusIdx = 0;
   const t = focusLista[focusIdx];
   $('focusContador').textContent = (focusIdx + 1) + ' de ' + focusLista.length;
-
-  let html = `<div class="tarea-foco ${t.hecha ? 'done' : ''}">
+  cont.innerHTML = `<div class="tarea-foco ${t.hecha ? 'done' : ''}">
     <h2>${escapeHtml(t.descripcion)}</h2>
     ${t.persona ? `<div class="detail">👤 <b>${escapeHtml(t.persona)}</b></div>` : ''}
     ${t.fecha ? `<div class="detail">📅 ${t.fecha}${t.hora ? ' · 🕐 ' + t.hora : ''}</div>` : ''}
@@ -1037,8 +1200,6 @@ function renderFocus() {
       <button class="btn" id="focusSiguiente" ${focusIdx >= focusLista.length - 1 ? 'disabled style="opacity:.4"' : ''}>Siguiente ⏭</button>
     </div>
   </div>`;
-  cont.innerHTML = html;
-
   const btnCompletar = $('focusCompletar');
   if (btnCompletar) {
     btnCompletar.onclick = () => {
@@ -1050,8 +1211,7 @@ function renderFocus() {
       if (tareaReal.recurrencia && tareaReal.fecha) {
         tareas.unshift({ ...tareaReal, id: Date.now() + Math.random(), fecha: proximaFecha(tareaReal.fecha, tareaReal.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
       }
-      LS.set('tareas', tareas);
-      pushASync();
+      LS.set('tareas', tareas); pushASync();
       focusLista = focusLista.filter(x => !eqId(x.id, t.id));
       renderTareas(); renderCalendario();
       toast('✅ Completada');
@@ -1068,7 +1228,7 @@ function renderFocus() {
 $('btnFocusMode').onclick = abrirFocusMode;
 $('focusExit').onclick = cerrarFocusMode;
 
-/* ========== ADJUNTOS ========== */
+/* ========== ADJUNTOS v21 ========== */
 let adjuntoNotaActual = null;
 let adjuntoTipoActual = null;
 
@@ -1078,24 +1238,9 @@ function abrirModalAdjuntar(notaId) {
 }
 
 $('adjCancelar').onclick = () => $('modalAdjuntar').classList.remove('show');
-$('adjOpcFoto').onclick = () => {
-  adjuntoTipoActual = 'image';
-  const input = $('adjInput');
-  input.accept = 'image/*';
-  input.click();
-};
-$('adjOpcAudio').onclick = () => {
-  adjuntoTipoActual = 'audio';
-  const input = $('adjInput');
-  input.accept = 'audio/*';
-  input.click();
-};
-$('adjOpcArchivo').onclick = () => {
-  adjuntoTipoActual = 'file';
-  const input = $('adjInput');
-  input.accept = '*/*';
-  input.click();
-};
+$('adjOpcFoto').onclick = () => { adjuntoTipoActual = 'image'; $('adjInput').accept = 'image/*'; $('adjInput').click(); };
+$('adjOpcAudio').onclick = () => { adjuntoTipoActual = 'audio'; $('adjInput').accept = 'audio/*'; $('adjInput').click(); };
+$('adjOpcArchivo').onclick = () => { adjuntoTipoActual = 'file'; $('adjInput').accept = '*/*'; $('adjInput').click(); };
 
 $('adjInput').onchange = async (e) => {
   const file = e.target.files[0];
@@ -1106,41 +1251,76 @@ $('adjInput').onchange = async (e) => {
   const nota = notas.find(n => eqId(n.id, adjuntoNotaActual));
   if (!nota) return;
 
-  if (file.size > 5 * 1024 * 1024) return toast('⚠️ Máximo 5 MB por adjunto');
+  if (file.size > 15 * 1024 * 1024) return toast('⚠️ Máximo 15 MB por adjunto');
 
   const adjId = 'adj-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
-  try {
-    await guardarAdjuntoBlob(adjId, file);
-  } catch(err) {
-    return toast('❌ Error al guardar archivo');
-  }
-
   let tipo = 'file';
   if (file.type.startsWith('image/')) tipo = 'image';
   else if (file.type.startsWith('audio/')) tipo = 'audio';
 
+  let thumbBase64 = null;
+  let blobFull = file;
+
+  if (tipo === 'image') {
+    try {
+      // Full de alta calidad (hasta 1600px, calidad 0.85)
+      blobFull = await comprimirImagen(file, 1600, 0.85);
+      // Thumb para sincronizar (320px, calidad 0.65)
+      const thumb = await comprimirImagen(file, 320, 0.65);
+      thumbBase64 = await blobADataURL(thumb);
+    } catch(err) {
+      console.warn('Error comprimiendo, usando original');
+      blobFull = file;
+    }
+  } else if (tipo === 'audio' || file.size > 2 * 1024 * 1024) {
+    // Audio y archivos grandes no se sincronizan con thumb
+    thumbBase64 = null;
+  } else {
+    // Archivo chico: intentar guardar como base64 si es < 500KB
+    if (file.size < 500 * 1024) {
+      try { thumbBase64 = await blobADataURL(file); } catch(e){}
+    }
+  }
+
+  try {
+    await guardarAdjuntoBlob(adjId, blobFull);
+  } catch(err) {
+    return toast('❌ Error al guardar archivo');
+  }
+
   nota.adjuntos = nota.adjuntos || [];
-  nota.adjuntos.push({ id: adjId, tipo, nombre: file.name, size: file.size, mime: file.type });
+  nota.adjuntos.push({
+    id: adjId,
+    tipo,
+    nombre: file.name,
+    size: blobFull.size,
+    mime: blobFull.type || file.type,
+    thumb: thumbBase64 // base64 para sincronizar
+  });
   nota.fecha = new Date().toISOString();
   LS.set('notas', notas);
   pushASync();
   renderNotas();
-  toast('📎 Adjunto agregado');
+  toast(`📎 Adjunto ${thumbBase64 ? 'sincronizado' : 'local'}`);
 };
 
 async function renderAdjuntosHTML(nota) {
   if (!nota.adjuntos || !nota.adjuntos.length) return '';
   let html = '<div class="adjuntos-grid">';
   for (const adj of nota.adjuntos) {
+    let srcImg = null;
+    let esLocal = false;
+
     if (adj.tipo === 'image') {
-      let url = '';
       try {
         const blob = await obtenerAdjuntoBlob(adj.id);
-        if (blob) url = URL.createObjectURL(blob);
+        if (blob) { srcImg = URL.createObjectURL(blob); esLocal = true; }
       } catch(e){}
+      if (!srcImg && adj.thumb) srcImg = adj.thumb;
+
       html += `<div class="adjunto" data-adj-id="${adj.id}" data-adj-tipo="image" title="${escapeHtml(adj.nombre)}">
-        ${url ? `<img src="${url}" alt="">` : '<span style="color:var(--muted);font-size:.7rem">(no local)</span>'}
-        <span class="local-badge">LOCAL</span>
+        ${srcImg ? `<img src="${srcImg}" alt="">` : '<span style="color:var(--muted);font-size:.7rem">sin imagen</span>'}
+        ${esLocal ? '<span class="local-badge">HD</span>' : '<span class="sync-badge">Sync</span>'}
         <button class="x-adj" data-del-adj="${adj.id}" data-nota-id="${nota.id}">✕</button>
       </div>`;
     } else if (adj.tipo === 'audio') {
@@ -1163,7 +1343,14 @@ async function renderAdjuntosHTML(nota) {
 
 async function abrirVisorAdjunto(adjId) {
   try {
-    const blob = await obtenerAdjuntoBlob(adjId);
+    let blob = await obtenerAdjuntoBlob(adjId);
+    if (!blob) {
+      // Buscar el thumb en la nota
+      for (const n of notas) {
+        const adj = (n.adjuntos||[]).find(a => a.id === adjId);
+        if (adj && adj.thumb) { blob = await dataURLABlob(adj.thumb); break; }
+      }
+    }
     if (!blob) return toast('⚠️ Adjunto no disponible en este dispositivo');
     const cont = $('visorContenido');
     cont.innerHTML = '';
@@ -1193,6 +1380,86 @@ async function eliminarAdjunto(notaId, adjId) {
   pushASync();
   renderNotas();
   toast('🗑️ Adjunto eliminado');
+}
+
+/* ========== COMPARTIR v21 ========== */
+function abrirModalCompartir(notaId) {
+  const nota = notas.find(n => eqId(n.id, notaId));
+  if (!nota) return;
+  const cont = $('compartirOpciones');
+  const tieneAdjuntos = nota.adjuntos && nota.adjuntos.length > 0;
+  cont.innerHTML = `
+    <div class="opcion" data-comp="share"><span class="ico">📱</span> Compartir (WhatsApp, Gmail, etc.)</div>
+    <div class="opcion" data-comp="email"><span class="ico">📧</span> Enviar por correo</div>
+    <div class="opcion" data-comp="whatsapp"><span class="ico">💬</span> Enviar por WhatsApp</div>
+    <div class="opcion" data-comp="copiar"><span class="ico">📋</span> Copiar texto</div>
+  `;
+  cont.querySelectorAll('[data-comp]').forEach(b => {
+    b.onclick = async () => {
+      $('modalCompartir').classList.remove('show');
+      const modo = b.dataset.comp;
+      await compartirNota(nota, modo);
+    };
+  });
+  $('modalCompartir').classList.add('show');
+}
+$('compartirCancelar').onclick = () => $('modalCompartir').classList.remove('show');
+
+async function compartirNota(nota, modo) {
+  const texto = `${nota.titulo}\n\n${nota.texto}`;
+
+  if (modo === 'share' && navigator.share) {
+    try {
+      const data = { title: nota.titulo, text: nota.texto };
+      // Adjuntar imágenes si el navegador lo soporta
+      if (nota.adjuntos && nota.adjuntos.length) {
+        const files = [];
+        for (const adj of nota.adjuntos) {
+          if (adj.tipo === 'image') {
+            let blob = await obtenerAdjuntoBlob(adj.id);
+            if (!blob && adj.thumb) blob = await dataURLABlob(adj.thumb);
+            if (blob) {
+              try { files.push(new File([blob], adj.nombre || 'foto.jpg', { type: blob.type || 'image/jpeg' })); } catch(e){}
+            }
+          }
+        }
+        if (files.length && navigator.canShare && navigator.canShare({ files })) {
+          data.files = files;
+        }
+      }
+      await navigator.share(data);
+      toast('📤 Compartido');
+      return;
+    } catch(e) {
+      if (e.name === 'AbortError') return;
+      console.warn('Web Share falló:', e);
+    }
+  }
+
+  if (modo === 'email') {
+    const url = `mailto:?subject=${encodeURIComponent(nota.titulo)}&body=${encodeURIComponent(texto)}`;
+    window.location.href = url;
+    return;
+  }
+
+  if (modo === 'whatsapp') {
+    const url = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
+    return;
+  }
+
+  if (modo === 'copiar') {
+    copiar(texto);
+    return;
+  }
+
+  // Fallback genérico
+  if (navigator.share) {
+    try { await navigator.share({ title: nota.titulo, text: nota.texto }); } catch(e){}
+  } else {
+    copiar(texto);
+    toast('📋 Copiado (no hay compartir nativo)');
+  }
 }
 
 /* ========== NAV ========== */
@@ -1534,6 +1801,7 @@ async function renderNotas(){
         <button data-accion="copiar" data-id="${n.id}" title="Copiar">📋</button>
         <button data-accion="leer" data-id="${n.id}" title="Leer">🔊</button>
         <button data-accion="analizar" data-id="${n.id}" title="Analizar">🤖</button>
+        <button data-accion="compartir" data-id="${n.id}" title="Compartir">📤</button>
         <button data-accion="calendario" data-id="${n.id}" title="A calendario">📅</button>
         <button data-accion="tarea" data-id="${n.id}" title="Crear tarea">✅</button>
         <button data-accion="resumir" data-id="${n.id}" title="Resumir">📝</button>
@@ -1574,8 +1842,7 @@ async function renderNotas(){
       document.querySelector('nav button[data-tab="personas"]').click();
       setTimeout(() => {
         const pid = b.dataset.vincularPersona;
-        const cards = document.querySelectorAll('.persona-card');
-        cards.forEach(c => {
+        document.querySelectorAll('.persona-card').forEach(c => {
           if (c.querySelector(`[data-edit="${pid}"]`)) c.scrollIntoView({behavior:'smooth',block:'center'});
         });
       }, 200);
@@ -1615,6 +1882,7 @@ function manejarAccionNota(accion, id) {
     case 'leer': TTS.play(nota.texto); break;
     case 'analizar': analizarNota(nota); break;
     case 'resumir': resumirNota(nota); break;
+    case 'compartir': abrirModalCompartir(nota.id); break;
     case 'calendario': guardarNotaEnCalendario(nota); break;
     case 'tarea': crearTareaDesdeNota(nota); break;
     case 'concatenar': concatenarCon(nota); break;
@@ -1630,7 +1898,6 @@ function manejarAccionNota(accion, id) {
       break;
     case 'eliminar':
       if (confirm('¿Mover nota a papelera?')) {
-        // Eliminar adjuntos asociados
         (nota.adjuntos||[]).forEach(async a => { try { await eliminarAdjuntoBlob(a.id); } catch(e){} });
         moverAPapelera('notas', nota);
         notas = notas.filter(n => !eqId(n.id, idStr));
@@ -1693,7 +1960,6 @@ NOTA:
     if (ini !== -1 && fin !== -1) limpio = limpio.slice(ini, fin + 1);
     let data;
     try { data = JSON.parse(limpio); } catch(e) { panel.innerHTML = `<div class="txt">${escapeHtml(raw)}</div>`; return; }
-    // Vincular personas de las tareas detectadas
     if (data.tareas) {
       const vinculadas = new Set(nota.personasVinculadas || []);
       data.tareas.forEach(t => {
@@ -2108,9 +2374,7 @@ function renderPersonas(){
     };
   });
   cont.querySelectorAll('[data-go-nota]').forEach(b => {
-    b.onclick = () => {
-      document.querySelector('nav button[data-tab="notas"]').click();
-    };
+    b.onclick = () => { document.querySelector('nav button[data-tab="notas"]').click(); };
   });
 }
 
@@ -2190,11 +2454,18 @@ $('btnGuardarSync').onclick = async () => {
   if (!token || !gistId) return toast('Completa ambos campos');
   localStorage.setItem(SYNC_TOKEN_KEY, token);
   localStorage.setItem(SYNC_GIST_KEY, gistId);
+  localStorage.removeItem(SYNC_FILE_KEY); // resetear caché del nombre
   $('syncStatus').className = 'sync-status info';
-  $('syncStatus').textContent = '⏳ Probando y sincronizando...';
+  $('syncStatus').textContent = '⏳ Detectando archivo y sincronizando...';
   const ok = await sincronizar(true);
-  if (ok) { $('syncStatus').className = 'sync-status ok'; $('syncStatus').textContent = '✅ Configurado. Auto-sync cada 15s'; iniciarAutoSync(); }
-  else { $('syncStatus').className = 'sync-status err'; $('syncStatus').textContent = '❌ Error. Revisa token e ID'; }
+  if (ok) {
+    $('syncStatus').className = 'sync-status ok';
+    $('syncStatus').textContent = '✅ Configurado. Archivo: ' + getNombreArchivo() + '\nAuto-sync cada 15s';
+    iniciarAutoSync();
+  } else {
+    $('syncStatus').className = 'sync-status err';
+    $('syncStatus').textContent = '❌ Error. Presiona 🩺 Diagnóstico para más info';
+  }
 };
 
 $('btnProbarSync').onclick = async () => {
@@ -2207,17 +2478,20 @@ $('btnProbarSync').onclick = async () => {
     const res = await fetch(`https://api.github.com/gists/${gistId}`, { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' } });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const g = await res.json();
+    const files = Object.keys(g.files || {});
     st.className = 'sync-status ok';
-    st.textContent = `✅ OK. Gist tiene ${Object.keys(g.files || {}).length} archivo(s)`;
+    st.textContent = `✅ OK\nArchivos: ${files.join(', ')}\nSe usará: ${files.includes('jarvis.json') ? 'jarvis.json' : (files[0] || 'ninguno')}`;
   } catch (e) { st.className = 'sync-status err'; st.textContent = '❌ ' + e.message; }
 };
 
 $('btnSyncAhora').onclick = async () => { await sincronizar(false); };
+$('btnDiagnostico').onclick = diagnostico;
 
 $('btnBorrarSync').onclick = () => {
   if (!confirm('¿Borrar la config de sync?')) return;
   localStorage.removeItem(SYNC_TOKEN_KEY);
   localStorage.removeItem(SYNC_GIST_KEY);
+  localStorage.removeItem(SYNC_FILE_KEY);
   $('syncToken').value = ''; $('syncGistId').value = '';
   $('syncStatus').className = 'sync-status'; $('syncStatus').textContent = '';
   if (autoSyncTimer) clearInterval(autoSyncTimer);
@@ -2241,7 +2515,7 @@ $('buscarGlobal').oninput = renderBusquedaGlobal;
 
 $('btnReset').onclick = () => {
   if(!confirm('¿Borrar TODOS los datos locales? (La nube NO se borra)')) return;
-  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera'].forEach(k=>localStorage.removeItem('jarvis_'+k));
+  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera','sync-file'].forEach(k=>localStorage.removeItem('jarvis_'+k));
   notas = []; tareas = []; personas = []; papelera = [];
   eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
   renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
@@ -2255,12 +2529,12 @@ window.addEventListener('online', () => { if (tieneSync() && !operacionCritica) 
 window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica) pushASync(true); });
 window.addEventListener('beforeunload', () => { if (tieneSync() && !operacionCritica) pushASync(true); });
 
-// Escape para cerrar Focus y visor
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     if ($('focusOverlay').classList.contains('show')) cerrarFocusMode();
     if ($('visorAdjunto').classList.contains('show')) $('visorAdjunto').classList.remove('show');
     if ($('modalAdjuntar').classList.contains('show')) $('modalAdjuntar').classList.remove('show');
+    if ($('modalCompartir').classList.contains('show')) $('modalCompartir').classList.remove('show');
   }
 });
 
