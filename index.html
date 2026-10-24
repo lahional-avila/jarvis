@@ -29,6 +29,7 @@
   header{flex-shrink:0; padding:10px 18px 8px; text-align:center; border-bottom:1px solid var(--line);}
   header h1{margin:0; font-size:1.15rem; letter-spacing:3px; font-weight:600; color:var(--gold); text-shadow:0 0 14px rgba(255,215,0,.55);}
   header p{margin:2px 0 0; font-size:.68rem; color:var(--muted); letter-spacing:1px}
+  #syncIndicator{font-weight:700; margin-left:4px}
   nav{flex-shrink:0; display:flex; gap:4px; padding:8px; overflow-x:auto; background:rgba(10,8,6,.94); backdrop-filter:blur(8px); z-index:20; border-bottom:1px solid var(--line);}
   nav button{flex:1 0 auto; padding:9px 12px; border-radius:10px; border:1px solid var(--line); background:var(--bg2); color:var(--muted); font-size:.8rem; font-weight:600; cursor:pointer; white-space:nowrap; transition:.15s;}
   nav button.active{background:linear-gradient(180deg,#3a2508,#241600); color:var(--gold); border-color:var(--gold2); box-shadow:0 0 10px rgba(255,215,0,.3) inset;}
@@ -55,7 +56,6 @@
   .traduccion-box.show{display:block}
   .traduccion-box .head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:.72rem; color:var(--muted);}
 
-  /* FAB + Guardar: layouts */
   .grabar-controls{flex-shrink:0; display:flex; flex-direction:row; align-items:center; justify-content:center; gap:18px; padding:12px 0 6px;}
   .fab{width:min(40vw,150px); height:min(40vw,150px); border-radius:50%;
     border:3px solid var(--gold2);
@@ -82,7 +82,6 @@
   .btn-guardar-grande small{font-size:.58rem; font-weight:700; letter-spacing:.5px}
   .btn-guardar-grande:active{ transform:scale(.95); }
 
-  /* Panel guardado: ABAJO DERECHA + VERTICAL */
   #panelGuardado{
     position:fixed; bottom:24px; right:20px; left:auto;
     transform:translateY(20px);
@@ -108,7 +107,6 @@
     color:#1a1004; border-color:var(--gold);
   }
 
-  /* SYNC panel en Config */
   .sync-section{ background:var(--panel); border:1px solid var(--gold2); border-radius:12px; padding:14px; margin-top:14px; }
   .sync-section h3{ margin:0 0 10px; font-size:.85rem; color:var(--gold); letter-spacing:.5px; }
   .sync-section .row{ display:flex; gap:8px; margin-top:8px; }
@@ -213,7 +211,7 @@
 
 <header>
   <h1>J A R V I S</h1>
-  <p>Grabar · Notas · Calendario · Tareas · Personas · <span id="syncIndicator">—</span></p>
+  <p>Grabar · Notas · Calendario · Tareas · Personas <span id="syncIndicator">—</span></p>
 </header>
 
 <nav>
@@ -320,10 +318,9 @@
     <input id="apiKey" type="password" placeholder="gsk_...">
     <button class="btn primary block" id="btnGuardarKey">Guardar API key</button>
 
-    <!-- SECCIÓN SYNC -->
     <div class="sync-section">
       <h3>🔄 Sincronización con GitHub Gist</h3>
-      <p class="hint">Sincroniza notas, tareas y personas entre celular y computadora.</p>
+      <p class="hint">Auto-sincroniza cada 15 segundos. Notas, tareas y personas entre dispositivos.</p>
       <label>Token de GitHub (scope "gist")</label>
       <input id="syncToken" type="password" placeholder="ghp_...">
       <label>ID del Gist secreto</label>
@@ -345,8 +342,7 @@
           <b>2. Crear Gist:</b><br>
           gist.github.com → "New gist" → nombre <code>jarvis.json</code>, contenido <code>{}</code>, marca "Secret gist" → crear.<br><br>
           <b>3. Copiar ID:</b><br>
-          La URL del Gist termina en el ID: <code>gist.github.com/tu-user/<b>2decf6c462d9b4418f2</code><br><br>
-          <b>4. Pegar ambos arriba y guardar.</b>
+          La URL del Gist termina en el ID: <code>gist.github.com/tu-user/<b>2decf6c462d9b4418f2</code>
         </p>
       </details>
     </div>
@@ -395,7 +391,7 @@
 
 <script>
 /* =========================================================
-   JARVIS v15 — Sync con GitHub Gist + Botones corregidos
+   JARVIS v16 — Auto-sync robusto + Autoguardado de borrador
    ========================================================= */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} },
@@ -409,7 +405,7 @@ let notas    = LS.get('notas', []);
 let tareas   = LS.get('tareas', []);
 let personas = LS.get('personas', []);
 let modoGrabacion = LS.get('modoGrabacion', 'vivo');
-let eliminados = { notas: [], tareas: [], personas: [] };
+let eliminados = LS.get('eliminados', { notas: [], tareas: [], personas: [] });
 
 notas.forEach(n => { if(!n.titulo) n.titulo = 'Nota ' + new Date(n.fecha).toLocaleDateString('es-CL'); });
 
@@ -430,14 +426,14 @@ const FERIADOS_CHILE = {
   '2026-01-01':'Año Nuevo','2026-04-03':'Viernes Santo','2026-04-04':'Sábado Santo','2026-05-01':'Día del Trabajo','2026-05-21':'Glorias Navales','2026-06-21':'Pueblos Indígenas','2026-06-29':'San Pedro y San Pablo','2026-07-16':'Virgen del Carmen','2026-08-15':'Asunción','2026-09-18':'Independencia','2026-09-19':'Glorias del Ejército','2026-10-12':'Encuentro Dos Mundos','2026-10-31':'Iglesias Evangélicas','2026-11-01':'Todos los Santos','2026-12-08':'Inmaculada Concepción','2026-12-25':'Navidad'
 };
 
-/* ========== SYNC CON GITHUB GIST ========== */
+/* ========== SYNC ========== */
 function getToken(){ return localStorage.getItem(SYNC_TOKEN_KEY) || ''; }
 function getGistId(){ return localStorage.getItem(SYNC_GIST_KEY) || ''; }
 function tieneSync(){ return !!(getToken() && getGistId()); }
 
 let syncEnProgreso = false;
 let operacionCritica = false;
-let ultimaSyncExito = 0;
+let ultimaSyncExito = LS.get('ultimaSync', 0);
 
 async function fetchConTimeout(url, opts = {}, ms = 20000) {
   const ctrl = new AbortController();
@@ -479,12 +475,31 @@ async function ghRequest(method, path, body) {
 function actualizarIndicatorSync() {
   const el = $('syncIndicator');
   if (!el) return;
-  if (!tieneSync()) { el.textContent = ''; el.style.color = ''; return; }
-  const hace = Math.floor((Date.now() - ultimaSyncExito) / 1000);
-  if (ultimaSyncExito === 0) { el.textContent = '🔄'; el.style.color = 'var(--muted)'; }
-  else if (hace < 60) { el.textContent = '✓'; el.style.color = 'var(--green)'; }
-  else if (hace < 300) { el.textContent = '✓'; el.style.color = 'var(--gold2)'; }
-  else { el.textContent = '⚠'; el.style.color = 'var(--amber)'; }
+  if (!tieneSync()) { el.textContent = '— sin sync'; el.style.color = 'var(--muted)'; return; }
+  if (syncEnProgreso) { el.textContent = '🔄 sync...'; el.style.color = 'var(--muted)'; return; }
+  if (ultimaSyncExito === 0) { el.textContent = '⚠ sin sync'; el.style.color = 'var(--amber)'; return; }
+  const seg = Math.floor((Date.now() - ultimaSyncExito) / 1000);
+  if (seg < 5) { el.textContent = '✓ ahora'; el.style.color = 'var(--green)'; }
+  else if (seg < 60) { el.textContent = `✓ hace ${seg}s`; el.style.color = 'var(--green)'; }
+  else if (seg < 300) { el.textContent = `✓ hace ${Math.floor(seg/60)}min`; el.style.color = 'var(--gold2)'; }
+  else if (seg < 3600) { el.textContent = `⚠ hace ${Math.floor(seg/60)}min`; el.style.color = 'var(--amber)'; }
+  else { el.textContent = `⚠ hace ${Math.floor(seg/3600)}h`; el.style.color = 'var(--red)'; }
+}
+
+/* ==== AUTO-SYNC ROBUSTO ==== */
+let autoSyncTimer = null;
+const AUTO_SYNC_INTERVAL = 15000; // 15 segundos
+
+function iniciarAutoSync() {
+  if (autoSyncTimer) clearInterval(autoSyncTimer);
+  autoSyncTimer = setInterval(async () => {
+    if (!tieneSync()) return;
+    if (operacionCritica || syncEnProgreso) return;
+    if (!navigator.onLine) return;
+    if (document.hidden) return; // solo cuando visible
+    await sincronizar(true);
+  }, AUTO_SYNC_INTERVAL);
+  console.log('🔄 AutoSync cada ' + (AUTO_SYNC_INTERVAL/1000) + 's');
 }
 
 function buildDatosNube() {
@@ -512,12 +527,6 @@ function mergeArreglos(local, nube, eliminadosArr) {
       const fLocal = Number(existing.fecha) || 0;
       const fNube = Number(item.fecha) || 0;
       if (fNube > fLocal) mapa.set(item.id, item);
-      else if (fNube === fLocal) {
-        // Desempate: preferir el que tenga más campos llenos
-        const cLocal = Object.values(existing).filter(v => v && v !== '').length;
-        const cNube = Object.values(item).filter(v => v && v !== '').length;
-        if (cNube > cLocal) mapa.set(item.id, item);
-      }
     }
   }
   return Array.from(mapa.values());
@@ -534,8 +543,9 @@ function mergeEliminados(local, nube) {
 async function sincronizar(silencioso = false) {
   if (operacionCritica) { if (!silencioso) toast('Operación en curso…'); return false; }
   if (!tieneSync()) { if (!silencioso) toast('Configurá sync primero (Config)'); return false; }
-  if (syncEnProgreso) { if (!silencioso) toast('Sync ya en progreso…'); return false; }
+  if (syncEnProgreso) return false;
   syncEnProgreso = true;
+  actualizarIndicatorSync();
 
   try {
     const gist = await ghRequest('GET', `/gists/${getGistId()}`);
@@ -543,18 +553,14 @@ async function sincronizar(silencioso = false) {
     let nube = { version: 1, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [] } };
     if (file) {
       const contenido = file.truncated ? await (await fetchConTimeout(file.raw_url)).text() : file.content;
-      try { nube = JSON.parse(contenido); } catch(e){ console.warn('JSON inválido en gist', e); }
+      try { nube = JSON.parse(contenido); } catch(e){ console.warn('JSON inválido', e); }
     }
 
-    // Merge eliminados primero
     eliminados = mergeEliminados(eliminados, nube.eliminados || {});
-
-    // Merge arreglos
     const notasMerge    = mergeArreglos(notas, nube.notas || [], eliminados.notas);
     const tareasMerge   = mergeArreglos(tareas, nube.tareas || [], eliminados.tareas);
     const personasMerge = mergeArreglos(personas, nube.personas || [], eliminados.personas);
 
-    // Detectar si hay cambios para hacer PATCH
     const hayCambios =
       JSON.stringify(notasMerge) !== JSON.stringify(notas) ||
       JSON.stringify(tareasMerge) !== JSON.stringify(tareas) ||
@@ -578,7 +584,6 @@ async function sincronizar(silencioso = false) {
 
     ultimaSyncExito = Date.now();
     LS.set('ultimaSync', ultimaSyncExito);
-    actualizarIndicatorSync();
     renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
     if (!silencioso) toast('✓ Sincronizado');
     return true;
@@ -588,7 +593,7 @@ async function sincronizar(silencioso = false) {
     return false;
   } finally {
     syncEnProgreso = false;
-    syncEnProgreso = false;
+    actualizarIndicatorSync();
   }
 }
 
@@ -612,6 +617,9 @@ function marcarEliminado(tipo, id) {
   LS.set('eliminados', eliminados);
 }
 
+/* Actualizar indicador cada segundo */
+setInterval(actualizarIndicatorSync, 1000);
+
 /* ========== NAV ========== */
 document.querySelectorAll('nav button').forEach(b=>{
   b.onclick = () => {
@@ -623,7 +631,8 @@ document.querySelectorAll('nav button').forEach(b=>{
     if(b.dataset.tab==='tareas') renderTareas();
     if(b.dataset.tab==='calendario') renderCalendario();
     if(b.dataset.tab==='personas') renderPersonas();
-    if(b.dataset.tab==='config') actualizarIndicatorSync();
+    // Sync al cambiar de pestaña
+    if (tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true);
   };
 });
 
@@ -808,7 +817,19 @@ setInterval(() => {
 
 txt.addEventListener('input', () => { bufferFinal = txt.value; interimActual = ''; });
 
-$('btnBorrar').onclick = () => { bufferFinal=''; interimActual=''; txt.value=''; $('traduccionBox').classList.remove('show'); toast('🧹 Borrado'); };
+/* ==== AUTOGUARDADO DEL BORRADOR ==== */
+let draftTimer = null;
+txt.addEventListener('input', () => {
+  clearTimeout(draftTimer);
+  draftTimer = setTimeout(() => {
+    const texto = txt.value.trim();
+    if (texto) LS.set('draft', { texto, fecha: Date.now() });
+    else localStorage.removeItem('jarvis_draft');
+  }, 2000);
+});
+
+/* ========== BOTONES DE ACCIÓN ========== */
+$('btnBorrar').onclick = () => { bufferFinal=''; interimActual=''; txt.value=''; $('traduccionBox').classList.remove('show'); localStorage.removeItem('jarvis_draft'); toast('🧹 Borrado'); };
 
 async function copiar(texto){
   if(!texto) return toast('Nada que copiar');
@@ -851,22 +872,18 @@ $('btnTraducir').onclick = async () => {
 };
 $('btnCopiarTraduccion').onclick = () => copiar($('traduccionTexto').textContent);
 
-/* ========== GUARDAR: detiene grabación, panel abajo derecha ========== */
+/* ========== GUARDAR ========== */
 let timerPanelGuardado = null;
 
 function guardarNotaRapida() {
   const texto = txt.value.trim();
   if (!texto) return toast('No hay texto para guardar');
-
-  // Detener grabación
   detenerTodo();
   TTS.stop();
-
   const ahora = new Date();
   const fecha = ahora.toLocaleDateString('es-CL');
   const hora = ahora.toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
   const tituloAuto = `Nota ${fecha} ${hora}`;
-
   notas.unshift({
     id: Date.now(),
     titulo: tituloAuto,
@@ -874,11 +891,8 @@ function guardarNotaRapida() {
     fecha: ahora.toISOString()
   });
   LS.set('notas', notas);
-
-  // Push a nube automático
+  localStorage.removeItem('jarvis_draft');
   pushASync(true);
-
-  // Panel
   $('pgTitulo').textContent = '✅ Guardada';
   $('panelGuardado').classList.add('show');
   clearTimeout(timerPanelGuardado);
@@ -894,6 +908,7 @@ $('pgLimpiar').onclick = () => {
   $('traduccionBox').classList.remove('show');
   $('panelGuardado').classList.remove('show');
   clearTimeout(timerPanelGuardado);
+  localStorage.removeItem('jarvis_draft');
   toast('🧹 Listo para nueva nota');
 };
 
@@ -916,6 +931,7 @@ $('btnPasar').onclick = () => {
     fecha: ahora.toISOString()
   });
   LS.set('notas', notas);
+  localStorage.removeItem('jarvis_draft');
   pushASync(true);
   bufferFinal = ''; interimActual = ''; txt.value = '';
   $('traduccionBox').classList.remove('show');
@@ -980,7 +996,7 @@ function renderBarraSeleccion(){
 $('btnCancelarSel').onclick = () => { seleccionadas.clear(); renderBarraSeleccion(); renderNotas(); };
 $('btnUnirSel').onclick = () => {
   if (seleccionadas.size < 2) return;
-  const titulo = prompt('Título de la nota unificada (obligatorio):');
+  const titulo = prompt('Título de la nota unificada:');
   if (!titulo || !titulo.trim()) return toast('❌ Título obligatorio');
   const seleccionadasNotas = notas.filter(n => seleccionadas.has(n.id));
   const textoUnido = seleccionadasNotas.map(n => `[${n.titulo}]\n${n.texto}`).join('\n\n---\n\n');
@@ -1044,7 +1060,7 @@ function concatenarCon(nota) {
   const idx = parseInt(elegido) - 1;
   if (idx < 0 || idx >= otras.length) return toast('Número inválido');
   const otra = otras[idx];
-  const titulo = prompt('Título de la nota unificada (obligatorio):');
+  const titulo = prompt('Título de la nota unificada:');
   if (!titulo || !titulo.trim()) return toast('❌ Título obligatorio');
   notas.unshift({
     id: Date.now(),
@@ -1393,7 +1409,7 @@ function bindTareas(cont){
       if(t){
         t.hecha = c.checked;
         t.completadaEn = c.checked ? new Date().toISOString() : null;
-        t.fecha = t.fecha || new Date().toISOString(); // actualizar fecha para sync
+        t.fecha = t.fecha || new Date().toISOString();
         LS.set('tareas', tareas);
         pushASync();
         renderCalendario(); renderTareas();
@@ -1610,7 +1626,8 @@ $('btnGuardarSync').onclick = async () => {
   const ok = await sincronizar(true);
   if (ok) {
     $('syncStatus').className = 'sync-status ok';
-    $('syncStatus').textContent = '✅ Configurado y sincronizado';
+    $('syncStatus').textContent = '✅ Configurado. Auto-sync cada 15s activado';
+    iniciarAutoSync(); // <-- IMPORTANTE: arrancar el intervalo
   } else {
     $('syncStatus').className = 'sync-status err';
     $('syncStatus').textContent = '❌ Error al sincronizar. Revisa el token y el ID';
@@ -1649,6 +1666,8 @@ $('btnBorrarSync').onclick = () => {
   $('syncGistId').value = '';
   $('syncStatus').className = 'sync-status';
   $('syncStatus').textContent = '';
+  if (autoSyncTimer) clearInterval(autoSyncTimer);
+  autoSyncTimer = null;
   actualizarIndicatorSync();
   toast('Config borrada');
 };
@@ -1656,33 +1675,67 @@ $('btnBorrarSync').onclick = () => {
 /* ========== RESET ========== */
 $('btnReset').onclick = () => {
   if(!confirm('¿Borrar TODOS los datos locales? (La nube NO se borra)')) return;
-  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados'].forEach(k=>localStorage.removeItem('jarvis_'+k));
+  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync'].forEach(k=>localStorage.removeItem('jarvis_'+k));
   notas = []; tareas = []; personas = []; eliminados = { notas: [], tareas: [], personas: [] };
   renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
   toast('🗑️ Todo borrado');
 };
 
+/* ========== EVENTOS GLOBALES DE SYNC ========== */
+
+// Al volver a foco
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && tieneSync() && !operacionCritica && !syncEnProgreso) {
+    sincronizar(true);
+  }
+});
+
+window.addEventListener('focus', () => {
+  if (tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true);
+});
+
+// Al recuperar conexión
+window.addEventListener('online', () => {
+  if (tieneSync() && !operacionCritica) sincronizar(true);
+});
+
+// Guardar antes de cerrar
+window.addEventListener('pagehide', () => {
+  if (tieneSync() && !operacionCritica) pushASync(true);
+});
+window.addEventListener('beforeunload', () => {
+  if (tieneSync() && !operacionCritica) pushASync(true);
+});
+
 /* ========== INIT ========== */
-ultimaSyncExito = LS.get('ultimaSync', 0);
 renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
 actualizarModoToggle();
 actualizarIndicatorSync();
 if(window.speechSynthesis){ speechSynthesis.onvoiceschanged = () => {}; }
 
-// Sync automático al abrir
-if (tieneSync()) {
-  setTimeout(() => sincronizar(true), 800);
-  // Sync periódico cada 60s
-  setInterval(() => sincronizar(true), 60000);
-}
+// Restaurar borrador al abrir
+setTimeout(() => {
+  const draft = LS.get('draft', null);
+  if (draft && draft.texto && !txt.value.trim()) {
+    const edad = Date.now() - draft.fecha;
+    if (edad < 24 * 60 * 60 * 1000) {
+      const hora = new Date(draft.fecha).toLocaleString('es-CL');
+      if (confirm(`¿Recuperar borrador del ${hora}?`)) {
+        txt.value = draft.texto;
+        bufferFinal = draft.texto;
+        toast('📝 Borrador recuperado');
+      } else {
+        localStorage.removeItem('jarvis_draft');
+      }
+    }
+  }
+}, 1500);
 
-// Sync al volver a foco
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && tieneSync() && !operacionCritica) sincronizar(true);
-});
-window.addEventListener('focus', () => {
-  if (tieneSync() && !operacionCritica) sincronizar(true);
-});
+// Si ya hay sync configurado, arrancar auto-sync INMEDIATAMENTE
+if (tieneSync()) {
+  sincronizar(true);      // sync inmediato sin delay
+  iniciarAutoSync();      // intervalo cada 15s
+}
 
 // Service Worker con auto-actualización
 if ('serviceWorker' in navigator) {
