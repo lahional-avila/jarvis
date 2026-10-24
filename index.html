@@ -206,7 +206,7 @@
         1. Entra a <b>console.groq.com/keys</b>.<br>
         2. Crea una cuenta (no pide tarjeta).<br>
         3. "Create API Key" → cópiala y pégala arriba.<br>
-        Límite gratis: ~30 peticiones/minuto y 14.400/día.
+        Modelo actual: <code>openai/gpt-oss-120b</code> (gratuito).
       </p>
     </details>
 
@@ -236,7 +236,7 @@
 
 <script>
 /* =========================================================
-   JARVIS v7 — Groq Edition
+   JARVIS v8 — Groq (modelo actualizado) + anti-duplicado móvil
    ========================================================= */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} },
@@ -292,27 +292,42 @@ async function asegurarPermisoMic(){
   }
 }
 
-/* ---------- Reconocimiento de voz (anti-duplicado) ---------- */
-function mergeTranscript(existing, newText) {
-  const clean = String(newText || '').trim();
+/* ---------- Detectar móvil ---------- */
+const ES_MOVIL = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+
+/* ---------- Anti-duplicado para Chrome Android ---------- */
+function smartAppend(existing, nuevo) {
+  const clean = String(nuevo || '').trim();
   if (!clean) return existing;
-  if (existing.endsWith(clean)) return existing;
-  if (existing.length > 0 && clean.toLowerCase().includes(existing.trim().toLowerCase())) {
-    const idx = clean.toLowerCase().lastIndexOf(existing.trim().toLowerCase());
+  if (!existing) return clean;
+
+  const exLow = existing.toLowerCase();
+  const clLow = clean.toLowerCase();
+
+  // Si el texto nuevo ya está al final de lo existente, no hacer nada
+  if (exLow.endsWith(clLow)) return existing;
+
+  // Si lo existente está contenido dentro de lo nuevo (Chrome Android envía todo acumulado)
+  if (clLow.includes(exLow) && existing.length > 0) {
+    const idx = clLow.lastIndexOf(exLow);
     if (idx !== -1) {
-      const rest = clean.slice(idx + existing.trim().length).replace(/^[\s,.;:!?]+/, '').trim();
-      if (!rest) return existing;
-      return existing + (/[.,;:!?]$/.test(existing) ? ' ' : ', ') + rest;
+      const resto = clean.slice(idx + existing.length).replace(/^[\s,.;:!?]+/, '').trim();
+      if (!resto) return existing;
+      return existing + (/[.,;:!?]$/.test(existing) ? ' ' : ', ') + resto;
     }
   }
+
+  // Buscar solapamiento parcial entre el final de "existing" y el inicio de "clean"
   const maxK = Math.min(existing.length, clean.length);
-  for (let k = maxK; k >= 3; k--) {
-    if (existing.toLowerCase().endsWith(clean.toLowerCase().slice(0, k))) {
-      const rest = clean.slice(k).replace(/^[\s,.;:!?]+/, '').trim();
-      if (!rest) return existing;
-      return existing + (/[.,;:!?]$/.test(existing) ? ' ' : ', ') + rest;
+  for (let k = maxK; k >= 4; k--) {
+    if (exLow.endsWith(clLow.slice(0, k))) {
+      const resto = clean.slice(k).replace(/^[\s,.;:!?]+/, '').trim();
+      if (!resto) return existing;
+      return existing + (/[.,;:!?]$/.test(existing) ? ' ' : ', ') + resto;
     }
   }
+
+  // Sin solapamiento → agregar con coma
   return existing + (/[.,;:!?]$/.test(existing) ? ' ' : ', ') + clean;
 }
 
@@ -340,6 +355,7 @@ function crearReconocimiento() {
 
   r.onresult = (e) => {
     ultimoResultado = Date.now();
+
     if (modo === 'manos' && !capturando) {
       let hayJarvis = false;
       for (let i = 0; i < e.results.length; i++) {
@@ -348,14 +364,24 @@ function crearReconocimiento() {
       if (!hayJarvis) return;
       capturando = true; bufferFinal = ''; toast('🖐️ Te escucho...');
     }
+
     let interim = '';
     for (let i = e.resultIndex; i < e.results.length; i++) {
       const res = e.results[i];
-      const t = res[0].transcript;
-      if (res.isFinal) {
-        bufferFinal = mergeTranscript(bufferFinal, t);
+      const alt = res[0];
+      const t = alt.transcript;
+
+      // *** FILTRO CLAVE PARA MÓVIL ***
+      // Chrome Android a veces marca resultados como finales con confidence 0.
+      // En ese caso los tratamos como intermedios, no como finales.
+      const esFinalReal = res.isFinal && !(ES_MOVIL && alt.confidence === 0);
+
+      if (esFinalReal) {
+        bufferFinal = smartAppend(bufferFinal, t);
         interimActual = '';
-      } else { interim += t; }
+      } else {
+        interim += t;
+      }
     }
     interimActual = interim;
     renderTexto();
@@ -364,10 +390,15 @@ function crearReconocimiento() {
   r.onend = () => {
     if (!escuchando) { actualizarUI(); return; }
     if (reiniciando) return;
+
+    // Al pausar, fusionar el interim con la misma lógica anti-duplicado
     if (interimActual && modo !== 'manos') {
-      bufferFinal = mergeTranscript(bufferFinal, interimActual);
+      bufferFinal = smartAppend(bufferFinal, interimActual);
       interimActual = ''; renderTexto();
-    } else if (interimActual) { interimActual = ''; renderTexto(); }
+    } else if (interimActual) {
+      interimActual = ''; renderTexto();
+    }
+
     reiniciando = true;
     setTimeout(() => {
       reiniciando = false;
@@ -545,32 +576,63 @@ $('ttsPause').onclick = () => TTS.pauseToggle(); $('ttsStop').onclick = () => TT
 $('btnProbarVoz').onclick = () => { const v = mejorVoz(); $('vozInfo').textContent = v ? `Usando: ${v.name} (${v.lang})` : 'No hay voces en español instaladas.'; TTS.play('Hola, soy Jarvis. Esta es mi voz. Puedo leer tus notas y respuestas en fragmentos largos, sin cortarme.'); };
 
 /* =========================================================
-   GROQ API (reemplaza a Gemini)
+   GROQ API — Modelo actualizado (gpt-oss-120b)
    ========================================================= */
 $('apiKey').value = LS.get('apiKey','');
 $('btnGuardarKey').onclick = () => { LS.set('apiKey', $('apiKey').value.trim()); toast('🔑 API key guardada'); };
 
-async function llamarGroq(prompt){
+// Modelos vigentes en Groq (2025-2026)
+const GROQ_MODEL_PRINCIPAL = 'openai/gpt-oss-120b';
+const GROQ_MODEL_RESPALDO  = 'llama-3.1-8b-instant';
+
+async function llamarGroqUnaVez(prompt, model) {
   const key = LS.get('apiKey','') || $('apiKey').value.trim();
   if(!key) throw new Error('Falta la API key de Groq. Ve a Config.');
-  const url = 'https://api.groq.com/openai/v1/chat/completions';
-  const body = {
-    model: 'llama-3.3-70b-versatile', // Modelo gratuito, potente y rápido
-    messages: [
-      { role: 'system', content: 'Eres JARVIS, un asistente personal práctico y directo. Respondes siempre en español.' },
-      { role: 'user', content: prompt }
-    ],
-    temperature: 0.7,
-    max_tokens: 1400
-  };
-  const res = await fetch(url, {
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-    body: JSON.stringify(body)
+    body: JSON.stringify({
+      model: model,
+      messages: [
+        { role: 'system', content: 'Eres JARVIS, un asistente personal práctico y directo. Respondes siempre en español.' },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 1400
+    })
   });
-  if(!res.ok) throw new Error('Error ' + res.status + ': ' + (await res.text()).slice(0,300));
+
+  if (!res.ok) {
+    const errTxt = await res.text();
+    // Si el error es 404 (modelo no encontrado) lanzamos un error especial para reintentar con el otro modelo
+    if (res.status === 404) {
+      const e = new Error('MODEL_NOT_FOUND');
+      e.detalle = errTxt;
+      throw e;
+    }
+    throw new Error('Error ' + res.status + ': ' + errTxt.slice(0,300));
+  }
+
   const data = await res.json();
   return (data.choices?.[0]?.message?.content || '').trim() || '(sin respuesta)';
+}
+
+async function llamarGroq(prompt) {
+  try {
+    return await llamarGroqUnaVez(prompt, GROQ_MODEL_PRINCIPAL);
+  } catch (e) {
+    // Si el modelo principal falla por 404, reintentar con el de respaldo
+    if (e.message === 'MODEL_NOT_FOUND') {
+      console.warn('Modelo principal no disponible, usando respaldo:', GROQ_MODEL_RESPALDO);
+      try {
+        return await llamarGroqUnaVez(prompt, GROQ_MODEL_RESPALDO);
+      } catch (e2) {
+        throw new Error('Ningún modelo de Groq está disponible. Revisa tu API key o los modelos en console.groq.com/docs/models');
+      }
+    }
+    throw e;
+  }
 }
 
 function mostrarIA(texto){ const out = $('aiOut'); out.textContent = texto; out.classList.add('show'); }
