@@ -28,6 +28,8 @@
   section{display:none;height:100%;overflow-y:auto;padding:14px}
   section.active{display:block}
   #tab-grabar.active{display:flex;flex-direction:column;padding:10px;overflow:hidden}
+
+  /* ===== BOTONES GENERALES ===== */
   .btn{padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--txt);font-size:.9rem;font-weight:600;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px;justify-content:center}
   .btn:active{transform:scale(.97)}
   .btn.primary{background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004;border-color:var(--gold)}
@@ -35,16 +37,45 @@
   .btn.ghost{background:transparent}
   .btn.block{width:100%;margin-top:8px}
   .btn.small{padding:6px 10px;font-size:.75rem}
-  .grabar-wrap{flex:1;min-height:0;display:flex;gap:8px}
-  #txt{flex:1;min-height:0;resize:none;font-size:1.05rem;line-height:1.65;padding:14px;border-radius:14px;background:var(--bg2);border:1px solid var(--line);color:var(--txt);font-family:inherit;outline:none}
+
+  /* ===== GRABAR: layout nuevo con acciones debajo ===== */
+  #txt{flex:1;min-height:0;resize:none;font-size:1.05rem;line-height:1.65;padding:14px;border-radius:14px;background:var(--bg2);border:1px solid var(--line);color:var(--txt);font-family:inherit;outline:none;width:100%}
   #txt:focus{border-color:var(--gold2);box-shadow:0 0 0 2px rgba(255,215,0,.15)}
-  .side-actions{flex-shrink:0;display:flex;flex-direction:column;gap:6px;width:56px}
-  .side-actions button{width:56px;height:56px;padding:0;font-size:1.3rem;border-radius:14px;border:1px solid var(--line);background:var(--panel);color:var(--txt);cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center}
-  .side-actions button:active{transform:scale(.94)}
-  .traduccion-box{flex-shrink:0;margin-top:8px;padding:12px;border-radius:12px;background:#1a1208;border:1px solid var(--gold2);font-size:.88rem;line-height:1.5;display:none}
+
+  .action-bar{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:6px;
+    padding:10px 0;
+    flex-shrink:0;
+  }
+  .action-bar button{
+    padding:10px 4px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--txt);
+    font-size:.72rem;
+    font-weight:700;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    transition:.15s;
+    line-height:1.2;
+    min-height:56px;
+  }
+  .action-bar button:active{transform:scale(.95);background:#2a1a08}
+  .action-bar button .ico{font-size:1.2rem}
+  .action-bar button .lbl{font-size:.65rem;letter-spacing:.3px;color:var(--txt)}
+
+  .traduccion-box{flex-shrink:0;margin-top:8px;padding:12px;border-radius:12px;background:#1a1208;border:1px solid var(--gold2);font-size:.88rem;line-height:1.5;display:none;max-height:40vh;overflow-y:auto}
   .traduccion-box.show{display:block}
   .traduccion-box .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.72rem;color:var(--gold);font-weight:700;letter-spacing:.5px}
-  .grabar-controls{flex-shrink:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:18px;padding:12px 0 6px}
+
+  .grabar-controls{flex-shrink:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:18px;padding:8px 0 6px}
   .fab{width:min(40vw,150px);height:min(40vw,150px);border-radius:50%;border:3px solid var(--gold2);background:radial-gradient(circle at 50% 30%,#3a2508,#1a1004);color:var(--gold);font-size:1.3rem;font-weight:700;letter-spacing:.5px;cursor:pointer;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:0 0 30px rgba(255,215,0,.35);touch-action:manipulation;user-select:none}
   .fab small{font-size:.6rem;font-weight:400;letter-spacing:1px;opacity:.8}
   .fab.rec{background:radial-gradient(circle at 50% 30%,#1e40af,#0f172a);border-color:var(--ia2);color:#dbeafe;box-shadow:0 0 45px rgba(59,130,246,.75),0 0 20px rgba(96,165,250,.5) inset;animation:pulseIA 1.1s infinite}
@@ -55,46 +86,57 @@
   .btn-guardar-grande{width:min(25vw,95px);height:min(25vw,95px);border-radius:20px;border:3px solid var(--gold2);background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004;font-size:1.4rem;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 20px rgba(255,215,0,.35);transition:.15s;user-select:none;touch-action:manipulation}
   .btn-guardar-grande small{font-size:.58rem;font-weight:700;letter-spacing:.5px}
   .btn-guardar-grande:active{transform:scale(.95)}
-  #panelGuardado{position:fixed;bottom:24px;right:20px;left:auto;transform:translateY(20px);background:rgba(58,37,8,.98);border:2px solid var(--gold2);border-radius:16px;padding:14px 16px;display:none;flex-direction:column;gap:10px;align-items:stretch;z-index:300;box-shadow:0 6px 30px rgba(255,215,0,.5);min-width:220px;max-width:280px;opacity:0;transition:.25s}
-  #panelGuardado.show{display:flex;opacity:1;transform:translateY(0)}
-  #panelGuardado .titulo{font-size:.85rem;color:var(--gold);font-weight:600;text-align:center}
-  #panelGuardado .subtitulo{font-size:.78rem;color:var(--txt);text-align:center;margin-top:-4px}
-  #panelGuardado .botones{display:flex;flex-direction:column;gap:8px;width:100%}
-  #panelGuardado .botones button{padding:12px 14px;border-radius:10px;font-size:.82rem;font-weight:600;cursor:pointer;border:1px solid var(--gold2);background:var(--panel);color:var(--txt)}
-  #panelGuardado .botones button.primary{background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004;border-color:var(--gold)}
-  .sync-section{background:var(--panel);border:1px solid var(--gold2);border-radius:12px;padding:14px;margin-top:14px}
-  .sync-section h3{margin:0 0 10px;font-size:.85rem;color:var(--gold);letter-spacing:.5px}
-  .sync-section .row{display:flex;gap:8px;margin-top:8px}
-  .sync-status{padding:8px 12px;border-radius:8px;font-size:.78rem;margin-top:8px;display:none;white-space:pre-wrap;font-family:ui-monospace,monospace}
-  .sync-status.ok{background:rgba(102,187,106,.15);color:var(--green);border:1px solid var(--green);display:block}
-  .sync-status.err{background:rgba(229,57,53,.12);color:#ff8a80;border:1px solid var(--red);display:block}
-  .sync-status.info{background:rgba(255,193,7,.12);color:var(--gold);border:1px solid var(--gold2);display:block}
-  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-  .row > *{flex:1 1 0;min-width:110px}
-  textarea,input,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);font-size:.92rem;font-family:inherit;outline:none;resize:vertical}
-  textarea:focus,input:focus,select:focus{border-color:var(--gold2);box-shadow:0 0 0 2px rgba(255,215,0,.15)}
-  label{font-size:.75rem;color:var(--muted);display:block;margin:10px 0 4px;letter-spacing:.5px}
+
+  /* ===== NOTAS ===== */
   .nota-card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold2);border-radius:10px;padding:14px;margin-bottom:10px;position:relative}
   .nota-card.sel{background:#2a1e08;border-color:var(--gold)}
   .nota-card h3{margin:0 0 8px;font-size:1rem;color:var(--gold);padding-right:30px}
   .nota-card .texto{font-size:.88rem;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto}
   .nota-card .meta{font-size:.7rem;color:var(--muted);margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
-  .nota-card .actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center}
-  .nota-card .actions button{padding:8px 10px;font-size:1rem;min-width:38px;min-height:38px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
   .nota-card .check{position:absolute;top:12px;right:12px;width:24px;height:24px;accent-color:var(--gold);cursor:pointer}
   .nota-card .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.66rem;background:#3a2508;color:var(--gold);border:1px solid var(--gold2)}
+
+  /* Grid de acciones en notas */
+  .nota-actions-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));
+    gap:6px;
+    margin-top:10px;
+  }
+  .nota-actions-grid button{
+    padding:10px 8px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--bg2);
+    color:var(--txt);
+    font-size:.75rem;
+    font-weight:600;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    transition:.15s;
+    min-height:42px;
+    line-height:1.2;
+    text-align:center;
+  }
+  .nota-actions-grid button:active{transform:scale(.96);background:#2a1a08}
+  .nota-actions-grid button.danger-btn{color:#ff8a80;border-color:#6b2020}
+
   .hl-chunk{transition:background-color .2s,color .2s,padding .2s}
   .hl-chunk.hl-activo{background-color:var(--gold2);color:#1a1004;padding:2px 5px;border-radius:4px;font-weight:700;box-shadow:0 0 8px rgba(255,193,7,.6)}
-  .nota-play-row{display:flex;gap:8px;align-items:center;margin-top:10px}
   .nota-play-btn{padding:9px 18px;border-radius:20px;border:1px solid var(--gold2);background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004;font-size:.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s;touch-action:manipulation}
   .nota-play-btn:active{transform:scale(.95)}
   .nota-play-btn.playing{background:linear-gradient(180deg,#FF5252,#B71C1C);border-color:#e53935;color:#fff;animation:pulsePlay 1.5s infinite}
   @keyframes pulsePlay{50%{box-shadow:0 0 15px rgba(229,57,53,.7)}}
+
   #barraSeleccion{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(58,37,8,.98);border:1px solid var(--gold2);border-radius:24px;padding:8px 14px;display:none;gap:8px;align-items:center;z-index:100;box-shadow:0 4px 20px rgba(255,215,0,.4)}
   #barraSeleccion.show{display:flex}
   #barraSeleccion span{font-size:.8rem;color:var(--gold);padding:0 6px}
-  #barraSeleccion button{padding:8px 12px;font-size:.82rem}
-  .analisis-panel{margin-top:12px;padding:12px;border-radius:10px;background:#1a1208;border:1px solid var(--gold2);display:none}
+
+  /* ===== ANÁLISIS PANEL ===== */
+  .analisis-panel{margin-top:12px;padding:12px;border-radius:10px;background:#1a1208;border:1px solid var(--gold2);display:none;max-height:60vh;overflow-y:auto}
   .analisis-panel.show{display:block}
   .analisis-panel h4{margin:0 0 8px;font-size:.82rem;color:var(--gold);letter-spacing:.5px}
   .analisis-panel .seccion{margin-bottom:10px}
@@ -108,6 +150,8 @@
   .analisis-panel .tarea-item .botones button{padding:5px 8px;font-size:.7rem}
   .analisis-panel .acciones-finales{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
   .analisis-panel .acciones-finales button{flex:1;min-width:90px;padding:8px;font-size:.78rem}
+
+  /* ===== CALENDARIO ===== */
   .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
   .cal-head button{width:42px;height:42px;padding:0;border-radius:10px}
   .cal-title{font-size:1rem;color:var(--gold);font-weight:600;letter-spacing:1px}
@@ -122,11 +166,14 @@
   .cal-day .dots{display:flex;gap:2px;margin-top:3px;height:5px}
   .cal-day .dot{width:5px;height:5px;border-radius:50%;background:var(--amber)}
   .cal-day .dot.done{background:var(--green)}
+
   #panelDia{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:flex-end;justify-content:center;z-index:150}
   #panelDia.show{display:flex}
   #panelDia .contenido{background:var(--panel);border-top:2px solid var(--gold2);border-radius:20px 20px 0 0;width:100%;max-width:760px;max-height:80vh;overflow-y:auto;padding:20px;padding-bottom:30px}
   #panelDia h3{margin:0 0 12px;color:var(--gold);font-size:1rem}
   #panelDia .cerrar{float:right;padding:4px 10px;font-size:.82rem}
+
+  /* ===== TAREAS ===== */
   .task-item{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:10px;background:var(--panel);border:1px solid var(--line);margin-bottom:8px}
   .task-item.done{opacity:.65;background:#0d1a0d}
   .task-item.done .t-desc{text-decoration:line-through}
@@ -138,6 +185,8 @@
   .tabs-tareas{display:flex;gap:6px;margin-bottom:12px}
   .tabs-tareas button{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--muted);cursor:pointer;font-weight:600;font-size:.78rem}
   .tabs-tareas button.activo{background:linear-gradient(180deg,#3a2508,#241600);color:var(--gold);border-color:var(--gold2)}
+
+  /* ===== PERSONAS ===== */
   .persona-card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold2);border-radius:10px;padding:12px;margin-bottom:10px;position:relative}
   .persona-card h3{margin:0 0 6px;font-size:.95rem;color:var(--gold);padding-right:60px}
   .persona-card .info{font-size:.78rem;color:var(--muted);line-height:1.5}
@@ -146,6 +195,22 @@
   .persona-card .acciones button{width:30px;height:30px;padding:0;border-radius:6px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);cursor:pointer;font-size:.82rem}
   .form-persona{background:var(--panel);border:1px solid var(--gold2);border-radius:12px;padding:14px;margin-bottom:14px;display:none}
   .form-persona.show{display:block}
+
+  /* ===== GENERAL ===== */
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .row > *{flex:1 1 0;min-width:110px}
+  textarea,input,select{width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);font-size:.92rem;font-family:inherit;outline:none;resize:vertical}
+  textarea:focus,input:focus,select:focus{border-color:var(--gold2);box-shadow:0 0 0 2px rgba(255,215,0,.15)}
+  label{font-size:.75rem;color:var(--muted);display:block;margin:10px 0 4px;letter-spacing:.5px}
+
+  .sync-section{background:var(--panel);border:1px solid var(--gold2);border-radius:12px;padding:14px;margin-top:14px}
+  .sync-section h3{margin:0 0 10px;font-size:.85rem;color:var(--gold);letter-spacing:.5px}
+  .sync-section .row{display:flex;gap:8px;margin-top:8px}
+  .sync-status{padding:8px 12px;border-radius:8px;font-size:.78rem;margin-top:8px;display:none;white-space:pre-wrap;font-family:ui-monospace,monospace}
+  .sync-status.ok{background:rgba(102,187,106,.15);color:var(--green);border:1px solid var(--green);display:block}
+  .sync-status.err{background:rgba(229,57,53,.12);color:#ff8a80;border:1px solid var(--red);display:block}
+  .sync-status.info{background:rgba(255,193,7,.12);color:var(--gold);border:1px solid var(--gold2);display:block}
+
   .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(60px);background:#3a2508;color:var(--gold);border:1px solid var(--gold2);padding:10px 18px;border-radius:20px;font-size:.85rem;opacity:0;transition:.3s;z-index:999;pointer-events:none;max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .hint{font-size:.72rem;color:var(--muted);margin-top:6px;line-height:1.4}
@@ -153,28 +218,35 @@
   .modo-toggle{display:flex;gap:8px;margin-top:6px}
   .modo-toggle button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--muted);cursor:pointer;font-weight:600;font-size:.82rem}
   .modo-toggle button.activo{background:linear-gradient(180deg,#3a2508,#241600);color:var(--gold);border-color:var(--gold2);box-shadow:0 0 10px rgba(255,215,0,.3) inset}
+
   .tts-player{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(58,37,8,.96);border:1px solid var(--gold2);border-radius:30px;padding:6px 14px;display:none;gap:6px;align-items:center;z-index:200;box-shadow:0 4px 20px rgba(255,215,0,.4)}
   .tts-player.show{display:flex}
   .tts-player button{width:42px;height:42px;border-radius:50%;border:none;background:transparent;color:var(--gold);font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .tts-player .chunk-info{font-size:.68rem;color:var(--muted);padding:0 4px;min-width:50px;text-align:center}
+
   .tags-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
   .tag{display:inline-flex;align-items:center;gap:4px;font-size:.66rem;padding:3px 9px;border-radius:11px;background:#3a2508;color:var(--gold);border:1px solid var(--gold2);font-weight:600}
   .tag.clickable{cursor:pointer}
   .tag.clickable:hover{background:#5a3a10}
   .tags-filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+
   .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:12px}
   .stat-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center}
   .stat-card .num{font-size:1.9rem;font-weight:800;color:var(--gold);line-height:1}
   .stat-card .lbl{font-size:.68rem;color:var(--muted);letter-spacing:.5px;margin-top:6px;text-transform:uppercase}
+
   .papelera-item{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:12px;margin-bottom:8px}
   .papelera-item .title{font-size:.9rem;color:var(--gold);font-weight:600;margin-bottom:4px}
   .papelera-item .body{font-size:.75rem;color:var(--muted);margin-bottom:8px}
   .papelera-item .btns{display:flex;gap:6px;flex-wrap:wrap}
   .papelera-item .btns button{padding:6px 10px;font-size:.75rem}
+
   .recur-badge{display:inline-block;font-size:.62rem;padding:1px 6px;border-radius:8px;background:#2a4a2a;color:var(--green);border:1px solid var(--green);margin-left:4px;font-weight:700}
+
   .search-input-wrap{position:relative;margin-bottom:12px}
   .search-input-wrap input{padding-left:40px;font-size:1rem;padding-top:14px;padding-bottom:14px}
   .search-input-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+
   #focusOverlay{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,#1a1208 0%,#000 90%);display:none;flex-direction:column;z-index:400;padding:30px 20px;overflow-y:auto}
   #focusOverlay.show{display:flex}
   #focusOverlay .exit{position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:1.3rem;cursor:pointer}
@@ -190,6 +262,7 @@
   #focusOverlay .tarea-foco .btns button{padding:16px;font-size:1rem;font-weight:700;border-radius:12px}
   #focusOverlay .empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:1.1rem}
   .focus-btn{background:linear-gradient(135deg,#3B82F6,#60A5FA)!important;color:#fff!important;border-color:#60A5FA!important;font-weight:700}
+
   .adjuntos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;margin-top:10px}
   .adjunto{position:relative;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#0a0806;aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer}
   .adjunto img{width:100%;height:100%;object-fit:cover;display:block}
@@ -201,15 +274,18 @@
   .adjunto .sync-badge{position:absolute;bottom:3px;right:3px;font-size:.55rem;background:rgba(59,130,246,.85);color:#fff;padding:1px 5px;border-radius:4px;font-weight:700}
   .adjuntar-btn{padding:10px;border-radius:10px;border:1px dashed var(--gold2);background:transparent;color:var(--gold);font-size:.82rem;cursor:pointer;width:100%;margin-top:8px;font-weight:600}
   .adjuntar-btn:hover{background:rgba(255,193,7,.08)}
+
   .vinculos{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
   .vinculo-chip{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;padding:4px 10px;border-radius:14px;background:rgba(59,130,246,.12);color:var(--ia2);border:1px solid var(--ia);font-weight:600;cursor:pointer}
   .vinculo-chip:hover{background:rgba(59,130,246,.25)}
+
   .relacionadas{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
   .relacionadas h4{font-size:.72rem;color:var(--muted);margin:8px 0 6px;letter-spacing:.5px;text-transform:uppercase}
   .rel-item{background:rgba(255,193,7,.06);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:4px;font-size:.82rem;cursor:pointer}
   .rel-item:hover{border-color:var(--gold2)}
   .rel-item .rel-title{color:var(--gold);font-weight:600;margin-bottom:2px}
   .rel-item .rel-fecha{font-size:.65rem;color:var(--muted)}
+
   #modalAdjuntar,#modalCompartir,#modalTraducir{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:500;padding:20px}
   #modalAdjuntar.show,#modalCompartir.show,#modalTraducir.show{display:flex}
   #modalAdjuntar .box,#modalCompartir .box,#modalTraducir .box{background:var(--panel);border:2px solid var(--gold2);border-radius:16px;padding:20px;max-width:400px;width:100%;box-shadow:0 10px 40px rgba(255,215,0,.4)}
@@ -219,11 +295,13 @@
   #modalAdjuntar .opcion .ico,#modalCompartir .opcion .ico,#modalTraducir .opcion .ico{font-size:1.6rem}
   #modalAdjuntar .cancelar,#modalCompartir .cancelar,#modalTraducir .cancelar{width:100%;margin-top:6px}
   #modalAdjuntar input[type=file]{display:none}
+
   #visorAdjunto{position:fixed;inset:0;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;z-index:600;padding:20px;flex-direction:column;gap:20px}
   #visorAdjunto.show{display:flex}
   #visorAdjunto img{max-width:95vw;max-height:80vh;border-radius:8px}
   #visorAdjunto audio{width:90vw;max-width:500px}
   #visorAdjunto .cerrar-vis{position:absolute;top:20px;right:20px;width:50px;height:50px;border-radius:50%;border:1px solid var(--gold2);background:rgba(58,37,8,.9);color:var(--gold);font-size:1.5rem;cursor:pointer}
+
   .traduccion-result{margin-bottom:8px;font-size:.9rem;line-height:1.6;color:var(--txt)}
   .traduccion-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 </style>
@@ -248,15 +326,13 @@
 
 <main>
   <section id="tab-grabar" class="active">
-    <div class="grabar-wrap">
-      <textarea id="txt" placeholder="Toca el botón de abajo y habla..."></textarea>
-      <div class="side-actions">
-        <button id="btnPasar" title="Pasar a Notas">📤</button>
-        <button id="btnPegar" title="Pegar">📥</button>
-        <button id="btnCopiar" title="Copiar">📋</button>
-        <button id="btnTraducir" title="Traducir">🌐</button>
-        <button id="btnBorrar" title="Borrar">🧹</button>
-      </div>
+    <textarea id="txt" placeholder="Toca el botón de abajo y habla..."></textarea>
+    <div class="action-bar">
+      <button id="btnPasar" title="Guardar y abrir pestaña Notas"><span class="ico">📤</span><span class="lbl">Pasar</span></button>
+      <button id="btnPegar" title="Pegar texto del portapapeles"><span class="ico">📥</span><span class="lbl">Pegar</span></button>
+      <button id="btnCopiar" title="Copiar el texto actual"><span class="ico">📋</span><span class="lbl">Copiar</span></button>
+      <button id="btnTraducir" title="Traducir a inglés o español"><span class="ico">🌐</span><span class="lbl">Traducir</span></button>
+      <button id="btnBorrar" title="Borrar todo el texto"><span class="ico">🧹</span><span class="lbl">Borrar</span></button>
     </div>
     <div class="traduccion-box" id="traduccionBox">
       <div class="head"><span id="traduccionLabel">Traducción</span><button class="btn ghost small" id="btnCerrarTrad" style="padding:3px 8px">✕</button></div>
@@ -264,7 +340,7 @@
     </div>
     <div class="grabar-controls">
       <button id="btnPTT" class="fab"><span>🎤</span><span id="fabLabel">GRABAR</span><small id="fabSub">toca para hablar</small></button>
-      <button id="btnGuardarRapido" class="btn-guardar-grande" title="Guardar nota">💾<br><small>Guardar</small></button>
+      <button id="btnGuardarRapido" class="btn-guardar-grande" title="Guardar esta nota">💾<br><small>Guardar</small></button>
     </div>
   </section>
 
@@ -330,14 +406,15 @@
       <div class="sync-status" id="syncStatus"></div>
       <div class="row"><button class="btn primary" id="btnGuardarSync">💾 Guardar</button><button class="btn" id="btnProbarSync">🧪 Probar</button></div>
       <div class="row"><button class="btn" id="btnSyncAhora" style="flex:1">🔄 Sync ahora</button><button class="btn ghost small" id="btnDiagnostico">🩺</button><button class="btn ghost small" id="btnBorrarSync">🗑️</button></div>
-      <div class="row"><button class="btn" id="btnPausarSync" style="flex:1">⏸ Pausar sync 1h</button><button class="btn" id="btnReparar" style="flex:1">🔧 Reparar</button></div>
+      <div class="row"><button class="btn" id="btnPausarSync" style="flex:1">⏸ Pausar 1h</button><button class="btn" id="btnReparar" style="flex:1">🔧 Reparar</button></div>
       <p class="hint" id="syncInfo"></p>
       <p class="hint" style="margin-top:8px;font-size:.7rem;line-height:1.5">
-        <b>ℹ️ Notas sobre rate limit:</b><br>
-        • Sync automático cada 2 min<br>
-        • Solo envía si hay cambios<br>
-        • Si GitHub bloquea (403): 30 min pausa automática<br>
-        • Mientras pausado: todo funciona local
+        <b>ℹ️ Estrategia tipo "lector" (sin rate limit):</b><br>
+        • NO hay polling automático<br>
+        • Sync solo al salir o al pulsar 🔄<br>
+        • Debounce 5s tras cada cambio<br>
+        • Pausa 30 min si GitHub limita<br>
+        • Todo funciona local mientras tanto
       </p>
     </div>
     <div class="sync-section">
@@ -370,7 +447,7 @@
 
 <script>
 /* =========================================================
-   JARVIS v24 — Sync con backoff + rate limit + reparación
+   JARVIS v25 — Botones con etiquetas + Fix analizar + Sync tipo lector
    ========================================================= */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} },
@@ -382,11 +459,7 @@ const SYNC_GIST_KEY = 'jarvis-sync-gist';
 const SYNC_FILE_KEY = 'jarvis-sync-file';
 const ELIMINADOS_TTL = 90 * 24 * 60 * 60 * 1000;
 const PAPELERA_TTL = 30 * 24 * 60 * 60 * 1000;
-
-/* ===== ESTRATEGIA SYNC v24 ===== */
-const SYNC_INTERVAL_MS = 120000;               // 2 minutos
-const SYNC_BACKOFF = [30000, 60000, 120000, 300000, 600000, 900000]; // 30s→15min
-const RATE_LIMIT_PAUSE_MS = 30 * 60 * 1000;    // 30 minutos
+const RATE_LIMIT_PAUSE_MS = 30 * 60 * 1000;
 
 function nuevoId() {
   if (crypto.randomUUID) return crypto.randomUUID();
@@ -450,10 +523,7 @@ if (!eliminados.tareas) eliminados.tareas = [];
 if (!eliminados.personas) eliminados.personas = [];
 ['notas', 'tareas', 'personas'].forEach(tipo => { eliminados[tipo] = (eliminados[tipo] || []).map(x => String(x)); });
 
-/* ===== ESTADO SYNC v24 ===== */
 let modoLocalHasta = LS.get('modoLocalHasta', 0);
-let proximaSyncPermitida = 0;
-let syncBackoffIdx = LS.get('syncBackoffIdx', 0);
 let ultimoHashSync = LS.get('ultimoHashSync', '');
 let pendingPush = LS.get('pendingPush', false);
 
@@ -472,37 +542,22 @@ function toast(msg){
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 const eqId = (a, b) => String(a) === String(b);
 
-/* ===== REPARACIÓN DE DATOS ===== */
+/* ===== REPARACIÓN ===== */
 function repararDatosLocales() {
-  let reparados = 0, huerfanos = 0;
-  // IDs duplicados
+  let reparados = 0;
   const reparar = (arr) => {
-    const vistos = new Set();
-    const limpio = [];
-    for (const item of arr) {
-      const k = String(item.id);
-      if (vistos.has(k)) { reparados++; continue; }
-      vistos.add(k);
-      limpio.push(item);
-    }
+    const vistos = new Set(); const limpio = [];
+    for (const item of arr) { const k = String(item.id); if (vistos.has(k)) { reparados++; continue; } vistos.add(k); limpio.push(item); }
     return limpio;
   };
-  const notasAntes = notas.length, tareasAntes = tareas.length, personasAntes = personas.length;
-  notas = reparar(notas);
-  tareas = reparar(tareas);
-  personas = reparar(personas);
-  // Eliminados huérfanos (los que no corresponden a nada existente y ya no importan)
-  const setNotas = new Set(notas.map(n => String(n.id)));
-  const setTareas = new Set(tareas.map(t => String(t.id)));
-  const setPersonas = new Set(personas.map(p => String(p.id)));
-  eliminados.notas = eliminados.notas.filter(id => !setNotas.has(id));
-  eliminados.tareas = eliminados.tareas.filter(id => !setTareas.has(id));
-  eliminados.personas = eliminados.personas.filter(id => !setPersonas.has(id));
+  notas = reparar(notas); tareas = reparar(tareas); personas = reparar(personas);
+  const sN = new Set(notas.map(n => String(n.id))), sT = new Set(tareas.map(t => String(t.id))), sP = new Set(personas.map(p => String(p.id)));
+  eliminados.notas = eliminados.notas.filter(id => !sN.has(id));
+  eliminados.tareas = eliminados.tareas.filter(id => !sT.has(id));
+  eliminados.personas = eliminados.personas.filter(id => !sP.has(id));
   LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
   LS.set('eliminados', eliminados);
-  const total = reparados + huerfanos;
-  if (total > 0) console.log(`Reparados: ${reparados} duplicados`);
-  return { reparados, huerfanos, notasAntes, tareasAntes, personasAntes };
+  return { reparados };
 }
 
 /* ===== DETECCIÓN IDIOMA + VOZ ===== */
@@ -518,23 +573,25 @@ function detectarIdioma(texto) {
   return en > es ? 'en' : 'es';
 }
 function mejorVozPorIdioma(idioma) {
-  const voces = speechSynthesis.getVoices();
-  if (!voces || !voces.length) return null;
-  const prefijos = { 'es': ['es-CL','es-ES','es-MX','es-AR','es-US','es-CO','es-PE','es-VE'], 'en': ['en-US','en-GB','en-AU','en-CA','en-IN','en-NZ','en-ZA','en-IE'] };
-  const langs = prefijos[idioma] || [idioma];
-  const filtradas = voces.filter(v => v.lang.toLowerCase().startsWith(idioma.toLowerCase()));
-  if (!filtradas.length) return null;
-  for (const lang of langs) { const l = filtradas.find(v => v.lang === lang && v.localService && /neural|enhanced|premium|siri|google/i.test(v.name)); if (l) return l; }
-  for (const lang of langs) { const l = filtradas.find(v => v.lang === lang && v.localService); if (l) return l; }
-  for (const lang of langs) { const v = filtradas.find(v => v.lang === lang); if (v) return v; }
-  return filtradas[0];
+  try {
+    const voces = speechSynthesis.getVoices();
+    if (!voces || !voces.length) return null;
+    const prefijos = { 'es': ['es-CL','es-ES','es-MX','es-AR','es-US','es-CO','es-PE','es-VE'], 'en': ['en-US','en-GB','en-AU','en-CA','en-IN','en-NZ','en-ZA','en-IE'] };
+    const langs = prefijos[idioma] || [idioma];
+    const filtradas = voces.filter(v => v.lang.toLowerCase().startsWith(idioma.toLowerCase()));
+    if (!filtradas.length) return null;
+    for (const lang of langs) { const l = filtradas.find(v => v.lang === lang && v.localService && /neural|enhanced|premium|siri|google/i.test(v.name)); if (l) return l; }
+    for (const lang of langs) { const l = filtradas.find(v => v.lang === lang && v.localService); if (l) return l; }
+    for (const lang of langs) { const v = filtradas.find(v => v.lang === lang); if (v) return v; }
+    return filtradas[0];
+  } catch(e) { console.warn('Voz error:', e); return null; }
 }
 
-/* ===== TTS ===== */
+/* ===== TTS CON FALLBACK ===== */
 const TTS = {
   chunks: [], i: 0, activo: false, pausado: false, idioma: 'es', notaIdActual: null, gen: 0,
   dividirPalabras(texto, maxLen = 180) {
-    const palabras = String(texto).replace(/\s+/g, ' ').trim().split(' ');
+    const palabras = String(texto||'').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean);
     const chunks = []; let buf = []; let len = 0;
     for (const p of palabras) {
       if (len + p.length + 1 > maxLen && buf.length) { chunks.push(buf.join(' ')); buf = [p]; len = p.length; }
@@ -544,62 +601,76 @@ const TTS = {
     return chunks;
   },
   play(texto, idioma, notaId) {
-    this.stop(); this.gen++;
-    const gen = this.gen;
-    this.idioma = idioma || detectarIdioma(texto);
-    this.notaIdActual = notaId || null;
-    this.chunks = this.dividirPalabras(texto);
-    if (!this.chunks.length) return;
-    this.i = 0; this.activo = true; this.pausado = false;
-    if (notaId) this._prepHL(notaId);
-    $('ttsPlayer').classList.add('show');
-    this._info(); this._next(gen);
+    try {
+      this.stop(); this.gen++;
+      const gen = this.gen;
+      this.idioma = idioma || detectarIdioma(texto);
+      this.notaIdActual = notaId || null;
+      this.chunks = this.dividirPalabras(texto);
+      if (!this.chunks.length) { toast('Texto vacío'); return; }
+      if (!('speechSynthesis' in window)) { toast('⚠️ Sin TTS en este navegador'); return; }
+      this.i = 0; this.activo = true; this.pausado = false;
+      if (notaId) this._prepHL(notaId);
+      $('ttsPlayer').classList.add('show');
+      this._info(); this._next(gen);
+    } catch(e) { console.error('TTS.play error:', e); toast('❌ Error TTS'); }
   },
   _prepHL(notaId) {
-    const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
-    if (!card) return;
-    const t = card.querySelector('.texto'); if (!t) return;
-    if (t.querySelector('.hl-chunk')) return;
-    t.dataset.orig = t.textContent;
-    t.innerHTML = this.chunks.map((c, i) => `<span class="hl-chunk" data-hl="${i}">${escapeHtml(c)}</span> `).join('');
+    try {
+      const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
+      if (!card) return;
+      const t = card.querySelector('.texto'); if (!t) return;
+      if (t.querySelector('.hl-chunk')) return;
+      t.dataset.orig = t.textContent;
+      t.innerHTML = this.chunks.map((c, i) => `<span class="hl-chunk" data-hl="${i}">${escapeHtml(c)}</span> `).join('');
+    } catch(e) { console.warn('HL prep:', e); }
   },
   _cleanHL(notaId) {
     if (!notaId) return;
-    const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
-    if (!card) return;
-    const t = card.querySelector('.texto'); if (!t) return;
-    if (t.dataset.orig) { t.textContent = t.dataset.orig; delete t.dataset.orig; }
+    try {
+      const card = document.querySelector(`.nota-card[data-id="${notaId}"]`);
+      if (!card) return;
+      const t = card.querySelector('.texto'); if (!t) return;
+      if (t.dataset.orig) { t.textContent = t.dataset.orig; delete t.dataset.orig; }
+    } catch(e) {}
   },
   _info() { if ($('ttsInfo')) $('ttsInfo').textContent = (this.i + 1) + '/' + this.chunks.length; },
   _next(gen) {
-    if (gen !== undefined && gen !== this.gen) return;
-    if (!this.activo || this.i >= this.chunks.length) { this._finish(); return; }
-    if (this.notaIdActual) {
-      const card = document.querySelector(`.nota-card[data-id="${this.notaIdActual}"]`);
-      if (card) {
-        const t = card.querySelector('.texto');
-        if (t) {
-          t.querySelectorAll('.hl-chunk').forEach(s => s.classList.remove('hl-activo'));
-          const span = t.querySelector(`.hl-chunk[data-hl="${this.i}"]`);
-          if (span) { span.classList.add('hl-activo'); span.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+    try {
+      if (gen !== undefined && gen !== this.gen) return;
+      if (!this.activo || this.i >= this.chunks.length) { this._finish(); return; }
+      if (this.notaIdActual) {
+        const card = document.querySelector(`.nota-card[data-id="${this.notaIdActual}"]`);
+        if (card) {
+          const t = card.querySelector('.texto');
+          if (t) {
+            t.querySelectorAll('.hl-chunk').forEach(s => s.classList.remove('hl-activo'));
+            const span = t.querySelector(`.hl-chunk[data-hl="${this.i}"]`);
+            if (span) { span.classList.add('hl-activo'); span.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+          }
         }
       }
-    }
-    const u = new SpeechSynthesisUtterance(this.chunks[this.i]);
-    u.lang = this.idioma === 'en' ? 'en-US' : 'es-CL';
-    u.rate = 1.05;
-    const v = mejorVozPorIdioma(this.idioma);
-    if (v) u.voice = v;
-    u.onend = () => { if (gen !== this.gen || !this.activo) return; this.i++; this._info(); this._next(gen); };
-    u.onerror = (e) => { if (gen !== this.gen || !this.activo) return; if (e.error === 'interrupted' || e.error === 'canceled') return; this.i++; this._info(); this._next(gen); };
-    try { speechSynthesis.speak(u); } catch(e) { this._finish(); }
-    this._info();
+      const u = new SpeechSynthesisUtterance(this.chunks[this.i]);
+      u.lang = this.idioma === 'en' ? 'en-US' : 'es-CL';
+      u.rate = 1.05;
+      const v = mejorVozPorIdioma(this.idioma);
+      if (v) u.voice = v;
+      u.onend = () => { if (gen !== this.gen || !this.activo) return; this.i++; this._info(); this._next(gen); };
+      u.onerror = (e) => {
+        console.warn('TTS utterance error:', e);
+        if (gen !== this.gen || !this.activo) return;
+        if (e.error === 'interrupted' || e.error === 'canceled') return;
+        this.i++; this._info(); this._next(gen);
+      };
+      speechSynthesis.speak(u);
+      this._info();
+    } catch(e) { console.error('TTS._next error:', e); this._finish(); }
   },
   _finish() {
     this.activo = false; this.pausado = false;
     $('ttsPlayer').classList.remove('show');
     if (this.notaIdActual) { this._cleanHL(this.notaIdActual); this.notaIdActual = null; }
-    document.querySelectorAll('.nota-play-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML = '▶ Escuchar'; });
+    document.querySelectorAll('.nota-play-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML = '▶ Escuchar nota'; });
   },
   stop() { this.gen++; try { speechSynthesis.cancel(); } catch(e){} this._finish(); },
   pauseToggle() { if (speechSynthesis.paused) { speechSynthesis.resume(); this.pausado = false; } else if (speechSynthesis.speaking) { speechSynthesis.pause(); this.pausado = true; } },
@@ -634,7 +705,9 @@ async function dataURLABlob(dataURL) { return await (await fetch(dataURL)).blob(
 
 const FERIADOS_CHILE = { '2025-01-01':'Año Nuevo','2025-04-18':'Viernes Santo','2025-04-19':'Sábado Santo','2025-05-01':'Día del Trabajo','2025-05-21':'Glorias Navales','2025-06-20':'Pueblos Indígenas','2025-06-29':'San Pedro y San Pablo','2025-07-16':'Virgen del Carmen','2025-08-15':'Asunción','2025-09-18':'Independencia','2025-09-19':'Glorias del Ejército','2025-10-12':'Encuentro Dos Mundos','2025-10-31':'Iglesias Evangélicas','2025-11-01':'Todos los Santos','2025-12-08':'Inmaculada Concepción','2025-12-25':'Navidad','2026-01-01':'Año Nuevo','2026-04-03':'Viernes Santo','2026-04-04':'Sábado Santo','2026-05-01':'Día del Trabajo','2026-05-21':'Glorias Navales','2026-06-21':'Pueblos Indígenas','2026-06-29':'San Pedro y San Pablo','2026-07-16':'Virgen del Carmen','2026-08-15':'Asunción','2026-09-18':'Independencia','2026-09-19':'Glorias del Ejército','2026-10-12':'Encuentro Dos Mundos','2026-10-31':'Iglesias Evangélicas','2026-11-01':'Todos los Santos','2026-12-08':'Inmaculada Concepción','2026-12-25':'Navidad' };
 
-/* ===== SYNC ===== */
+/* =========================================================
+   SYNC ESTRATEGIA TIPO LECTOR (sin polling)
+   ========================================================= */
 function getToken(){ return localStorage.getItem(SYNC_TOKEN_KEY) || ''; }
 function getGistId(){ return localStorage.getItem(SYNC_GIST_KEY) || ''; }
 function getNombreArchivo(){ return localStorage.getItem(SYNC_FILE_KEY) || ''; }
@@ -647,10 +720,6 @@ async function fetchConTimeout(url, opts = {}, ms = 25000) {
   const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), ms);
   try { const r = await fetch(url, { ...opts, signal: ctrl.signal }); clearTimeout(t); return r; }
   catch (e) { clearTimeout(t); throw e; }
-}
-
-function esRateLimit(res, errText) {
-  return res && res.status === 403 && /rate limit/i.test(errText || '');
 }
 
 async function ghRequest(method, path, body) {
@@ -672,12 +741,11 @@ async function ghRequest(method, path, body) {
     errText = await res.text().catch(() => '');
     let msg = `HTTP ${res.status}`;
     try { const err = JSON.parse(errText); msg = err.message || msg; } catch(e){}
-    if (esRateLimit(res, errText)) {
-      // Activar modo local automático 30 min
+    if (res.status === 403 && /rate limit/i.test(errText)) {
       modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS;
       LS.set('modoLocalHasta', modoLocalHasta);
       actualizarIndicatorSync();
-      throw new Error('⏸ GitHub rate limit. Modo local por 30 min');
+      throw new Error('⏸ GitHub rate limit. Modo local 30 min');
     }
     if (res.status === 401) msg = 'Token inválido';
     if (res.status === 403) msg = 'Token sin scope "gist"';
@@ -709,10 +777,6 @@ function actualizarIndicatorSync() {
     return;
   }
   if (syncEnProgreso) { el.textContent = '🔄 sync...'; el.style.color = 'var(--muted)'; return; }
-  if (proximaSyncPermitida > Date.now()) {
-    const sec = Math.ceil((proximaSyncPermitida - Date.now()) / 1000);
-    el.textContent = `⏳ espera ${sec}s`; el.style.color = 'var(--amber)'; return;
-  }
   if (pendingPush) { el.textContent = '📤 pendiente'; el.style.color = 'var(--gold2)'; return; }
   if (ultimaSyncExito === 0) { el.textContent = '⚠ sin sync'; el.style.color = 'var(--amber)'; return; }
   const seg = Math.floor((Date.now() - ultimaSyncExito) / 1000);
@@ -722,34 +786,25 @@ function actualizarIndicatorSync() {
   else { el.textContent = `⚠ hace ${Math.floor(seg/60)}min`; el.style.color = 'var(--amber)'; }
 }
 
-/* HASH estable para saber si hay cambios reales */
 function hashDatos() {
   const ordenar = (arr) => [...arr].map(x => ({ id: String(x.id), t: x.titulo || x.descripcion || x.nombre || '', f: x.fecha || 0 })).sort((a,b) => a.id.localeCompare(b.id));
-  const datos = {
-    notas: ordenar(notas),
-    tareas: ordenar(tareas),
-    personas: ordenar(personas),
-    elim: {
-      notas: [...eliminados.notas].sort(),
-      tareas: [...eliminados.tareas].sort(),
-      personas: [...eliminados.personas].sort()
-    }
-  };
-  return JSON.stringify(datos);
+  return JSON.stringify({
+    n: ordenar(notas), t: ordenar(tareas), p: ordenar(personas),
+    e: { n: [...eliminados.notas].sort(), t: [...eliminados.tareas].sort(), p: [...eliminados.personas].sort() }
+  });
 }
 
-let autoSyncTimer = null;
-function iniciarAutoSync() {
-  if (autoSyncTimer) clearInterval(autoSyncTimer);
-  autoSyncTimer = setInterval(async () => {
-    if (!tieneSync() || operacionCritica || syncEnProgreso) return;
-    if (!navigator.onLine || document.hidden) return;
-    if (modoLocalHasta > Date.now()) return;
-    if (Date.now() < proximaSyncPermitida) return;
-    const h = hashDatos();
-    if (h === ultimoHashSync && !pendingPush) return;  // Sin cambios, no sincronizar
-    await sincronizar(true);
-  }, SYNC_INTERVAL_MS);
+/* ===== SYNC DEBOUNCED (patrón lector.html) ===== */
+let syncDebounceTimer = null;
+function syncDebounced() {
+  if (!tieneSync() || operacionCritica) return;
+  pendingPush = true; LS.set('pendingPush', true);
+  actualizarIndicatorSync();
+  if (modoLocalHasta > Date.now()) return;
+  clearTimeout(syncDebounceTimer);
+  syncDebounceTimer = setTimeout(() => {
+    sincronizar(true);
+  }, 5000);  /* 5s de debounce */
 }
 
 function buildDatosNube() {
@@ -809,11 +864,10 @@ async function sincronizar(silencioso = false) {
   if (!tieneSync()) { if (!silencioso) toast('Configurá sync'); return false; }
   if (syncEnProgreso) return false;
   if (modoLocalHasta > Date.now()) { if (!silencioso) toast('⏸ Modo local activo'); return false; }
-  if (Date.now() < proximaSyncPermitida) return false;
   syncEnProgreso = true; actualizarIndicatorSync();
   try {
     const nombreArchivo = await detectarNombreArchivo();
-    if (!nombreArchivo) throw new Error('No se encontró archivo en Gist');
+    if (!nombreArchivo) throw new Error('No se encontró archivo');
     const gist = await ghRequest('GET', `/gists/${getGistId()}`);
     const file = gist.files && gist.files[nombreArchivo];
     let nube = { version: 2, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
@@ -825,21 +879,16 @@ async function sincronizar(silencioso = false) {
     if (!nube.eliminados._ts) nube.eliminados._ts = {};
     if (!nube.papelera) nube.papelera = [];
 
-    /* 1. Unir eliminados */
     eliminados = mergeEliminados(eliminados, nube.eliminados);
-
-    /* 2. Purgar de nube los eliminados (evita revivir) */
     nube.notas = (nube.notas || []).filter(n => !eliminados.notas.some(e => eqId(e, n.id)));
     nube.tareas = (nube.tareas || []).filter(t => !eliminados.tareas.some(e => eqId(e, t.id)));
     nube.personas = (nube.personas || []).filter(p => !eliminados.personas.some(e => eqId(e, p.id)));
 
-    /* 3. Merge papelera */
     const pMap = new Map();
     for (const p of papelera) pMap.set(p.tipo + '-' + String(p.item.id), p);
     for (const p of nube.papelera) { const k = p.tipo + '-' + String(p.item.id); if (!pMap.has(k)) pMap.set(k, p); }
     papelera = Array.from(pMap.values());
 
-    /* 4. Merge datos */
     notas = mergeArreglos(notas, nube.notas, eliminados.notas).filter(n => !eliminados.notas.some(e => eqId(e, n.id)));
     tareas = mergeArreglos(tareas, nube.tareas, eliminados.tareas).filter(t => !eliminados.tareas.some(e => eqId(e, t.id)));
     personas = mergeArreglos(personas, nube.personas, eliminados.personas).filter(p => !eliminados.personas.some(e => eqId(e, p.id)));
@@ -847,65 +896,28 @@ async function sincronizar(silencioso = false) {
     LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
     LS.set('eliminados', eliminados); LS.set('papelera', papelera);
 
-    /* 5. Solo PATCH si hay cambios reales */
     const hashActual = hashDatos();
-    const hayCambios = hashActual !== ultimoHashSync || pendingPush;
-    if (hayCambios) {
+    if (hashActual !== ultimoHashSync || pendingPush) {
       const contenidoStr = JSON.stringify(buildDatosNube(), null, 2);
       const tamañoKB = Math.round(new Blob([contenidoStr]).size / 1024);
       await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { [nombreArchivo]: { content: contenidoStr } } });
-      ultimoHashSync = hashActual;
-      LS.set('ultimoHashSync', ultimoHashSync);
-      pendingPush = false;
-      LS.set('pendingPush', false);
-      if (!silencioso) toast(`✓ Sincronizado (${tamañoKB}KB)`);
-      const info = $('syncInfo'); if (info) info.textContent = `Última sync: ${tamañoKB}KB`;
-    } else if (!silencioso) {
-      toast('✓ Sin cambios');
-    }
+      ultimoHashSync = hashActual; LS.set('ultimoHashSync', ultimoHashSync);
+      pendingPush = false; LS.set('pendingPush', false);
+      if (!silencioso) toast(`✓ Sync (${tamañoKB}KB)`);
+      const info = $('syncInfo'); if (info) info.textContent = `Última: ${tamañoKB}KB`;
+    } else if (!silencioso) toast('✓ Sin cambios');
 
-    /* 6. Éxito: reset backoff */
-    syncBackoffIdx = 0;
-    LS.set('syncBackoffIdx', 0);
-    proximaSyncPermitida = 0;
     if (Math.random() < 0.1) purgarEliminadosViejos();
     ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito);
     renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
     return true;
   } catch (e) {
     console.error('Sync:', e);
-    if (/rate limit/i.test(e.message)) {
-      toast('⏸ Rate limit. Modo local 30 min');
-    } else {
-      syncBackoffIdx = Math.min(syncBackoffIdx + 1, SYNC_BACKOFF.length - 1);
-      LS.set('syncBackoffIdx', syncBackoffIdx);
-      const espera = SYNC_BACKOFF[syncBackoffIdx];
-      proximaSyncPermitida = Date.now() + espera;
-      if (!silencioso) toast(`❌ ${e.message} (reintento en ${Math.round(espera/1000)}s)`);
-    }
+    if (/rate limit/i.test(e.message)) toast('⏸ Rate limit. Modo local 30 min');
+    else if (!silencioso) toast(`❌ ${e.message}`);
     return false;
   } finally {
     syncEnProgreso = false; actualizarIndicatorSync();
-  }
-}
-
-async function pushASync(silencioso = true) {
-  if (!tieneSync() || operacionCritica) return;
-  if (modoLocalHasta > Date.now()) { pendingPush = true; LS.set('pendingPush', true); actualizarIndicatorSync(); return; }
-  if (Date.now() < proximaSyncPermitida) { pendingPush = true; LS.set('pendingPush', true); actualizarIndicatorSync(); return; }
-  try {
-    const nombreArchivo = getNombreArchivo() || await detectarNombreArchivo() || 'jarvis.json';
-    const contenidoStr = JSON.stringify(buildDatosNube(), null, 2);
-    await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { [nombreArchivo]: { content: contenidoStr } } });
-    ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito);
-    ultimoHashSync = hashDatos(); LS.set('ultimoHashSync', ultimoHashSync);
-    pendingPush = false; LS.set('pendingPush', false);
-    syncBackoffIdx = 0; proximaSyncPermitida = 0;
-    actualizarIndicatorSync();
-  } catch (e) {
-    pendingPush = true; LS.set('pendingPush', true);
-    if (!silencioso) toast('⚠ Sync pendiente: ' + e.message);
-    actualizarIndicatorSync();
   }
 }
 
@@ -928,7 +940,7 @@ async function diagnostico() {
     const gistId = $('syncGistId').value.trim() || getGistId();
     if (!token || !gistId) throw new Error('Falta token o Gist ID');
     log += `🔑 Token: ${token.slice(0, 8)}...\n📋 Gist: ${gistId}\n`;
-    if (modoLocalHasta > Date.now()) log += `⏸ MODO LOCAL activo por ${Math.ceil((modoLocalHasta-Date.now())/60000)}min\n`;
+    if (modoLocalHasta > Date.now()) log += `⏸ MODO LOCAL por ${Math.ceil((modoLocalHasta-Date.now())/60000)}min\n`;
     log += `\n[1] Usuario...\n`;
     const uRes = await fetch('https://api.github.com/user', { headers: { 'Authorization': `Bearer ${token}` } });
     if (!uRes.ok) {
@@ -944,11 +956,8 @@ async function diagnostico() {
     const pRes = await fetch(`https://api.github.com/gists/${gistId}`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' }, body: JSON.stringify({ files: { [files[0] || 'jarvis.json']: { content: g.files?.[files[0]]?.content || '{}' } } }) });
     if (!pRes.ok) {
       const t = await pRes.text();
-      if (/rate limit/i.test(t)) {
-        modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS;
-        LS.set('modoLocalHasta', modoLocalHasta);
-        log += `❌ RATE LIMIT — modo local activado 30min\n`;
-      } else log += `❌ PATCH HTTP ${pRes.status}\n`;
+      if (/rate limit/i.test(t)) { modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta); log += `❌ RATE LIMIT — modo local 30min\n`; }
+      else log += `❌ PATCH HTTP ${pRes.status}\n`;
     } else log += `✅ PATCH OK\n`;
     st.className = 'sync-status ok'; st.textContent = log;
   } catch(e) { st.className = 'sync-status err'; st.textContent = log + `\n❌ ${e.message}`; }
@@ -976,7 +985,7 @@ function restaurarDePapelera(idx) {
   if (p.tipo === 'tareas') tareas.unshift(p.item);
   if (p.tipo === 'personas') personas.unshift(p.item);
   LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
-  pushASync();
+  syncDebounced();
   renderPapelera(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario();
   toast('♻️ Restaurado');
 }
@@ -985,7 +994,7 @@ async function eliminarDefinitivo(idx) {
   if (!confirm('¿Eliminar definitivamente?')) return;
   try { if (p.item && p.item.adjuntos) { for (const a of p.item.adjuntos) { try { await idbDelete(a.id); } catch(e){} } } } catch(e){}
   papelera.splice(idx, 1); LS.set('papelera', papelera);
-  pushASync(); renderPapelera(); toast('🗑️ Eliminado');
+  syncDebounced(); renderPapelera(); toast('🗑️ Eliminado');
 }
 function renderPapelera() {
   const cont = $('listaPapelera'); if (!cont) return;
@@ -1024,7 +1033,7 @@ async function importarJSON(file) {
     LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
     LS.set('eliminados', eliminados); LS.set('papelera', papelera);
     ultimoHashSync = ''; pendingPush = true; LS.set('pendingPush', true);
-    pushASync();
+    syncDebounced();
     renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderPapelera();
     toast('📤 Importado');
   } catch(e) { toast('❌ ' + e.message); }
@@ -1072,16 +1081,16 @@ function renderTagsFilter() {
   build(r.tareas, tagFiltroTareas, $('tagsFilterTareas'));
 }
 function editarTagsNota(nota) {
-  const n = prompt('Etiquetas (coma):', (nota.tags||[]).join(', '));
+  const n = prompt('Etiquetas (coma). Ej: trabajo, urgente, reunión:', (nota.tags||[]).join(', '));
   if (n === null) return;
   nota.tags = parseTags(n); nota.fecha = new Date().toISOString();
-  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas(); renderTagsFilter(); toast('🏷️ Actualizado');
+  LS.set('notas', notas); syncDebounced(); renderNotas(); renderTagsFilter(); toast('🏷️ Actualizado');
 }
 function editarTagsTarea(t) {
-  const n = prompt('Etiquetas (coma):', (t.tags||[]).join(', '));
+  const n = prompt('Etiquetas (coma). Ej: trabajo, urgente:', (t.tags||[]).join(', '));
   if (n === null) return;
   t.tags = parseTags(n); t.fecha = t.fecha || new Date().toISOString();
-  LS.set('tareas', tareas); pendingPush = true; pushASync(); renderTareas(); renderTagsFilter(); toast('🏷️ Actualizado');
+  LS.set('tareas', tareas); syncDebounced(); renderTareas(); renderTagsFilter(); toast('🏷️ Actualizado');
 }
 function proximaFecha(fechaStr, rec) {
   if (!fechaStr) return '';
@@ -1219,7 +1228,7 @@ function renderFocus() {
     tr.hecha = true; tr.completadaEn = new Date().toISOString();
     tr.fecha = tr.fecha || new Date().toISOString();
     if (tr.recurrencia && tr.fecha) tareas.unshift({ ...tr, id: nuevoId(), fecha: proximaFecha(tr.fecha, tr.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
-    LS.set('tareas', tareas); pendingPush = true; pushASync();
+    LS.set('tareas', tareas); syncDebounced();
     focusLista = focusLista.filter(x => !eqId(x.id, t.id));
     renderTareas(); renderCalendario(); toast('✅ Completada');
     if (focusIdx >= focusLista.length) focusIdx = Math.max(0, focusLista.length - 1);
@@ -1249,17 +1258,13 @@ $('adjInput').onchange = async (e) => {
   else if (file.type.startsWith('audio/')) tipo = 'audio';
   let thumbBase64 = null, blobFull = file;
   if (tipo === 'image') {
-    try {
-      blobFull = await comprimirImagen(file, 1600, 0.85);
-      const thumb = await comprimirImagen(file, 320, 0.65);
-      thumbBase64 = await blobADataURL(thumb);
-    } catch(err) { blobFull = file; }
+    try { blobFull = await comprimirImagen(file, 1600, 0.85); const thumb = await comprimirImagen(file, 320, 0.65); thumbBase64 = await blobADataURL(thumb); } catch(err) { blobFull = file; }
   } else if (file.size < 500 * 1024) { try { thumbBase64 = await blobADataURL(file); } catch(e){} }
   try { await idbPut(adjId, blobFull); } catch(err) { return toast('❌ Error'); }
   nota.adjuntos = nota.adjuntos || [];
   nota.adjuntos.push({ id: adjId, tipo, nombre: file.name, size: blobFull.size, mime: blobFull.type || file.type, thumb: thumbBase64 });
   nota.fecha = new Date().toISOString();
-  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas();
+  LS.set('notas', notas); syncDebounced(); renderNotas();
   toast(`📎 ${thumbBase64 ? 'Sincronizado' : 'Local'}`);
 };
 async function renderAdjuntosHTML(nota) {
@@ -1299,7 +1304,7 @@ async function eliminarAdjunto(notaId, adjId) {
   nota.adjuntos = (nota.adjuntos||[]).filter(a => a.id !== adjId);
   nota.fecha = new Date().toISOString();
   try { await idbDelete(adjId); } catch(e){}
-  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas();
+  LS.set('notas', notas); syncDebounced(); renderNotas();
   toast('🗑️ Eliminado');
 }
 
@@ -1307,7 +1312,7 @@ async function eliminarAdjunto(notaId, adjId) {
 function abrirModalCompartir(notaId) {
   const nota = notas.find(n => eqId(n.id, notaId)); if (!nota) return;
   const cont = $('compartirOpciones');
-  cont.innerHTML = `<div class="opcion" data-comp="share"><span class="ico">📱</span> Compartir</div><div class="opcion" data-comp="email"><span class="ico">📧</span> Correo</div><div class="opcion" data-comp="whatsapp"><span class="ico">💬</span> WhatsApp</div><div class="opcion" data-comp="copiar"><span class="ico">📋</span> Copiar</div>`;
+  cont.innerHTML = `<div class="opcion" data-comp="share"><span class="ico">📱</span> Compartir</div><div class="opcion" data-comp="email"><span class="ico">📧</span> Correo</div><div class="opcion" data-comp="whatsapp"><span class="ico">💬</span> WhatsApp</div><div class="opcion" data-comp="copiar"><span class="ico">📋</span> Copiar texto</div>`;
   cont.querySelectorAll('[data-comp]').forEach(b => { b.onclick = async () => { $('modalCompartir').classList.remove('show'); await compartirNota(nota, b.dataset.comp); }; });
   $('modalCompartir').classList.add('show');
 }
@@ -1406,7 +1411,7 @@ const modales = ['modalAdjuntar','modalCompartir','modalTraducir','visorAdjunto'
 document.addEventListener('touchstart', (e) => {
   if (modales.some(id => $(id)?.classList.contains('show'))) return;
   if (e.target.closest('textarea') || e.target.closest('input') || e.target.closest('select')) return;
-  if (e.target.closest('nav') || e.target.closest('.tabs-tareas') || e.target.closest('.tags-filter') || e.target.closest('.adjuntos-grid') || e.target.closest('.cal-grid')) return;
+  if (e.target.closest('nav') || e.target.closest('.tabs-tareas') || e.target.closest('.tags-filter') || e.target.closest('.adjuntos-grid') || e.target.closest('.cal-grid') || e.target.closest('.nota-actions-grid') || e.target.closest('.action-bar')) return;
   touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; touchStartTime = Date.now();
 }, { passive: true });
 document.addEventListener('touchend', (e) => {
@@ -1425,7 +1430,7 @@ document.addEventListener('touchend', (e) => {
   }
 }, { passive: true });
 
-/* ===== VOZ (GRABAR) ===== */
+/* ===== VOZ ===== */
 let permisoPrimed = false;
 async function asegurarPermisoMic(){
   if(permisoPrimed) return true;
@@ -1560,7 +1565,7 @@ txt.addEventListener('input', () => { bufferFinal = txt.value; interimActual = '
 let draftTimer = null;
 txt.addEventListener('input', () => { clearTimeout(draftTimer); draftTimer = setTimeout(() => { const t = txt.value.trim(); if (t) LS.set('draft', { texto: t, fecha: Date.now() }); else localStorage.removeItem('jarvis_draft'); }, 2000); });
 
-/* ===== ACCIONES ===== */
+/* ===== ACCIONES GRABAR ===== */
 $('btnBorrar').onclick = () => { bufferFinal=''; interimActual=''; txt.value=''; $('traduccionBox').classList.remove('show'); localStorage.removeItem('jarvis_draft'); toast('🧹 Borrado'); };
 async function copiar(texto){
   if(!texto) return toast('Nada que copiar');
@@ -1585,7 +1590,7 @@ function guardarNotaRapida() {
   notas.unshift(nueva);
   LS.set('notas', notas);
   localStorage.removeItem('jarvis_draft');
-  pendingPush = true; pushASync(true);
+  syncDebounced();
   $('pgTitulo').textContent = '✅ Guardada';
   $('panelGuardado').classList.add('show');
   clearTimeout(timerPanelGuardado);
@@ -1605,7 +1610,7 @@ $('btnPasar').onclick = () => {
   notas.unshift(nueva);
   LS.set('notas', notas);
   localStorage.removeItem('jarvis_draft');
-  pendingPush = true; pushASync(true);
+  syncDebounced();
   bufferFinal = ''; interimActual = ''; txt.value = '';
   $('traduccionBox').classList.remove('show');
   toast('📤 Abriendo Notas...');
@@ -1636,24 +1641,26 @@ async function renderNotas(){
       <input type="checkbox" class="check" data-check="${n.id}" ${sel?'checked':''}>
       <h3>${escapeHtml(n.titulo)}</h3>
       <div class="texto" data-texto-nota="${n.id}">${textoHtml}</div>
-      <div class="nota-play-row"><button class="nota-play-btn ${estaLeyendo ? 'playing' : ''}" data-play-nota="${n.id}">${estaLeyendo ? '⏹ Detener' : '▶ Escuchar nota'}</button></div>
+      <div class="nota-play-row" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="nota-play-btn ${estaLeyendo ? 'playing' : ''}" data-play-nota="${n.id}" title="${estaLeyendo ? 'Detener lectura' : 'Leer esta nota en voz alta'}">${estaLeyendo ? '⏹ Detener' : '▶ Escuchar nota'}</button>
+        <button class="btn small" data-adjuntar="${n.id}" title="Adjuntar foto, audio o archivo">📎 Adjuntar</button>
+      </div>
       ${renderTagsHTML(n.tags)}
       ${adjuntosHtml}
       ${vinculosHtml}
       <div class="meta"><span>📅 ${new Date(n.fecha).toLocaleString('es-CL')}</span>${n.concatenadaDe ? `<span class="badge">🔗 Unión de ${n.concatenadaDe.length}</span>` : ''}</div>
-      <button class="adjuntar-btn" data-adjuntar="${n.id}">📎 Adjuntar</button>
-      <div class="actions">
-        <button data-accion="copiar" data-id="${n.id}">📋</button>
-        <button data-accion="leer" data-id="${n.id}">🔊</button>
-        <button data-accion="analizar" data-id="${n.id}">🤖</button>
-        <button data-accion="compartir" data-id="${n.id}">📤</button>
-        <button data-accion="calendario" data-id="${n.id}">📅</button>
-        <button data-accion="tarea" data-id="${n.id}">✅</button>
-        <button data-accion="resumir" data-id="${n.id}">📝</button>
-        <button data-accion="concatenar" data-id="${n.id}">🔗</button>
-        <button data-accion="tags" data-id="${n.id}">🏷️</button>
-        <button data-accion="editar" data-id="${n.id}">✏️</button>
-        <button data-accion="eliminar" data-id="${n.id}">🗑️</button>
+      <div class="nota-actions-grid">
+        <button data-accion="copiar" data-id="${n.id}" title="Copiar el texto al portapapeles">📋 Copiar</button>
+        <button data-accion="leer" data-id="${n.id}" title="Leer la nota en voz alta">🔊 Escuchar</button>
+        <button data-accion="analizar" data-id="${n.id}" title="Analizar con IA: resumen, tareas, soluciones">🤖 Analizar IA</button>
+        <button data-accion="compartir" data-id="${n.id}" title="Compartir por WhatsApp, correo, etc.">📤 Compartir</button>
+        <button data-accion="calendario" data-id="${n.id}" title="Agendar esta nota en el calendario">📅 Calendario</button>
+        <button data-accion="tarea" data-id="${n.id}" title="Crear una tarea a partir de esta nota">✅ Crear tarea</button>
+        <button data-accion="resumir" data-id="${n.id}" title="Generar un resumen corto con IA">📝 Resumir</button>
+        <button data-accion="concatenar" data-id="${n.id}" title="Unir esta nota con otra">🔗 Unir</button>
+        <button data-accion="tags" data-id="${n.id}" title="Añadir etiquetas tipo 'trabajo', 'urgente'">🏷️ Etiquetar</button>
+        <button data-accion="editar" data-id="${n.id}" title="Editar el título de la nota">✏️ Editar</button>
+        <button class="danger-btn" data-accion="eliminar" data-id="${n.id}" title="Mover la nota a la papelera">🗑️ Eliminar</button>
       </div>
       <div class="analisis-panel" id="panel-${n.id}"></div>
     </div>`);
@@ -1669,7 +1676,9 @@ async function renderNotas(){
 }
 
 function togglePlayNota(notaId) {
-  const nota = notas.find(n => eqId(n.id, notaId)); if (!nota) return;
+  const nota = notas.find(n => eqId(n.id, notaId));
+  if (!nota) { toast('⚠️ Nota no encontrada'); return; }
+  if (!nota.texto || !nota.texto.trim()) { toast('Nota vacía'); return; }
   if (TTS.activo && eqId(TTS.notaIdActual, nota.id)) { TTS.stop(); return; }
   const idioma = detectarIdioma(nota.texto);
   TTS.play(nota.texto, idioma, nota.id);
@@ -1686,7 +1695,7 @@ $('btnUnirSel').onclick = () => {
   const nueva = { id: nuevoId(), titulo: titulo.trim(), texto: textoUnido, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
-  LS.set('notas', notas); pendingPush = true; pushASync();
+  LS.set('notas', notas); syncDebounced();
   seleccionadas.clear(); renderBarraSeleccion(); renderNotas();
   toast('🔗 Unificada');
 };
@@ -1709,18 +1718,16 @@ function manejarAccionNota(accion, id) {
     case 'tags': editarTagsNota(nota); break;
     case 'editar':
       const nt = prompt('Nuevo título:', nota.titulo);
-      if (nt && nt.trim()) { nota.titulo = nt.trim(); nota.fecha = new Date().toISOString(); LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas(); toast('✏️ Actualizado'); }
+      if (nt && nt.trim()) { nota.titulo = nt.trim(); nota.fecha = new Date().toISOString(); LS.set('notas', notas); syncDebounced(); renderNotas(); toast('✏️ Actualizado'); }
       break;
     case 'eliminar':
       if (!confirm('¿Mover a papelera?')) return;
-      /* LOCAL FIRST: borrar siempre local, después sincronizar */
       const copia = JSON.parse(JSON.stringify(nota));
       moverAPapelera('notas', copia);
       notas.splice(idx, 1);
       LS.set('notas', notas);
       renderNotas(); renderPapelera();
-      pendingPush = true;
-      pushASync(true);  /* en background, no bloquea */
+      syncDebounced();
       toast('🗑️ Eliminada');
       break;
   }
@@ -1740,24 +1747,26 @@ function concatenarCon(nota) {
   const nueva = { id: nuevoId(), titulo: titulo.trim(), texto: `[${nota.titulo}]\n${nota.texto}\n\n---\n\n[${otra.titulo}]\n${otra.texto}`, fecha: new Date().toISOString(), concatenadaDe: [nota.id, otra.id], tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
-  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas(); toast('🔗 Unificada');
+  LS.set('notas', notas); syncDebounced(); renderNotas(); toast('🔗 Unificada');
 }
 function guardarNotaEnCalendario(nota) {
   const fecha = prompt('¿Qué día? (YYYY-MM-DD)', new Date().toISOString().slice(0,10));
   if (!fecha) return;
   tareas.unshift({ id: nuevoId(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha, hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
-  LS.set('tareas', tareas); pendingPush = true; pushASync();
+  LS.set('tareas', tareas); syncDebounced();
   renderTareas(); renderCalendario(); toast('📅 Guardado');
 }
 function crearTareaDesdeNota(nota) {
   tareas.unshift({ id: nuevoId(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha: '', hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
-  LS.set('tareas', tareas); pendingPush = true; pushASync(); renderTareas(); toast('✅ Tarea creada');
+  LS.set('tareas', tareas); syncDebounced(); renderTareas(); toast('✅ Tarea creada');
 }
 
+/* ===== ANALIZAR (FIX PRINCIPAL: NO re-renderizar al final) ===== */
 async function analizarNota(nota) {
   const panel = $('panel-' + nota.id);
+  if (!panel) { toast('⚠️ Error al abrir panel'); return; }
   panel.classList.add('show');
-  panel.innerHTML = '<div class="txt">⏳ Analizando...</div>';
+  panel.innerHTML = '<div class="txt">⏳ Analizando con IA...</div>';
   detenerTodo(); TTS.stop();
   const hoy = new Date().toISOString().slice(0,10);
   const prompt2 = `Analiza y devuelve SOLO JSON sin markdown:
@@ -1771,7 +1780,10 @@ NOTA:
     const ini = limpio.indexOf('{'), fin = limpio.lastIndexOf('}');
     if (ini !== -1 && fin !== -1) limpio = limpio.slice(ini, fin + 1);
     let data;
-    try { data = JSON.parse(limpio); } catch(e) { panel.innerHTML = `<div class="txt">${escapeHtml(raw)}</div>`; return; }
+    try { data = JSON.parse(limpio); } catch(e) {
+      panel.innerHTML = `<div class="txt">⚠️ No pude estructurar como JSON. Respuesta cruda:<br><br>${escapeHtml(raw)}</div>`;
+      return;
+    }
     if (data.tareas) {
       const v = new Set(nota.personasVinculadas || []);
       data.tareas.forEach(t => { if (t.persona) { const p = buscarPersonaPorNombre(t.persona); if (p) v.add(String(p.id)); } });
@@ -1780,8 +1792,23 @@ NOTA:
     }
     panel.innerHTML = renderAnalisis(data, nota);
     bindAnalisis(panel, data, nota);
-    renderNotas();
-  } catch(e) { panel.innerHTML = '<div class="txt">❌ ' + escapeHtml(e.message) + '</div>'; }
+    /* ⚠️ NO llamar renderNotas() aquí — destruye el panel. Solo actualizamos el link de personas */
+    const idStr = String(nota.id);
+    const card = document.querySelector(`.nota-card[data-id="${idStr}"]`);
+    if (card && nota.personasVinculadas && nota.personasVinculadas.length) {
+      let v = card.querySelector('.vinculos');
+      if (!v) {
+        v = document.createElement('div');
+        v.className = 'vinculos';
+        const metaDiv = card.querySelector('.meta');
+        if (metaDiv) metaDiv.parentNode.insertBefore(v, metaDiv);
+      }
+      v.innerHTML = nota.personasVinculadas.map(pid => { const p = getPersona(pid); return p ? `<span class="vinculo-chip" data-vincular-persona="${pid}">👤 ${escapeHtml(p.nombre)}</span>` : ''; }).join('');
+    }
+  } catch(e) {
+    console.error('Analizar error:', e);
+    panel.innerHTML = '<div class="txt">❌ ' + escapeHtml(e.message) + '</div>';
+  }
 }
 
 function renderAnalisis(data, nota) {
@@ -1801,7 +1828,7 @@ function renderAnalisis(data, nota) {
   if (data.soluciones && data.soluciones.length) html += `<div class="seccion"><h4>💡 SOLUCIONES</h4><div class="txt">${data.soluciones.map(s=>'• '+escapeHtml(s)).join('\n')}</div></div>`;
   if (data.recordatorios && data.recordatorios.length) html += `<div class="seccion"><h4>⏰ RECORDATORIOS</h4><div class="txt">${data.recordatorios.map(s=>'• '+escapeHtml(s)).join('\n')}</div></div>`;
   if (data.riesgos && data.riesgos.length) html += `<div class="seccion"><h4>⚠️ RIESGOS</h4><div class="txt">${data.riesgos.map(s=>'• '+escapeHtml(s)).join('\n')}</div></div>`;
-  html += `<div class="acciones-finales"><button class="btn primary" data-af="escuchar">🔊 Escuchar</button><button class="btn" data-af="copiar">📋</button><button class="btn ghost" data-af="cerrar">❌</button></div>`;
+  html += `<div class="acciones-finales"><button class="btn primary" data-af="escuchar" title="Leer toda la respuesta en voz alta">🔊 Escuchar</button><button class="btn" data-af="copiar" title="Copiar la respuesta completa">📋 Copiar</button><button class="btn ghost" data-af="cerrar" title="Cerrar el panel">❌ Cerrar</button></div>`;
   return html;
 }
 function bindAnalisis(panel, data, nota) {
@@ -1813,7 +1840,7 @@ function bindAnalisis(panel, data, nota) {
       if (tipo === 'record') {
         const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
         tareas.unshift({ id: nuevoId(), descripcion: '🔔 ' + t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: t.fecha || '', hora: t.hora || '', hecha: false, completadaEn: null, recordatorio: true, fechaCreacion: Date.now(), tags: [] });
-        LS.set('tareas', tareas); pendingPush = true; pushASync(); renderTareas(); renderCalendario(); toast('🔔 Recordatorio');
+        LS.set('tareas', tareas); syncDebounced(); renderTareas(); renderCalendario(); toast('🔔 Recordatorio');
       }
       b.textContent = '✓'; b.disabled = true;
     };
@@ -1821,7 +1848,18 @@ function bindAnalisis(panel, data, nota) {
   panel.querySelectorAll('[data-af]').forEach(b => {
     b.onclick = () => {
       const a = b.dataset.af;
-      if (a === 'escuchar') { const t = panel.querySelector('.txt')?.textContent || ''; TTS.play(t, detectarIdioma(t)); }
+      if (a === 'escuchar') {
+        /* Leer TODO el contenido del panel, no solo el primer .txt */
+        const textos = Array.from(panel.querySelectorAll('.seccion')).map(sec => {
+          const titulo = sec.querySelector('h4')?.textContent || '';
+          const contenido = Array.from(sec.querySelectorAll('.txt, .tarea-item')).map(el => el.textContent).join('. ');
+          return titulo + '. ' + contenido;
+        }).filter(Boolean).join('. ');
+        const textoCompleto = textos || panel.textContent || '';
+        if (!textoCompleto.trim()) { toast('Sin texto para leer'); return; }
+        TTS.play(textoCompleto, detectarIdioma(textoCompleto));
+        toast('🔊 Leyendo análisis');
+      }
       if (a === 'copiar') copiar(panel.textContent);
       if (a === 'cerrar') panel.classList.remove('show');
     };
@@ -1830,7 +1868,7 @@ function bindAnalisis(panel, data, nota) {
 function agregarTarea(t, nota, conFecha) {
   const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
   tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: conFecha ? (t.fecha || new Date().toISOString().slice(0,10)) : '', hora: t.hora || '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), recurrencia: t.recurrencia || '', tags: [] });
-  LS.set('tareas', tareas); pendingPush = true; pushASync();
+  LS.set('tareas', tareas); syncDebounced();
   renderTareas(); renderCalendario(); toast(conFecha ? '📅 Tarea con fecha' : '✅ Tarea');
 }
 async function resumirNota(nota) {
@@ -1848,7 +1886,7 @@ const GROQ_MODEL = 'openai/gpt-oss-120b';
 const GROQ_RESPALDO = 'llama-3.1-8b-instant';
 async function llamarGroqUna(prompt2, model) {
   const key = LS.get('apiKey','') || $('apiKey').value.trim();
-  if(!key) throw new Error('Falta API key');
+  if(!key) throw new Error('Falta API key de Groq. Ve a Config.');
   const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({ model, messages: [{ role: 'system', content: 'Eres JARVIS, asistente personal. Respondes en español.' }, { role: 'user', content: prompt2 }], temperature: 0.4, max_tokens: 1500 })
@@ -1919,7 +1957,7 @@ function abrirPanelDia(iso){
     const pt = $('pdPersona').value.trim();
     const pO = pt ? buscarPersonaPorNombre(pt) : null;
     tareas.unshift({ id: nuevoId(), descripcion: desc, persona: pt, contacto: pO ? (pO.whatsapp || pO.telefono || '') : '', personaId: pO ? pO.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), recurrencia: $('pdRecur').value, tags: parseTags($('pdTags').value) });
-    LS.set('tareas', tareas); pendingPush = true; pushASync();
+    LS.set('tareas', tareas); syncDebounced();
     renderCalendario(); renderTareas(); renderTagsFilter();
     abrirPanelDia(iso);
     toast('✅ Tarea agregada');
@@ -1941,7 +1979,7 @@ function renderTareaHTML(t){
       <div class="t-meta">${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}${t.fecha ? `<span>📅 ${t.fecha}</span>` : ''}${t.recordatorio ? `<span>🔔</span>` : ''}</div>
       ${hechaTag}
     </div>
-    <div style="display:flex;flex-direction:column;gap:4px"><button class="btn ghost small" data-tags-t="${t.id}" style="padding:4px 8px">🏷️</button><button class="btn ghost small" data-delT="${t.id}" style="padding:4px 8px">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:4px"><button class="btn ghost small" data-tags-t="${t.id}" style="padding:4px 8px" title="Etiquetar">🏷️</button><button class="btn ghost small" data-delT="${t.id}" style="padding:4px 8px" title="Eliminar">✕</button></div>
   </div>`;
 }
 function bindTareas(cont, isoPanel){
@@ -1952,11 +1990,8 @@ function bindTareas(cont, isoPanel){
       t.hecha = c.checked;
       t.completadaEn = c.checked ? new Date().toISOString() : null;
       t.fecha = t.fecha || new Date().toISOString();
-      if (c.checked && t.recurrencia && t.fecha) {
-        tareas.unshift({ ...t, id: nuevoId(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
-        toast('🔄 Siguiente creada');
-      }
-      LS.set('tareas', tareas); pendingPush = true; pushASync();
+      if (c.checked && t.recurrencia && t.fecha) { tareas.unshift({ ...t, id: nuevoId(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() }); toast('🔄 Siguiente creada'); }
+      LS.set('tareas', tareas); syncDebounced();
       renderCalendario(); renderTareas();
       if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
     };
@@ -1967,15 +2002,13 @@ function bindTareas(cont, isoPanel){
       if(!confirm('¿Mover a papelera?')) return;
       const idx = tareas.findIndex(x => eqId(x.id, b.dataset.delT));
       if (idx === -1) { toast('⚠️ Ya no existe'); renderTareas(); return; }
-      /* LOCAL FIRST */
       const copia = JSON.parse(JSON.stringify(tareas[idx]));
       moverAPapelera('tareas', copia);
       tareas.splice(idx, 1);
       LS.set('tareas', tareas);
       renderCalendario(); renderTareas(); renderPapelera();
       if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
-      pendingPush = true;
-      pushASync(true);
+      syncDebounced();
       toast('🗑️ Eliminada');
     };
   });
@@ -2012,7 +2045,7 @@ $('btnGuardarPersona').onclick = () => {
   const id = idRaw && existente >= 0 ? personas[existente].id : nuevoId();
   const persona = { id, nombre, telefono: $('pTel').value.trim(), whatsapp: $('pWa').value.trim(), correo: $('pCorreo').value.trim(), empresa: $('pEmpresa').value.trim(), cargo: $('pCargo').value.trim(), cumpleanos: $('pCumple').value, fecha: new Date().toISOString() };
   if (existente >= 0) personas[existente] = persona; else personas.unshift(persona);
-  LS.set('personas', personas); pendingPush = true; pushASync();
+  LS.set('personas', personas); syncDebounced();
   $('formPersona').classList.remove('show');
   renderPersonas(); renderCalendario(); renderNotas(); toast('👥 Guardada');
 };
@@ -2031,7 +2064,7 @@ function renderPersonas(){
     return `<div class="persona-card"><h3>${escapeHtml(p.nombre)}</h3>
       <div class="info">${p.telefono ? `<div>📞 <b>${escapeHtml(p.telefono)}</b></div>` : ''}${p.whatsapp ? `<div>💬 WhatsApp: <b>${escapeHtml(p.whatsapp)}</b></div>` : ''}${p.correo ? `<div>📧 ${escapeHtml(p.correo)}</div>` : ''}${p.empresa ? `<div>🏢 ${escapeHtml(p.empresa)}</div>` : ''}${p.cargo ? `<div>💼 ${escapeHtml(p.cargo)}</div>` : ''}${p.cumpleanos ? `<div>🎂 ${new Date(p.cumpleanos + 'T12:00:00').toLocaleDateString('es-CL')}</div>` : ''}</div>
       ${relHtml}
-      <div class="acciones"><button data-edit="${p.id}">✏️</button><button data-del-p="${p.id}">🗑️</button></div>
+      <div class="acciones"><button data-edit="${p.id}" title="Editar">✏️</button><button data-del-p="${p.id}" title="Eliminar">🗑️</button></div>
     </div>`;
   }).join('');
   cont.querySelectorAll('[data-edit]').forEach(b => { b.onclick = () => { const p = personas.find(x => eqId(x.id, b.dataset.edit)); if (!p) return; $('pId').value = p.id; $('pNombre').value = p.nombre || ''; $('pTel').value = p.telefono || ''; $('pWa').value = p.whatsapp || ''; $('pCorreo').value = p.correo || ''; $('pEmpresa').value = p.empresa || ''; $('pCargo').value = p.cargo || ''; $('pCumple').value = p.cumpleanos || ''; $('formPersona').classList.add('show'); $('formPersona').scrollIntoView({behavior:'smooth'}); }; });
@@ -2045,7 +2078,7 @@ function renderPersonas(){
       personas.splice(idx, 1);
       LS.set('personas', personas);
       renderPersonas(); renderCalendario(); renderPapelera();
-      pendingPush = true; pushASync(true);
+      syncDebounced();
       toast('🗑️ Eliminada');
     };
   });
@@ -2061,20 +2094,17 @@ function actualizarModoToggle(){
 $('modoVivo').onclick = () => { modoGrabacion = 'vivo'; LS.set('modoGrabacion','vivo'); detenerTodo(); actualizarModoToggle(); };
 $('modoEstable').onclick = () => { modoGrabacion = 'estable'; LS.set('modoGrabacion','estable'); detenerTodo(); actualizarModoToggle(); };
 
-/* ===== BANNER MODO LOCAL ===== */
 function actualizarBannerModoLocal() {
   const b = $('modoLocalBanner'); if (!b) return;
   if (modoLocalHasta > Date.now()) {
     const mins = Math.ceil((modoLocalHasta - Date.now()) / 60000);
     b.style.display = 'block';
-    b.innerHTML = `⏸ <b>Modo local activo</b> por ${mins} min más<br><span style="font-size:.72rem">Todo funciona local. Se sincronizará cuando termine.</span>`;
-  } else {
-    b.style.display = 'none';
-  }
+    b.innerHTML = `⏸ <b>Modo local</b> por ${mins} min<br><span style="font-size:.72rem">Todo funciona local. Se sincronizará al terminar.</span>`;
+  } else b.style.display = 'none';
 }
 setInterval(actualizarBannerModoLocal, 30000);
 
-/* ===== CONFIG UI ===== */
+/* ===== CONFIG ===== */
 $('syncToken').value = getToken();
 $('syncGistId').value = getGistId();
 $('btnGuardarKey').onclick = async () => { const k = $('apiKey').value.trim(); if (!k) return toast('Escribe la API key'); await guardarApiKeyPersistente(k); toast('🔑 Guardada persistente'); };
@@ -2084,10 +2114,9 @@ $('btnGuardarSync').onclick = async () => {
   localStorage.setItem(SYNC_TOKEN_KEY, t); localStorage.setItem(SYNC_GIST_KEY, g);
   localStorage.removeItem(SYNC_FILE_KEY);
   modoLocalHasta = 0; LS.set('modoLocalHasta', 0);
-  proximaSyncPermitida = 0; syncBackoffIdx = 0;
   $('syncStatus').className = 'sync-status info'; $('syncStatus').textContent = '⏳ Sincronizando...';
   const ok = await sincronizar(true);
-  if (ok) { $('syncStatus').className = 'sync-status ok'; $('syncStatus').textContent = '✅ Configurado\nArchivo: ' + getNombreArchivo() + '\nAuto-sync cada 2 min'; iniciarAutoSync(); }
+  if (ok) { $('syncStatus').className = 'sync-status ok'; $('syncStatus').textContent = '✅ Configurado\nArchivo: ' + getNombreArchivo() + '\nSin polling (solo al salir o manual)'; }
   else { $('syncStatus').className = 'sync-status err'; $('syncStatus').textContent = '❌ Error. Usa 🩺'; }
   actualizarBannerModoLocal();
 };
@@ -2099,42 +2128,26 @@ $('btnProbarSync').onclick = async () => {
     const res = await fetch(`https://api.github.com/gists/${g}`, { headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' } });
     if (!res.ok) {
       const txt = await res.text();
-      if (res.status === 403 && /rate limit/i.test(txt)) {
-        modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta);
-        st.className = 'sync-status err'; st.textContent = '⏸ RATE LIMIT de GitHub. Modo local 30 min activado.\nEspera o espera al reset (1h).';
-        actualizarBannerModoLocal(); return;
-      }
+      if (res.status === 403 && /rate limit/i.test(txt)) { modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta); st.className = 'sync-status err'; st.textContent = '⏸ RATE LIMIT. Modo local 30 min.'; actualizarBannerModoLocal(); return; }
       throw new Error(`HTTP ${res.status}`);
     }
     const gg = await res.json(); const files = Object.keys(gg.files || {});
     st.className = 'sync-status ok'; st.textContent = `✅ OK\nArchivos: ${files.join(', ')}`;
   } catch (e) { st.className = 'sync-status err'; st.textContent = '❌ ' + e.message; }
 };
-$('btnSyncAhora').onclick = async () => { proximaSyncPermitida = 0; await sincronizar(false); actualizarBannerModoLocal(); };
+$('btnSyncAhora').onclick = async () => { await sincronizar(false); actualizarBannerModoLocal(); };
 $('btnDiagnostico').onclick = diagnostico;
 $('btnPausarSync').onclick = () => {
-  if (modoLocalHasta > Date.now()) {
-    modoLocalHasta = 0; LS.set('modoLocalHasta', 0);
-    proximaSyncPermitida = 0;
-    toast('▶ Sync reactivado');
-  } else {
-    modoLocalHasta = Date.now() + 60 * 60 * 1000; LS.set('modoLocalHasta', modoLocalHasta);
-    toast('⏸ Sync pausado 1h');
-  }
+  if (modoLocalHasta > Date.now()) { modoLocalHasta = 0; LS.set('modoLocalHasta', 0); toast('▶ Sync reactivado'); }
+  else { modoLocalHasta = Date.now() + 60 * 60 * 1000; LS.set('modoLocalHasta', modoLocalHasta); toast('⏸ Sync pausado 1h'); }
   actualizarIndicatorSync(); actualizarBannerModoLocal();
 };
-$('btnReparar').onclick = () => {
-  const r = repararDatosLocales();
-  renderNotas(); renderTareas(); renderPersonas(); renderCalendario();
-  if (r.reparados > 0) toast(`🔧 ${r.reparados} duplicados eliminados`);
-  else toast('✅ Sin problemas detectados');
-};
+$('btnReparar').onclick = () => { const r = repararDatosLocales(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); if (r.reparados > 0) toast(`🔧 ${r.reparados} duplicados eliminados`); else toast('✅ Sin problemas'); };
 $('btnBorrarSync').onclick = () => {
   if (!confirm('¿Borrar config de sync?')) return;
   localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY); localStorage.removeItem(SYNC_FILE_KEY);
   $('syncToken').value = ''; $('syncGistId').value = '';
   $('syncStatus').className = 'sync-status'; $('syncStatus').textContent = '';
-  if (autoSyncTimer) clearInterval(autoSyncTimer); autoSyncTimer = null;
   modoLocalHasta = 0; LS.set('modoLocalHasta', 0);
   actualizarIndicatorSync(); actualizarBannerModoLocal(); toast('Config borrada');
 };
@@ -2149,17 +2162,15 @@ if ('Notification' in window) {
 }
 $('buscarGlobal').oninput = renderBusquedaGlobal;
 
-/* ===== RESET ===== */
 $('btnReset').onclick = async () => {
-  if (!confirm('⚠️ Borrar TODOS los datos LOCALES:\n\n• Notas, tareas, personas\n• Papelera\n• API key\n• Config sync\n• Adjuntos en IndexedDB\n\n(La nube NO se borra)\n\n¿Continuar?')) return;
+  if (!confirm('⚠️ Borrar TODOS los datos LOCALES:\n\n• Notas, tareas, personas\n• Papelera\n• API key\n• Config sync\n• Adjuntos\n\n(La nube NO se borra)\n\n¿Continuar?')) return;
   if (!confirm('⚠️ CONFIRMAR: ¿Realmente borrar todo el contenido local?')) return;
-  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera','sync-file','notifHechas','modoLocalHasta','syncBackoffIdx','ultimoHashSync','pendingPush'].forEach(k => localStorage.removeItem('jarvis_' + k));
+  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera','sync-file','notifHechas','modoLocalHasta','ultimoHashSync','pendingPush'].forEach(k => localStorage.removeItem('jarvis_' + k));
   localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY);
   try { await idbClear(); } catch(e){}
-  if (autoSyncTimer) clearInterval(autoSyncTimer); autoSyncTimer = null;
   notas = []; tareas = []; personas = []; papelera = [];
   eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
-  modoLocalHasta = 0; proximaSyncPermitida = 0; syncBackoffIdx = 0; ultimoHashSync = ''; pendingPush = false;
+  modoLocalHasta = 0; ultimoHashSync = ''; pendingPush = false;
   $('apiKey').value = ''; $('syncToken').value = ''; $('syncGistId').value = '';
   actualizarEstadoApiKey(); actualizarIndicatorSync();
   renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
@@ -2167,20 +2178,8 @@ $('btnReset').onclick = async () => {
 };
 
 /* ===== EVENTOS ===== */
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && tieneSync() && !operacionCritica && !syncEnProgreso) {
-    if (modoLocalHasta > Date.now()) return;
-    if (pendingPush) sincronizar(true);
-    else if (hashDatos() !== ultimoHashSync) sincronizar(true);
-  }
-});
-window.addEventListener('focus', () => {
-  if (tieneSync() && !operacionCritica && !syncEnProgreso && modoLocalHasta <= Date.now() && pendingPush) sincronizar(true);
-});
-window.addEventListener('online', () => {
-  if (tieneSync() && !operacionCritica && modoLocalHasta <= Date.now()) sincronizar(true);
-});
-window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica && pendingPush && modoLocalHasta <= Date.now()) pushASync(true); });
+window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica && modoLocalHasta <= Date.now()) { if (pendingPush) sincronizar(true); } });
+window.addEventListener('beforeunload', () => { if (tieneSync() && !operacionCritica && modoLocalHasta <= Date.now()) { if (pendingPush) sincronizar(true); } });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     ['focusOverlay','visorAdjunto','modalAdjuntar','modalCompartir','modalTraducir','panelDia'].forEach(id => { if ($(id)?.classList.contains('show')) $(id).classList.remove('show'); });
@@ -2192,9 +2191,7 @@ document.addEventListener('keydown', (e) => {
 (async function init() {
   const k = await cargarApiKeyPersistente();
   if (k) $('apiKey').value = k;
-  /* Reparación automática al iniciar */
-  const r = repararDatosLocales();
-  if (r.reparados > 0) console.log(`Reparados automáticamente: ${r.reparados}`);
+  repararDatosLocales();
   renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
   renderTagsFilter(); renderPapelera();
   actualizarModoToggle(); actualizarIndicatorSync(); actualizarBannerModoLocal();
@@ -2210,14 +2207,9 @@ document.addEventListener('keydown', (e) => {
       }
     }
   }, 1500);
-  if (tieneSync()) {
-    if (modoLocalHasta > Date.now()) {
-      actualizarBannerModoLocal();
-      setTimeout(() => sincronizar(true), 5000);
-    } else {
-      setTimeout(() => sincronizar(true), 5000);
-    }
-    iniciarAutoSync();
+  /* Sync inicial UNA VEZ al cargar */
+  if (tieneSync() && modoLocalHasta <= Date.now()) {
+    setTimeout(() => sincronizar(true), 3000);
   }
   if ('serviceWorker' in navigator) {
     let refreshing = false;
