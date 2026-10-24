@@ -1,4 +1,4 @@
-const CACHE = 'jarvis-v18';
+const CACHE = 'jarvis-v19';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
