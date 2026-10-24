@@ -259,10 +259,7 @@
       </div>
     </div>
     <div class="traduccion-box" id="traduccionBox">
-      <div class="head">
-        <span id="traduccionLabel">Traducción</span>
-        <button class="btn ghost small" id="btnCerrarTrad" style="padding:3px 8px">✕</button>
-      </div>
+      <div class="head"><span id="traduccionLabel">Traducción</span><button class="btn ghost small" id="btnCerrarTrad" style="padding:3px 8px">✕</button></div>
       <div id="traduccionTexto"></div>
     </div>
     <div class="grabar-controls">
@@ -272,7 +269,7 @@
   </section>
 
   <section id="tab-notas">
-    <div class="row" style="margin-bottom:10px"><input id="buscarNotas" placeholder="🔍 Buscar por título o texto..." style="flex:1"></div>
+    <div class="row" style="margin-bottom:10px"><input id="buscarNotas" placeholder="🔍 Buscar..." style="flex:1"></div>
     <div class="tags-filter" id="tagsFilterNotas"></div>
     <div id="listaNotas"></div>
   </section>
@@ -299,9 +296,9 @@
     <div class="form-persona" id="formPersona">
       <input type="hidden" id="pId">
       <label>Nombre completo *</label><input id="pNombre" placeholder="Ej: Juan Pérez">
-      <div class="row"><div><label>Teléfono</label><input id="pTel" placeholder="+56 9 ..."></div><div><label>WhatsApp</label><input id="pWa" placeholder="+56 9 ..."></div></div>
-      <label>Correo</label><input id="pCorreo" type="email" placeholder="juan@empresa.cl">
-      <div class="row"><div><label>Empresa</label><input id="pEmpresa" placeholder="Empresa XYZ"></div><div><label>Cargo</label><input id="pCargo" placeholder="Jefe de bodega"></div></div>
+      <div class="row"><div><label>Teléfono</label><input id="pTel"></div><div><label>WhatsApp</label><input id="pWa"></div></div>
+      <label>Correo</label><input id="pCorreo" type="email">
+      <div class="row"><div><label>Empresa</label><input id="pEmpresa"></div><div><label>Cargo</label><input id="pCargo"></div></div>
       <label>Cumpleaños</label><input id="pCumple" type="date">
       <div class="row"><button class="btn ghost" id="btnCancelarPersona" style="margin-top:10px">Cancelar</button><button class="btn primary" id="btnGuardarPersona" style="margin-top:10px">Guardar</button></div>
     </div>
@@ -309,11 +306,8 @@
   </section>
 
   <section id="tab-buscar">
-    <div class="search-input-wrap">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
-      <input id="buscarGlobal" placeholder="Buscar en notas, tareas y personas...">
-    </div>
-    <div id="resultadosBusqueda"><p class="hint">Escribe algo para buscar en todo.</p></div>
+    <div class="search-input-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg><input id="buscarGlobal" placeholder="Buscar en todo..."></div>
+    <div id="resultadosBusqueda"><p class="hint">Escribe algo.</p></div>
   </section>
 
   <section id="tab-stats">
@@ -323,26 +317,35 @@
 
   <section id="tab-config">
     <label style="margin-top:0">Modo de grabación</label>
-    <div class="modo-toggle"><button id="modoVivo">⚡ En vivo<br><small style="font-weight:400;font-size:.68rem">escritorio</small></button><button id="modoEstable">🎯 Estable<br><small style="font-weight:400;font-size:.68rem">móvil · sin ding</small></button></div>
+    <div class="modo-toggle"><button id="modoVivo">⚡ En vivo<br><small style="font-weight:400;font-size:.68rem">escritorio</small></button><button id="modoEstable">🎯 Estable<br><small style="font-weight:400;font-size:.68rem">móvil</small></button></div>
     <p class="hint" id="modoInfo"></p>
-    <label style="margin-top:16px">API Key de Groq <span id="apiKeyStatus" style="color:var(--green);font-weight:600"></span></label>
+    <label style="margin-top:16px">API Key de Groq <span id="apiKeyStatus" style="font-weight:600"></span></label>
     <input id="apiKey" type="password" placeholder="gsk_...">
     <button class="btn primary block" id="btnGuardarKey">Guardar API key</button>
     <div class="sync-section">
       <h3>🔄 Sincronización GitHub Gist</h3>
+      <div id="modoLocalBanner" style="display:none;padding:8px 12px;border-radius:8px;background:rgba(255,193,7,.15);color:var(--gold);border:1px solid var(--gold2);font-size:.78rem;margin-bottom:10px;font-weight:600"></div>
       <label>Token de GitHub (scope "gist")</label><input id="syncToken" type="password" placeholder="ghp_...">
       <label>ID del Gist secreto</label><input id="syncGistId" type="text" placeholder="2decf6c462d9b4418f2">
       <div class="sync-status" id="syncStatus"></div>
       <div class="row"><button class="btn primary" id="btnGuardarSync">💾 Guardar</button><button class="btn" id="btnProbarSync">🧪 Probar</button></div>
       <div class="row"><button class="btn" id="btnSyncAhora" style="flex:1">🔄 Sync ahora</button><button class="btn ghost small" id="btnDiagnostico">🩺</button><button class="btn ghost small" id="btnBorrarSync">🗑️</button></div>
+      <div class="row"><button class="btn" id="btnPausarSync" style="flex:1">⏸ Pausar sync 1h</button><button class="btn" id="btnReparar" style="flex:1">🔧 Reparar</button></div>
       <p class="hint" id="syncInfo"></p>
+      <p class="hint" style="margin-top:8px;font-size:.7rem;line-height:1.5">
+        <b>ℹ️ Notas sobre rate limit:</b><br>
+        • Sync automático cada 2 min<br>
+        • Solo envía si hay cambios<br>
+        • Si GitHub bloquea (403): 30 min pausa automática<br>
+        • Mientras pausado: todo funciona local
+      </p>
     </div>
     <div class="sync-section">
       <h3>💾 Respaldo</h3>
       <button class="btn primary block" id="btnExportJSON">📥 Exportar JSON</button>
       <button class="btn block" id="btnImportJSON">📤 Importar JSON</button>
       <input type="file" id="fileImportJSON" accept=".json,application/json" style="display:none">
-      <button class="btn block" id="btnExportICS">📅 Exportar .ics (calendario)</button>
+      <button class="btn block" id="btnExportICS">📅 Exportar .ics</button>
       <button class="btn block" id="btnNotif">🔔 Activar notificaciones</button>
       <p class="hint" id="notifInfo"></p>
     </div>
@@ -355,48 +358,19 @@
 </main>
 
 <div id="focusOverlay"><button class="exit" id="focusExit">✕</button><div class="contador" id="focusContador">1 de 1</div><div id="focusContenido"></div></div>
-
-<div id="modalAdjuntar"><div class="box">
-  <h3>📎 Adjuntar a la nota</h3>
-  <div class="opcion" id="adjOpcFoto"><span class="ico">📷</span> Foto o imagen</div>
-  <div class="opcion" id="adjOpcAudio"><span class="ico">🎵</span> Audio</div>
-  <div class="opcion" id="adjOpcArchivo"><span class="ico">📄</span> Archivo</div>
-  <button class="btn ghost cancelar" id="adjCancelar">Cancelar</button>
-  <input type="file" id="adjInput" accept="image/*,audio/*,*/*">
-</div></div>
-
-<div id="modalCompartir"><div class="box">
-  <h3>📤 Compartir nota</h3>
-  <div id="compartirOpciones"></div>
-  <button class="btn ghost cancelar" id="compartirCancelar">Cancelar</button>
-</div></div>
-
-<div id="modalTraducir"><div class="box">
-  <h3>🌐 Traducir a...</h3>
-  <div class="opcion" data-lang="en"><span class="ico">🇬🇧</span> Inglés</div>
-  <div class="opcion" data-lang="es"><span class="ico">🇪🇸</span> Español</div>
-  <button class="btn ghost cancelar" id="tradCancelar">Cancelar</button>
-</div></div>
-
+<div id="modalAdjuntar"><div class="box"><h3>📎 Adjuntar</h3><div class="opcion" id="adjOpcFoto"><span class="ico">📷</span> Imagen</div><div class="opcion" id="adjOpcAudio"><span class="ico">🎵</span> Audio</div><div class="opcion" id="adjOpcArchivo"><span class="ico">📄</span> Archivo</div><button class="btn ghost cancelar" id="adjCancelar">Cancelar</button><input type="file" id="adjInput" accept="image/*,audio/*,*/*"></div></div>
+<div id="modalCompartir"><div class="box"><h3>📤 Compartir</h3><div id="compartirOpciones"></div><button class="btn ghost cancelar" id="compartirCancelar">Cancelar</button></div></div>
+<div id="modalTraducir"><div class="box"><h3>🌐 Traducir a...</h3><div class="opcion" data-lang="en"><span class="ico">🇬🇧</span> Inglés</div><div class="opcion" data-lang="es"><span class="ico">🇪🇸</span> Español</div><button class="btn ghost cancelar" id="tradCancelar">Cancelar</button></div></div>
 <div id="visorAdjunto"><button class="cerrar-vis" id="visorCerrar">✕</button><div id="visorContenido"></div></div>
-
-<div id="panelGuardado">
-  <div class="titulo" id="pgTitulo">✅ Nota guardada</div>
-  <div class="subtitulo">¿Empezar una nueva?</div>
-  <div class="botones"><button id="pgLimpiar" class="primary">🧹 Sí, limpiar</button><button id="pgSeguir">✏️ No, seguir</button></div>
-</div>
-
+<div id="panelGuardado"><div class="titulo" id="pgTitulo">✅ Nota guardada</div><div class="subtitulo">¿Empezar una nueva?</div><div class="botones"><button id="pgLimpiar" class="primary">🧹 Sí, limpiar</button><button id="pgSeguir">✏️ No, seguir</button></div></div>
 <div id="barraSeleccion"><span id="selCount">0 seleccionadas</span><button class="btn primary small" id="btnUnirSel">🔗 Unir</button><button class="btn ghost small" id="btnCancelarSel">❌</button></div>
-
 <div id="panelDia"><div class="contenido"><button class="btn ghost small cerrar" id="cerrarPanelDia">✕</button><h3 id="panelDiaTitulo">Día</h3><div id="panelDiaContenido"></div></div></div>
-
 <div class="tts-player" id="ttsPlayer"><button id="ttsPause">⏸️</button><button id="ttsPrev">⏮️</button><span class="chunk-info" id="ttsInfo">1/1</span><button id="ttsNext">⏭️</button><button id="ttsStop">⏹️</button></div>
-
 <div class="toast" id="toast"></div>
 
 <script>
 /* =========================================================
-   JARVIS v23 — IDs robustos + apiKey persistente + traducción mejorada
+   JARVIS v24 — Sync con backoff + rate limit + reparación
    ========================================================= */
 const LS = {
   get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} },
@@ -409,7 +383,11 @@ const SYNC_FILE_KEY = 'jarvis-sync-file';
 const ELIMINADOS_TTL = 90 * 24 * 60 * 60 * 1000;
 const PAPELERA_TTL = 30 * 24 * 60 * 60 * 1000;
 
-/* ===== ID ÚNICO INMUTABLE ===== */
+/* ===== ESTRATEGIA SYNC v24 ===== */
+const SYNC_INTERVAL_MS = 120000;               // 2 minutos
+const SYNC_BACKOFF = [30000, 60000, 120000, 300000, 600000, 900000]; // 30s→15min
+const RATE_LIMIT_PAUSE_MS = 30 * 60 * 1000;    // 30 minutos
+
 function nuevoId() {
   if (crypto.randomUUID) return crypto.randomUUID();
   return 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11);
@@ -419,7 +397,6 @@ function nuevoId() {
 const ADJUNTOS_DB = 'jarvis-adjuntos';
 const ADJUNTOS_STORE = 'archivos';
 let _dbAdj = null;
-
 function abrirDBAdjuntos(){
   return new Promise((res, rej) => {
     if (_dbAdj) return res(_dbAdj);
@@ -432,70 +409,29 @@ function abrirDBAdjuntos(){
     req.onerror = () => rej(req.error);
   });
 }
+async function idbPut(key, val){ const db = await abrirDBAdjuntos(); return new Promise((res, rej) => { const tx = db.transaction(ADJUNTOS_STORE, 'readwrite'); tx.objectStore(ADJUNTOS_STORE).put(val, key); tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error); }); }
+async function idbGet(key){ const db = await abrirDBAdjuntos(); return new Promise((res, rej) => { const req = db.transaction(ADJUNTOS_STORE, 'readonly').objectStore(ADJUNTOS_STORE).get(key); req.onsuccess = () => res(req.result); req.onerror = () => rej(req.error); }); }
+async function idbDelete(key){ const db = await abrirDBAdjuntos(); return new Promise((res, rej) => { const tx = db.transaction(ADJUNTOS_STORE, 'readwrite'); tx.objectStore(ADJUNTOS_STORE).delete(key); tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error); }); }
+async function idbClear(){ const db = await abrirDBAdjuntos(); return new Promise((res, rej) => { const tx = db.transaction(ADJUNTOS_STORE, 'readwrite'); tx.objectStore(ADJUNTOS_STORE).clear(); tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error); }); }
 
-async function idbPut(key, val){
-  const db = await abrirDBAdjuntos();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
-    tx.objectStore(ADJUNTOS_STORE).put(val, key);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
-  });
-}
-
-async function idbGet(key){
-  const db = await abrirDBAdjuntos();
-  return new Promise((res, rej) => {
-    const req = db.transaction(ADJUNTOS_STORE, 'readonly').objectStore(ADJUNTOS_STORE).get(key);
-    req.onsuccess = () => res(req.result);
-    req.onerror = () => rej(req.error);
-  });
-}
-
-async function idbDelete(key){
-  const db = await abrirDBAdjuntos();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
-    tx.objectStore(ADJUNTOS_STORE).delete(key);
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
-  });
-}
-
-async function idbClear(){
-  const db = await abrirDBAdjuntos();
-  return new Promise((res, rej) => {
-    const tx = db.transaction(ADJUNTOS_STORE, 'readwrite');
-    tx.objectStore(ADJUNTOS_STORE).clear();
-    tx.oncomplete = () => res();
-    tx.onerror = () => rej(tx.error);
-  });
-}
-
-/* ===== API KEY PERSISTENTE (localStorage + IndexedDB) ===== */
+/* ===== API KEY PERSISTENTE ===== */
 async function guardarApiKeyPersistente(key) {
   LS.set('apiKey', key);
-  try { await idbPut('__apiKey__', key); } catch(e){ console.warn('IDB apiKey save:', e); }
+  try { await idbPut('__apiKey__', key); } catch(e){}
   actualizarEstadoApiKey();
 }
-
 async function cargarApiKeyPersistente() {
   let key = LS.get('apiKey', '');
   if (!key) {
-    try {
-      const idbKey = await idbGet('__apiKey__');
-      if (idbKey) { key = idbKey; LS.set('apiKey', key); }
-    } catch(e){ console.warn('IDB apiKey load:', e); }
+    try { const idbKey = await idbGet('__apiKey__'); if (idbKey) { key = idbKey; LS.set('apiKey', key); } } catch(e){}
   }
   actualizarEstadoApiKey();
   return key;
 }
-
 function actualizarEstadoApiKey() {
-  const el = $('apiKeyStatus');
-  if (!el) return;
+  const el = $('apiKeyStatus'); if (!el) return;
   const key = LS.get('apiKey', '');
-  el.textContent = key ? `✓ Guardada (${key.slice(0, 6)}...)` : '⚠ Sin guardar';
+  el.textContent = key ? `✓ (${key.slice(0, 6)}...)` : '⚠';
   el.style.color = key ? 'var(--green)' : 'var(--amber)';
 }
 
@@ -512,9 +448,14 @@ if (!eliminados._ts) eliminados._ts = {};
 if (!eliminados.notas) eliminados.notas = [];
 if (!eliminados.tareas) eliminados.tareas = [];
 if (!eliminados.personas) eliminados.personas = [];
-['notas', 'tareas', 'personas'].forEach(tipo => {
-  eliminados[tipo] = (eliminados[tipo] || []).map(x => String(x));
-});
+['notas', 'tareas', 'personas'].forEach(tipo => { eliminados[tipo] = (eliminados[tipo] || []).map(x => String(x)); });
+
+/* ===== ESTADO SYNC v24 ===== */
+let modoLocalHasta = LS.get('modoLocalHasta', 0);
+let proximaSyncPermitida = 0;
+let syncBackoffIdx = LS.get('syncBackoffIdx', 0);
+let ultimoHashSync = LS.get('ultimoHashSync', '');
+let pendingPush = LS.get('pendingPush', false);
 
 notas.forEach(n => { if(!n.titulo) n.titulo = 'Nota ' + new Date(n.fecha).toLocaleDateString('es-CL'); });
 
@@ -531,6 +472,39 @@ function toast(msg){
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 const eqId = (a, b) => String(a) === String(b);
 
+/* ===== REPARACIÓN DE DATOS ===== */
+function repararDatosLocales() {
+  let reparados = 0, huerfanos = 0;
+  // IDs duplicados
+  const reparar = (arr) => {
+    const vistos = new Set();
+    const limpio = [];
+    for (const item of arr) {
+      const k = String(item.id);
+      if (vistos.has(k)) { reparados++; continue; }
+      vistos.add(k);
+      limpio.push(item);
+    }
+    return limpio;
+  };
+  const notasAntes = notas.length, tareasAntes = tareas.length, personasAntes = personas.length;
+  notas = reparar(notas);
+  tareas = reparar(tareas);
+  personas = reparar(personas);
+  // Eliminados huérfanos (los que no corresponden a nada existente y ya no importan)
+  const setNotas = new Set(notas.map(n => String(n.id)));
+  const setTareas = new Set(tareas.map(t => String(t.id)));
+  const setPersonas = new Set(personas.map(p => String(p.id)));
+  eliminados.notas = eliminados.notas.filter(id => !setNotas.has(id));
+  eliminados.tareas = eliminados.tareas.filter(id => !setTareas.has(id));
+  eliminados.personas = eliminados.personas.filter(id => !setPersonas.has(id));
+  LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
+  LS.set('eliminados', eliminados);
+  const total = reparados + huerfanos;
+  if (total > 0) console.log(`Reparados: ${reparados} duplicados`);
+  return { reparados, huerfanos, notasAntes, tareasAntes, personasAntes };
+}
+
 /* ===== DETECCIÓN IDIOMA + VOZ ===== */
 function detectarIdioma(texto) {
   if (!texto || texto.length < 5) return 'es';
@@ -538,38 +512,25 @@ function detectarIdioma(texto) {
   const t = ' ' + texto.toLowerCase().replace(/[.,;:!?"'""()]/g, ' ') + ' ';
   const enWords = [' the ',' and ',' is ',' are ',' was ',' were ',' you ',' have ',' has ',' had ',' that ',' this ',' with ',' for ',' from ',' they ',' their ',' what ',' when ',' where ',' how ',' but ',' not ',' can ',' will ',' would ',' should ',' could ',' about ',' which ',' there ',' been ',' being ',' more ',' most ',' some ',' any ',' than ',' too ',' very ',' just ',' also ',' into ',' your ',' our ',' we ',' he ',' she ',' it ',' them ',' his ',' her ',' its '];
   const esWords = [' el ',' la ',' los ',' las ',' un ',' una ',' y ',' es ',' son ',' fue ',' fueron ',' tu ',' tiene ',' que ',' este ',' esta ',' con ',' para ',' desde ',' ellos ',' qué ',' cuando ',' dónde ',' cómo ',' pero ',' no ',' puede ',' será ',' sería ',' debería ',' podría ',' sobre ',' cual ',' su ',' hay ',' estado ',' siendo ',' más ',' algunos ',' muy ',' solo ',' también ',' por ',' como ',' porque ',' entre ',' hasta ',' donde ',' yo ',' él ',' ella ',' nosotros ',' mi ',' nuestro ',' al ',' del ',' se ',' lo ',' le ',' les '];
-  let enCount = 0, esCount = 0;
-  for (const w of enWords) enCount += (t.split(w).length - 1);
-  for (const w of esWords) esCount += (t.split(w).length - 1);
-  return enCount > esCount ? 'en' : 'es';
+  let en = 0, es = 0;
+  for (const w of enWords) en += (t.split(w).length - 1);
+  for (const w of esWords) es += (t.split(w).length - 1);
+  return en > es ? 'en' : 'es';
 }
-
 function mejorVozPorIdioma(idioma) {
   const voces = speechSynthesis.getVoices();
   if (!voces || !voces.length) return null;
-  const prefijos = {
-    'es': ['es-CL','es-ES','es-MX','es-AR','es-US','es-CO','es-PE','es-VE'],
-    'en': ['en-US','en-GB','en-AU','en-CA','en-IN','en-NZ','en-ZA','en-IE']
-  };
+  const prefijos = { 'es': ['es-CL','es-ES','es-MX','es-AR','es-US','es-CO','es-PE','es-VE'], 'en': ['en-US','en-GB','en-AU','en-CA','en-IN','en-NZ','en-ZA','en-IE'] };
   const langs = prefijos[idioma] || [idioma];
   const filtradas = voces.filter(v => v.lang.toLowerCase().startsWith(idioma.toLowerCase()));
   if (!filtradas.length) return null;
-  for (const lang of langs) {
-    const local = filtradas.find(v => v.lang === lang && v.localService && /neural|enhanced|premium|siri|google/i.test(v.name));
-    if (local) return local;
-  }
-  for (const lang of langs) {
-    const local = filtradas.find(v => v.lang === lang && v.localService);
-    if (local) return local;
-  }
-  for (const lang of langs) {
-    const v = filtradas.find(v => v.lang === lang);
-    if (v) return v;
-  }
+  for (const lang of langs) { const l = filtradas.find(v => v.lang === lang && v.localService && /neural|enhanced|premium|siri|google/i.test(v.name)); if (l) return l; }
+  for (const lang of langs) { const l = filtradas.find(v => v.lang === lang && v.localService); if (l) return l; }
+  for (const lang of langs) { const v = filtradas.find(v => v.lang === lang); if (v) return v; }
   return filtradas[0];
 }
 
-/* ===== TTS CON HIGHLIGHT + MULTI-IDIOMA ===== */
+/* ===== TTS ===== */
 const TTS = {
   chunks: [], i: 0, activo: false, pausado: false, idioma: 'es', notaIdActual: null, gen: 0,
   dividirPalabras(texto, maxLen = 180) {
@@ -638,10 +599,7 @@ const TTS = {
     this.activo = false; this.pausado = false;
     $('ttsPlayer').classList.remove('show');
     if (this.notaIdActual) { this._cleanHL(this.notaIdActual); this.notaIdActual = null; }
-    document.querySelectorAll('.nota-play-btn').forEach(b => {
-      b.classList.remove('playing');
-      b.innerHTML = '▶ Escuchar';
-    });
+    document.querySelectorAll('.nota-play-btn').forEach(b => { b.classList.remove('playing'); b.innerHTML = '▶ Escuchar'; });
   },
   stop() { this.gen++; try { speechSynthesis.cancel(); } catch(e){} this._finish(); },
   pauseToggle() { if (speechSynthesis.paused) { speechSynthesis.resume(); this.pausado = false; } else if (speechSynthesis.speaking) { speechSynthesis.pause(); this.pausado = true; } },
@@ -662,10 +620,8 @@ async function comprimirImagen(blob, maxW, quality) {
       URL.revokeObjectURL(url);
       let { width: w, height: h } = img;
       if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-      const canvas = document.createElement('canvas');
-      canvas.width = w; canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.imageSmoothingQuality = 'high';
+      const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d'); ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, w, h);
       canvas.toBlob((out) => resolve(out || blob), 'image/jpeg', quality);
     };
@@ -676,10 +632,7 @@ async function comprimirImagen(blob, maxW, quality) {
 async function blobADataURL(blob) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob); }); }
 async function dataURLABlob(dataURL) { return await (await fetch(dataURL)).blob(); }
 
-const FERIADOS_CHILE = {
-  '2025-01-01':'Año Nuevo','2025-04-18':'Viernes Santo','2025-04-19':'Sábado Santo','2025-05-01':'Día del Trabajo','2025-05-21':'Glorias Navales','2025-06-20':'Pueblos Indígenas','2025-06-29':'San Pedro y San Pablo','2025-07-16':'Virgen del Carmen','2025-08-15':'Asunción','2025-09-18':'Independencia','2025-09-19':'Glorias del Ejército','2025-10-12':'Encuentro Dos Mundos','2025-10-31':'Iglesias Evangélicas','2025-11-01':'Todos los Santos','2025-12-08':'Inmaculada Concepción','2025-12-25':'Navidad',
-  '2026-01-01':'Año Nuevo','2026-04-03':'Viernes Santo','2026-04-04':'Sábado Santo','2026-05-01':'Día del Trabajo','2026-05-21':'Glorias Navales','2026-06-21':'Pueblos Indígenas','2026-06-29':'San Pedro y San Pablo','2026-07-16':'Virgen del Carmen','2026-08-15':'Asunción','2026-09-18':'Independencia','2026-09-19':'Glorias del Ejército','2026-10-12':'Encuentro Dos Mundos','2026-10-31':'Iglesias Evangélicas','2026-11-01':'Todos los Santos','2026-12-08':'Inmaculada Concepción','2026-12-25':'Navidad'
-};
+const FERIADOS_CHILE = { '2025-01-01':'Año Nuevo','2025-04-18':'Viernes Santo','2025-04-19':'Sábado Santo','2025-05-01':'Día del Trabajo','2025-05-21':'Glorias Navales','2025-06-20':'Pueblos Indígenas','2025-06-29':'San Pedro y San Pablo','2025-07-16':'Virgen del Carmen','2025-08-15':'Asunción','2025-09-18':'Independencia','2025-09-19':'Glorias del Ejército','2025-10-12':'Encuentro Dos Mundos','2025-10-31':'Iglesias Evangélicas','2025-11-01':'Todos los Santos','2025-12-08':'Inmaculada Concepción','2025-12-25':'Navidad','2026-01-01':'Año Nuevo','2026-04-03':'Viernes Santo','2026-04-04':'Sábado Santo','2026-05-01':'Día del Trabajo','2026-05-21':'Glorias Navales','2026-06-21':'Pueblos Indígenas','2026-06-29':'San Pedro y San Pablo','2026-07-16':'Virgen del Carmen','2026-08-15':'Asunción','2026-09-18':'Independencia','2026-09-19':'Glorias del Ejército','2026-10-12':'Encuentro Dos Mundos','2026-10-31':'Iglesias Evangélicas','2026-11-01':'Todos los Santos','2026-12-08':'Inmaculada Concepción','2026-12-25':'Navidad' };
 
 /* ===== SYNC ===== */
 function getToken(){ return localStorage.getItem(SYNC_TOKEN_KEY) || ''; }
@@ -696,20 +649,36 @@ async function fetchConTimeout(url, opts = {}, ms = 25000) {
   catch (e) { clearTimeout(t); throw e; }
 }
 
+function esRateLimit(res, errText) {
+  return res && res.status === 403 && /rate limit/i.test(errText || '');
+}
+
 async function ghRequest(method, path, body) {
   const token = getToken(); const gistId = getGistId();
   if (!token || !gistId) throw new Error('Falta token o Gist ID');
-  let res;
+  let res, errText = '';
   try {
     res = await fetchConTimeout(`https://api.github.com${path}`, {
       method,
       headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' },
       body: body ? JSON.stringify(body) : undefined
     });
-  } catch (e) { if (e.name === 'AbortError') throw new Error('Timeout'); if (/failed to fetch/i.test(e.message)) throw new Error('Sin conexión'); throw e; }
+  } catch (e) {
+    if (e.name === 'AbortError') throw new Error('Timeout');
+    if (/failed to fetch/i.test(e.message)) throw new Error('Sin conexión');
+    throw e;
+  }
   if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    let msg = err.message || `HTTP ${res.status}`;
+    errText = await res.text().catch(() => '');
+    let msg = `HTTP ${res.status}`;
+    try { const err = JSON.parse(errText); msg = err.message || msg; } catch(e){}
+    if (esRateLimit(res, errText)) {
+      // Activar modo local automático 30 min
+      modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS;
+      LS.set('modoLocalHasta', modoLocalHasta);
+      actualizarIndicatorSync();
+      throw new Error('⏸ GitHub rate limit. Modo local por 30 min');
+    }
     if (res.status === 401) msg = 'Token inválido';
     if (res.status === 403) msg = 'Token sin scope "gist"';
     if (res.status === 404) msg = 'Gist no encontrado';
@@ -734,23 +703,53 @@ async function detectarNombreArchivo() {
 function actualizarIndicatorSync() {
   const el = $('syncIndicator'); if (!el) return;
   if (!tieneSync()) { el.textContent = '— sin sync'; el.style.color = 'var(--muted)'; return; }
+  if (modoLocalHasta > Date.now()) {
+    const mins = Math.ceil((modoLocalHasta - Date.now()) / 60000);
+    el.textContent = `⏸ local (${mins}min)`; el.style.color = 'var(--amber)';
+    return;
+  }
   if (syncEnProgreso) { el.textContent = '🔄 sync...'; el.style.color = 'var(--muted)'; return; }
+  if (proximaSyncPermitida > Date.now()) {
+    const sec = Math.ceil((proximaSyncPermitida - Date.now()) / 1000);
+    el.textContent = `⏳ espera ${sec}s`; el.style.color = 'var(--amber)'; return;
+  }
+  if (pendingPush) { el.textContent = '📤 pendiente'; el.style.color = 'var(--gold2)'; return; }
   if (ultimaSyncExito === 0) { el.textContent = '⚠ sin sync'; el.style.color = 'var(--amber)'; return; }
   const seg = Math.floor((Date.now() - ultimaSyncExito) / 1000);
   if (seg < 5) { el.textContent = '✓ ahora'; el.style.color = 'var(--green)'; }
   else if (seg < 60) { el.textContent = `✓ hace ${seg}s`; el.style.color = 'var(--green)'; }
   else if (seg < 300) { el.textContent = `✓ hace ${Math.floor(seg/60)}min`; el.style.color = 'var(--gold2)'; }
-  else if (seg < 3600) { el.textContent = `⚠ hace ${Math.floor(seg/60)}min`; el.style.color = 'var(--amber)'; }
-  else { el.textContent = `⚠ hace ${Math.floor(seg/3600)}h`; el.style.color = 'var(--red)'; }
+  else { el.textContent = `⚠ hace ${Math.floor(seg/60)}min`; el.style.color = 'var(--amber)'; }
+}
+
+/* HASH estable para saber si hay cambios reales */
+function hashDatos() {
+  const ordenar = (arr) => [...arr].map(x => ({ id: String(x.id), t: x.titulo || x.descripcion || x.nombre || '', f: x.fecha || 0 })).sort((a,b) => a.id.localeCompare(b.id));
+  const datos = {
+    notas: ordenar(notas),
+    tareas: ordenar(tareas),
+    personas: ordenar(personas),
+    elim: {
+      notas: [...eliminados.notas].sort(),
+      tareas: [...eliminados.tareas].sort(),
+      personas: [...eliminados.personas].sort()
+    }
+  };
+  return JSON.stringify(datos);
 }
 
 let autoSyncTimer = null;
 function iniciarAutoSync() {
   if (autoSyncTimer) clearInterval(autoSyncTimer);
   autoSyncTimer = setInterval(async () => {
-    if (!tieneSync() || operacionCritica || syncEnProgreso || !navigator.onLine || document.hidden) return;
+    if (!tieneSync() || operacionCritica || syncEnProgreso) return;
+    if (!navigator.onLine || document.hidden) return;
+    if (modoLocalHasta > Date.now()) return;
+    if (Date.now() < proximaSyncPermitida) return;
+    const h = hashDatos();
+    if (h === ultimoHashSync && !pendingPush) return;  // Sin cambios, no sincronizar
     await sincronizar(true);
-  }, 15000);
+  }, SYNC_INTERVAL_MS);
 }
 
 function buildDatosNube() {
@@ -807,8 +806,10 @@ function purgarEliminadosViejos() {
 
 async function sincronizar(silencioso = false) {
   if (operacionCritica) { if (!silencioso) toast('Operación en curso…'); return false; }
-  if (!tieneSync()) { if (!silencioso) toast('Configurá sync primero'); return false; }
+  if (!tieneSync()) { if (!silencioso) toast('Configurá sync'); return false; }
   if (syncEnProgreso) return false;
+  if (modoLocalHasta > Date.now()) { if (!silencioso) toast('⏸ Modo local activo'); return false; }
+  if (Date.now() < proximaSyncPermitida) return false;
   syncEnProgreso = true; actualizarIndicatorSync();
   try {
     const nombreArchivo = await detectarNombreArchivo();
@@ -818,45 +819,94 @@ async function sincronizar(silencioso = false) {
     let nube = { version: 2, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
     if (file && file.content) {
       const contenido = file.truncated ? await (await fetchConTimeout(file.raw_url)).text() : file.content;
-      try { nube = JSON.parse(contenido); } catch(e){ console.warn('JSON inválido', e); }
+      try { nube = JSON.parse(contenido); } catch(e){}
     }
     if (!nube.eliminados) nube.eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
     if (!nube.eliminados._ts) nube.eliminados._ts = {};
     if (!nube.papelera) nube.papelera = [];
+
+    /* 1. Unir eliminados */
     eliminados = mergeEliminados(eliminados, nube.eliminados);
-    const papeleraMap = new Map();
-    for (const p of papelera) papeleraMap.set(p.tipo + '-' + String(p.item.id), p);
-    for (const p of nube.papelera) { const k = p.tipo + '-' + String(p.item.id); if (!papeleraMap.has(k)) papeleraMap.set(k, p); }
-    papelera = Array.from(papeleraMap.values());
-    const notasMerge = mergeArreglos(notas, nube.notas || [], eliminados.notas);
-    const tareasMerge = mergeArreglos(tareas, nube.tareas || [], eliminados.tareas);
-    const personasMerge = mergeArreglos(personas, nube.personas || [], eliminados.personas);
-    notas = notasMerge.filter(n => !eliminados.notas.some(e => eqId(e, n.id)));
-    tareas = tareasMerge.filter(t => !eliminados.tareas.some(e => eqId(e, t.id)));
-    personas = personasMerge.filter(p => !eliminados.personas.some(e => eqId(e, p.id)));
+
+    /* 2. Purgar de nube los eliminados (evita revivir) */
+    nube.notas = (nube.notas || []).filter(n => !eliminados.notas.some(e => eqId(e, n.id)));
+    nube.tareas = (nube.tareas || []).filter(t => !eliminados.tareas.some(e => eqId(e, t.id)));
+    nube.personas = (nube.personas || []).filter(p => !eliminados.personas.some(e => eqId(e, p.id)));
+
+    /* 3. Merge papelera */
+    const pMap = new Map();
+    for (const p of papelera) pMap.set(p.tipo + '-' + String(p.item.id), p);
+    for (const p of nube.papelera) { const k = p.tipo + '-' + String(p.item.id); if (!pMap.has(k)) pMap.set(k, p); }
+    papelera = Array.from(pMap.values());
+
+    /* 4. Merge datos */
+    notas = mergeArreglos(notas, nube.notas, eliminados.notas).filter(n => !eliminados.notas.some(e => eqId(e, n.id)));
+    tareas = mergeArreglos(tareas, nube.tareas, eliminados.tareas).filter(t => !eliminados.tareas.some(e => eqId(e, t.id)));
+    personas = mergeArreglos(personas, nube.personas, eliminados.personas).filter(p => !eliminados.personas.some(e => eqId(e, p.id)));
+
     LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
     LS.set('eliminados', eliminados); LS.set('papelera', papelera);
-    const contenidoStr = JSON.stringify(buildDatosNube(), null, 2);
-    const tamañoKB = Math.round(new Blob([contenidoStr]).size / 1024);
-    await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { [nombreArchivo]: { content: contenidoStr } } });
+
+    /* 5. Solo PATCH si hay cambios reales */
+    const hashActual = hashDatos();
+    const hayCambios = hashActual !== ultimoHashSync || pendingPush;
+    if (hayCambios) {
+      const contenidoStr = JSON.stringify(buildDatosNube(), null, 2);
+      const tamañoKB = Math.round(new Blob([contenidoStr]).size / 1024);
+      await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { [nombreArchivo]: { content: contenidoStr } } });
+      ultimoHashSync = hashActual;
+      LS.set('ultimoHashSync', ultimoHashSync);
+      pendingPush = false;
+      LS.set('pendingPush', false);
+      if (!silencioso) toast(`✓ Sincronizado (${tamañoKB}KB)`);
+      const info = $('syncInfo'); if (info) info.textContent = `Última sync: ${tamañoKB}KB`;
+    } else if (!silencioso) {
+      toast('✓ Sin cambios');
+    }
+
+    /* 6. Éxito: reset backoff */
+    syncBackoffIdx = 0;
+    LS.set('syncBackoffIdx', 0);
+    proximaSyncPermitida = 0;
     if (Math.random() < 0.1) purgarEliminadosViejos();
     ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito);
     renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
-    if (!silencioso) toast(`✓ Sincronizado (${tamañoKB}KB)`);
-    const info = $('syncInfo'); if (info) info.textContent = `Última sync: ${tamañoKB}KB`;
     return true;
-  } catch (e) { console.error('Sync:', e); if (!silencioso) toast('❌ ' + e.message); return false; }
-  finally { syncEnProgreso = false; actualizarIndicatorSync(); }
+  } catch (e) {
+    console.error('Sync:', e);
+    if (/rate limit/i.test(e.message)) {
+      toast('⏸ Rate limit. Modo local 30 min');
+    } else {
+      syncBackoffIdx = Math.min(syncBackoffIdx + 1, SYNC_BACKOFF.length - 1);
+      LS.set('syncBackoffIdx', syncBackoffIdx);
+      const espera = SYNC_BACKOFF[syncBackoffIdx];
+      proximaSyncPermitida = Date.now() + espera;
+      if (!silencioso) toast(`❌ ${e.message} (reintento en ${Math.round(espera/1000)}s)`);
+    }
+    return false;
+  } finally {
+    syncEnProgreso = false; actualizarIndicatorSync();
+  }
 }
 
 async function pushASync(silencioso = true) {
   if (!tieneSync() || operacionCritica) return;
+  if (modoLocalHasta > Date.now()) { pendingPush = true; LS.set('pendingPush', true); actualizarIndicatorSync(); return; }
+  if (Date.now() < proximaSyncPermitida) { pendingPush = true; LS.set('pendingPush', true); actualizarIndicatorSync(); return; }
   try {
     const nombreArchivo = getNombreArchivo() || await detectarNombreArchivo() || 'jarvis.json';
     const contenidoStr = JSON.stringify(buildDatosNube(), null, 2);
     await ghRequest('PATCH', `/gists/${getGistId()}`, { files: { [nombreArchivo]: { content: contenidoStr } } });
-    ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito); actualizarIndicatorSync();
-  } catch (e) { if (!silencioso) toast('⚠ Sync: ' + e.message); }
+    ultimaSyncExito = Date.now(); LS.set('ultimaSync', ultimaSyncExito);
+    ultimoHashSync = hashDatos(); LS.set('ultimoHashSync', ultimoHashSync);
+    pendingPush = false; LS.set('pendingPush', false);
+    syncBackoffIdx = 0; proximaSyncPermitida = 0;
+    actualizarIndicatorSync();
+  } catch (e) {
+    pendingPush = true; LS.set('pendingPush', true);
+    if (!silencioso) toast('⚠ Sync pendiente: ' + e.message);
+    actualizarIndicatorSync();
+  }
 }
 
 function marcarEliminado(tipo, id) {
@@ -877,18 +927,29 @@ async function diagnostico() {
     const token = $('syncToken').value.trim() || getToken();
     const gistId = $('syncGistId').value.trim() || getGistId();
     if (!token || !gistId) throw new Error('Falta token o Gist ID');
-    log += `🔑 Token: ${token.slice(0, 8)}...\n📋 Gist: ${gistId}\n\n[1] Usuario...\n`;
+    log += `🔑 Token: ${token.slice(0, 8)}...\n📋 Gist: ${gistId}\n`;
+    if (modoLocalHasta > Date.now()) log += `⏸ MODO LOCAL activo por ${Math.ceil((modoLocalHasta-Date.now())/60000)}min\n`;
+    log += `\n[1] Usuario...\n`;
     const uRes = await fetch('https://api.github.com/user', { headers: { 'Authorization': `Bearer ${token}` } });
-    if (!uRes.ok) throw new Error('Token inválido (HTTP ' + uRes.status + ')');
+    if (!uRes.ok) {
+      const t = await uRes.text();
+      if (uRes.status === 403 && /rate limit/i.test(t)) { log += `❌ RATE LIMIT activo\n`; st.className = 'sync-status err'; st.textContent = log; return; }
+      throw new Error('Token inválido');
+    }
     const u = await uRes.json(); log += `✅ ${u.login}\n\n[2] Gist...\n`;
     const gRes = await fetch(`https://api.github.com/gists/${gistId}`, { headers: { 'Authorization': `Bearer ${token}` } });
     if (!gRes.ok) throw new Error('Gist HTTP ' + gRes.status);
     const g = await gRes.json(); const files = Object.keys(g.files || {});
-    log += `✅ Archivos: ${files.join(', ') || '(vacío)'}\n\n[3] PATCH...\n`;
-    const nombreTest = files[0] || 'jarvis.json';
-    const pRes = await fetch(`https://api.github.com/gists/${gistId}`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' }, body: JSON.stringify({ files: { [nombreTest]: { content: g.files?.[nombreTest]?.content || '{}' } } }) });
-    if (!pRes.ok) { const err = await pRes.json().catch(() => ({})); log += `❌ PATCH HTTP ${pRes.status}: ${err.message || ''}\n`; }
-    else log += `✅ PATCH OK\n`;
+    log += `✅ Archivos: ${files.join(', ')}\n\n[3] PATCH...\n`;
+    const pRes = await fetch(`https://api.github.com/gists/${gistId}`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' }, body: JSON.stringify({ files: { [files[0] || 'jarvis.json']: { content: g.files?.[files[0]]?.content || '{}' } } }) });
+    if (!pRes.ok) {
+      const t = await pRes.text();
+      if (/rate limit/i.test(t)) {
+        modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS;
+        LS.set('modoLocalHasta', modoLocalHasta);
+        log += `❌ RATE LIMIT — modo local activado 30min\n`;
+      } else log += `❌ PATCH HTTP ${pRes.status}\n`;
+    } else log += `✅ PATCH OK\n`;
     st.className = 'sync-status ok'; st.textContent = log;
   } catch(e) { st.className = 'sync-status err'; st.textContent = log + `\n❌ ${e.message}`; }
 }
@@ -901,16 +962,15 @@ function moverAPapelera(tipo, item) {
   purgarPapeleraVieja();
 }
 function purgarPapeleraVieja() {
-  const limite = Date.now() - PAPELERA_TTL;
+  const lim = Date.now() - PAPELERA_TTL;
   const antes = papelera.length;
-  papelera = papelera.filter(p => p.fecha > limite);
+  papelera = papelera.filter(p => p.fecha > lim);
   if (papelera.length !== antes) LS.set('papelera', papelera);
 }
 function restaurarDePapelera(idx) {
   const p = papelera[idx]; if (!p) return;
   papelera.splice(idx, 1); LS.set('papelera', papelera);
-  const arr = eliminados[p.tipo] || [];
-  eliminados[p.tipo] = arr.filter(x => !eqId(x, p.item.id));
+  eliminados[p.tipo] = (eliminados[p.tipo] || []).filter(x => !eqId(x, p.item.id));
   LS.set('eliminados', eliminados);
   if (p.tipo === 'notas') notas.unshift(p.item);
   if (p.tipo === 'tareas') tareas.unshift(p.item);
@@ -922,15 +982,10 @@ function restaurarDePapelera(idx) {
 }
 async function eliminarDefinitivo(idx) {
   const p = papelera[idx]; if (!p) return;
-  if (!confirm('¿Eliminar definitivamente? No se recupera')) return;
-  try {
-    if (p.item && p.item.adjuntos) {
-      for (const a of p.item.adjuntos) { try { await idbDelete(a.id); } catch(e){} }
-    }
-  } catch(e) { console.warn('adj delete:', e); }
+  if (!confirm('¿Eliminar definitivamente?')) return;
+  try { if (p.item && p.item.adjuntos) { for (const a of p.item.adjuntos) { try { await idbDelete(a.id); } catch(e){} } } } catch(e){}
   papelera.splice(idx, 1); LS.set('papelera', papelera);
-  pushASync(); renderPapelera();
-  toast('🗑️ Eliminado definitivamente');
+  pushASync(); renderPapelera(); toast('🗑️ Eliminado');
 }
 function renderPapelera() {
   const cont = $('listaPapelera'); if (!cont) return;
@@ -941,12 +996,8 @@ function renderPapelera() {
     const fecha = new Date(p.fecha).toLocaleDateString('es-CL');
     const tipoLabel = { notas: '📝', tareas: '✅', personas: '👥' }[p.tipo] || '';
     const titulo = item.titulo || item.descripcion || item.nombre || '(sin título)';
-    const diasRestantes = Math.ceil((p.fecha + PAPELERA_TTL - Date.now()) / (24*60*60*1000));
-    return `<div class="papelera-item">
-      <div class="title">${tipoLabel} ${escapeHtml(String(titulo).slice(0,60))}</div>
-      <div class="body">${fecha} · quedan ${diasRestantes}d</div>
-      <div class="btns"><button class="btn primary small" data-restaurar="${i}">♻️ Restaurar</button><button class="btn danger small" data-eliminar-def="${i}">🗑️ Definitivo</button></div>
-    </div>`;
+    const dias = Math.ceil((p.fecha + PAPELERA_TTL - Date.now()) / (24*60*60*1000));
+    return `<div class="papelera-item"><div class="title">${tipoLabel} ${escapeHtml(String(titulo).slice(0,60))}</div><div class="body">${fecha} · quedan ${dias}d</div><div class="btns"><button class="btn primary small" data-restaurar="${i}">♻️ Restaurar</button><button class="btn danger small" data-eliminar-def="${i}">🗑️ Definitivo</button></div></div>`;
   }).join('');
   cont.querySelectorAll('[data-restaurar]').forEach(b => { b.onclick = () => restaurarDePapelera(+b.dataset.restaurar); });
   cont.querySelectorAll('[data-eliminar-def]').forEach(b => { b.onclick = () => eliminarDefinitivo(+b.dataset.eliminarDef); });
@@ -965,13 +1016,14 @@ async function importarJSON(file) {
     const texto = await file.text();
     const data = JSON.parse(texto);
     if (!data.notas && !data.tareas && !data.personas) throw new Error('Formato inválido');
-    if (!confirm('Reemplazará TODOS los datos actuales. ¿Continuar?')) return;
+    if (!confirm('Reemplazará TODOS los datos. ¿Continuar?')) return;
     notas = data.notas || []; tareas = data.tareas || []; personas = data.personas || [];
     eliminados = data.eliminados || { notas: [], tareas: [], personas: [], _ts: {} };
     ['notas','tareas','personas'].forEach(tipo => { eliminados[tipo] = (eliminados[tipo]||[]).map(String); });
     papelera = data.papelera || [];
     LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
     LS.set('eliminados', eliminados); LS.set('papelera', papelera);
+    ultimoHashSync = ''; pendingPush = true; LS.set('pendingPush', true);
     pushASync();
     renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderPapelera();
     toast('📤 Importado');
@@ -982,9 +1034,8 @@ function exportarICS() {
   if (!tareasConFecha.length) return toast('No hay tareas con fecha');
   const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jarvis//ES','CALSCALE:GREGORIAN'];
   tareasConFecha.forEach(t => {
-    const fecha = t.fecha.replace(/-/g, '');
-    const hora = (t.hora || '09:00').replace(':', '') + '00';
-    lines.push('BEGIN:VEVENT','UID:' + String(t.id) + '@jarvis','DTSTART:' + fecha + 'T' + hora,'SUMMARY:' + (t.descripcion || 'Tarea').replace(/[\n\r]/g, ' '),'END:VEVENT');
+    const f = t.fecha.replace(/-/g, ''); const h = (t.hora || '09:00').replace(':', '') + '00';
+    lines.push('BEGIN:VEVENT','UID:' + String(t.id) + '@jarvis','DTSTART:' + f + 'T' + h,'SUMMARY:' + (t.descripcion || 'Tarea').replace(/[\n\r]/g, ' '),'END:VEVENT');
   });
   lines.push('END:VCALENDAR');
   const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
@@ -995,10 +1046,7 @@ function exportarICS() {
 
 /* ===== TAGS ===== */
 function parseTags(str) { if (!str) return []; return str.split(',').map(s => s.trim()).filter(Boolean).slice(0, 5); }
-function renderTagsHTML(tags) {
-  if (!tags || !tags.length) return '';
-  return '<div class="tags-row">' + tags.map(t => `<span class="tag">🏷️ ${escapeHtml(t)}</span>`).join('') + '</div>';
-}
+function renderTagsHTML(tags) { if (!tags || !tags.length) return ''; return '<div class="tags-row">' + tags.map(t => `<span class="tag">🏷️ ${escapeHtml(t)}</span>`).join('') + '</div>'; }
 let tagFiltroNotas = '', tagFiltroTareas = '';
 function recolectarTags() {
   const tN = new Set(), tT = new Set();
@@ -1024,30 +1072,28 @@ function renderTagsFilter() {
   build(r.tareas, tagFiltroTareas, $('tagsFilterTareas'));
 }
 function editarTagsNota(nota) {
-  const nuevo = prompt('Etiquetas (coma):', (nota.tags||[]).join(', '));
-  if (nuevo === null) return;
-  nota.tags = parseTags(nuevo); nota.fecha = new Date().toISOString();
-  LS.set('notas', notas); pushASync(); renderNotas(); renderTagsFilter();
-  toast('🏷️ Actualizado');
+  const n = prompt('Etiquetas (coma):', (nota.tags||[]).join(', '));
+  if (n === null) return;
+  nota.tags = parseTags(n); nota.fecha = new Date().toISOString();
+  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas(); renderTagsFilter(); toast('🏷️ Actualizado');
 }
 function editarTagsTarea(t) {
-  const nuevo = prompt('Etiquetas (coma):', (t.tags||[]).join(', '));
-  if (nuevo === null) return;
-  t.tags = parseTags(nuevo); t.fecha = t.fecha || new Date().toISOString();
-  LS.set('tareas', tareas); pushASync(); renderTareas(); renderTagsFilter();
-  toast('🏷️ Actualizado');
+  const n = prompt('Etiquetas (coma):', (t.tags||[]).join(', '));
+  if (n === null) return;
+  t.tags = parseTags(n); t.fecha = t.fecha || new Date().toISOString();
+  LS.set('tareas', tareas); pendingPush = true; pushASync(); renderTareas(); renderTagsFilter(); toast('🏷️ Actualizado');
 }
-function proximaFecha(fechaStr, recurrencia) {
+function proximaFecha(fechaStr, rec) {
   if (!fechaStr) return '';
   const f = new Date(fechaStr + 'T12:00:00');
-  if (recurrencia === 'diario') f.setDate(f.getDate() + 1);
-  else if (recurrencia === 'semanal') f.setDate(f.getDate() + 7);
-  else if (recurrencia === 'mensual') f.setMonth(f.getMonth() + 1);
-  else if (recurrencia === 'anual') f.setFullYear(f.getFullYear() + 1);
+  if (rec === 'diario') f.setDate(f.getDate() + 1);
+  else if (rec === 'semanal') f.setDate(f.getDate() + 7);
+  else if (rec === 'mensual') f.setMonth(f.getMonth() + 1);
+  else if (rec === 'anual') f.setFullYear(f.getFullYear() + 1);
   return f.toISOString().slice(0,10);
 }
 
-/* ===== BUSCAR ===== */
+/* ===== BUSCAR + STATS ===== */
 function buscarGlobal(q) {
   const query = (q || '').toLowerCase().trim();
   if (!query) return { notas: [], tareas: [], personas: [] };
@@ -1058,40 +1104,34 @@ function buscarGlobal(q) {
   };
 }
 function renderBusquedaGlobal() {
-  const q = $('buscarGlobal').value;
-  const cont = $('resultadosBusqueda');
-  const r = buscarGlobal(q);
+  const q = $('buscarGlobal').value; const cont = $('resultadosBusqueda'); const r = buscarGlobal(q);
+  if (!q.trim()) { cont.innerHTML = '<p class="hint">Escribe algo.</p>'; return; }
   const total = r.notas.length + r.tareas.length + r.personas.length;
-  if (!q.trim()) { cont.innerHTML = '<p class="hint">Escribe algo para buscar.</p>'; return; }
-  if (total === 0) { cont.innerHTML = '<p class="hint">Sin resultados para "' + escapeHtml(q) + '"</p>'; return; }
+  if (!total) { cont.innerHTML = '<p class="hint">Sin resultados</p>'; return; }
   let html = '';
   if (r.notas.length) { html += '<h3 style="color:var(--gold);font-size:.85rem;margin:14px 0 8px">📝 Notas (' + r.notas.length + ')</h3>'; html += r.notas.map(n => `<div class="nota-card"><h3>${escapeHtml(n.titulo)}</h3><div class="texto">${escapeHtml((n.texto||'').slice(0,200))}</div></div>`).join(''); }
   if (r.tareas.length) { html += '<h3 style="color:var(--gold);font-size:.85rem;margin:14px 0 8px">✅ Tareas (' + r.tareas.length + ')</h3>'; html += r.tareas.map(renderTareaHTML).join(''); }
   if (r.personas.length) { html += '<h3 style="color:var(--gold);font-size:.85rem;margin:14px 0 8px">👥 Personas (' + r.personas.length + ')</h3>'; html += r.personas.map(p => `<div class="persona-card"><h3>${escapeHtml(p.nombre)}</h3></div>`).join(''); }
   cont.innerHTML = html;
 }
-
-/* ===== STATS ===== */
 function renderEstadisticas() {
   const total = notas.length + tareas.length + personas.length;
-  const tareasPend = tareas.filter(t => !t.hecha).length;
-  const tareasHechas = tareas.filter(t => t.hecha).length;
-  const notasHoy = notas.filter(n => new Date(n.fecha).toDateString() === new Date().toDateString()).length;
-  const notasSemana = notas.filter(n => Date.now() - new Date(n.fecha).getTime() < 7*24*60*60*1000).length;
-  const adjuntosTotal = notas.reduce((sum, n) => sum + (n.adjuntos?.length || 0), 0);
-  $('statContenido').innerHTML = `
-    <div class="stat-grid">
-      <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total</div></div>
-      <div class="stat-card"><div class="num">${notas.length}</div><div class="lbl">📝 Notas</div></div>
-      <div class="stat-card"><div class="num">${tareas.length}</div><div class="lbl">✅ Tareas</div></div>
-      <div class="stat-card"><div class="num">${personas.length}</div><div class="lbl">👥 Personas</div></div>
-      <div class="stat-card"><div class="num">${tareasPend}</div><div class="lbl">⏳ Pendientes</div></div>
-      <div class="stat-card"><div class="num">${tareasHechas}</div><div class="lbl">✓ Completadas</div></div>
-      <div class="stat-card"><div class="num">${notasHoy}</div><div class="lbl">Hoy</div></div>
-      <div class="stat-card"><div class="num">${notasSemana}</div><div class="lbl">Esta semana</div></div>
-      <div class="stat-card"><div class="num">${adjuntosTotal}</div><div class="lbl">📎 Adjuntos</div></div>
-      <div class="stat-card"><div class="num">${papelera.length}</div><div class="lbl">🗑️ Papelera</div></div>
-    </div>`;
+  const tP = tareas.filter(t => !t.hecha).length, tH = tareas.filter(t => t.hecha).length;
+  const nH = notas.filter(n => new Date(n.fecha).toDateString() === new Date().toDateString()).length;
+  const nS = notas.filter(n => Date.now() - new Date(n.fecha).getTime() < 7*24*60*60*1000).length;
+  const adj = notas.reduce((s, n) => s + (n.adjuntos?.length || 0), 0);
+  $('statContenido').innerHTML = `<div class="stat-grid">
+    <div class="stat-card"><div class="num">${total}</div><div class="lbl">Total</div></div>
+    <div class="stat-card"><div class="num">${notas.length}</div><div class="lbl">📝 Notas</div></div>
+    <div class="stat-card"><div class="num">${tareas.length}</div><div class="lbl">✅ Tareas</div></div>
+    <div class="stat-card"><div class="num">${personas.length}</div><div class="lbl">👥 Personas</div></div>
+    <div class="stat-card"><div class="num">${tP}</div><div class="lbl">⏳ Pendientes</div></div>
+    <div class="stat-card"><div class="num">${tH}</div><div class="lbl">✓ Completadas</div></div>
+    <div class="stat-card"><div class="num">${nH}</div><div class="lbl">Hoy</div></div>
+    <div class="stat-card"><div class="num">${nS}</div><div class="lbl">Esta semana</div></div>
+    <div class="stat-card"><div class="num">${adj}</div><div class="lbl">📎 Adjuntos</div></div>
+    <div class="stat-card"><div class="num">${papelera.length}</div><div class="lbl">🗑️ Papelera</div></div>
+  </div>`;
 }
 
 /* ===== NOTIFICACIONES ===== */
@@ -1110,8 +1150,7 @@ function iniciarChequeoNotif() {
 }
 function chequearNotif() {
   if (!('Notification' in window) || Notification.permission !== 'granted') return;
-  const yaNotif = LS.get('notifHechas', []);
-  const ahora = Date.now();
+  const yaNotif = LS.get('notifHechas', []); const ahora = Date.now();
   tareas.forEach(t => {
     if (t.hecha || !t.fecha || yaNotif.some(x => eqId(x, t.id))) return;
     const fh = new Date(`${t.fecha}T${t.hora||'09:00'}:00`).getTime();
@@ -1123,11 +1162,10 @@ function chequearNotif() {
   });
 }
 
-/* ===== VINCULAR PERSONAS ===== */
+/* ===== VINCULAR ===== */
 function buscarPersonaPorNombre(nombre) {
   if (!nombre) return null;
-  const low = String(nombre).toLowerCase().trim();
-  if (!low) return null;
+  const low = String(nombre).toLowerCase().trim(); if (!low) return null;
   const exactos = personas.filter(p => (p.nombre||'').toLowerCase() === low);
   if (exactos.length === 1) return exactos[0];
   const parciales = personas.filter(p => (p.nombre||'').toLowerCase().includes(low) || low.includes((p.nombre||'').toLowerCase().split(' ')[0]));
@@ -1136,21 +1174,20 @@ function buscarPersonaPorNombre(nombre) {
 }
 function vincularPersonasPorTexto(nota) {
   if (!nota || !nota.texto) return [];
-  const vinculadas = new Set(nota.personasVinculadas || []);
+  const v = new Set(nota.personasVinculadas || []);
   personas.forEach(p => {
     if (!p.nombre) return;
-    const pn = p.nombre.split(' ')[0];
-    if (pn.length < 3) return;
-    if (new RegExp('\\b' + pn + '\\b', 'i').test(nota.texto)) vinculadas.add(String(p.id));
+    const pn = p.nombre.split(' ')[0]; if (pn.length < 3) return;
+    if (new RegExp('\\b' + pn + '\\b', 'i').test(nota.texto)) v.add(String(p.id));
   });
-  return Array.from(vinculadas);
+  return Array.from(v);
 }
 function getPersona(id) { return personas.find(p => eqId(p.id, id)); }
-function getNotasDePersona(personaId) { return notas.filter(n => (n.personasVinculadas||[]).some(id => eqId(id, personaId))); }
-function getTareasDePersona(personaId) {
-  const persona = getPersona(personaId); if (!persona) return [];
-  const nL = (persona.nombre||'').toLowerCase();
-  return tareas.filter(t => eqId(t.personaId, personaId) || (t.persona && t.persona.toLowerCase().includes(nL.split(' ')[0].toLowerCase())));
+function getNotasDePersona(pid) { return notas.filter(n => (n.personasVinculadas||[]).some(id => eqId(id, pid))); }
+function getTareasDePersona(pid) {
+  const p = getPersona(pid); if (!p) return [];
+  const nL = (p.nombre||'').toLowerCase();
+  return tareas.filter(t => eqId(t.personaId, pid) || (t.persona && t.persona.toLowerCase().includes(nL.split(' ')[0].toLowerCase())));
 }
 
 /* ===== FOCUS ===== */
@@ -1170,16 +1207,11 @@ function renderFocus() {
   if (focusIdx < 0) focusIdx = 0;
   const t = focusLista[focusIdx];
   $('focusContador').textContent = (focusIdx + 1) + ' de ' + focusLista.length;
-  cont.innerHTML = `<div class="tarea-foco">
-    <h2>${escapeHtml(t.descripcion)}</h2>
+  cont.innerHTML = `<div class="tarea-foco"><h2>${escapeHtml(t.descripcion)}</h2>
     ${t.persona ? `<div class="detail">👤 <b>${escapeHtml(t.persona)}</b></div>` : ''}
     ${t.fecha ? `<div class="detail">📅 ${t.fecha}${t.hora ? ' · 🕐 ' + t.hora : ''}</div>` : ''}
     ${t.tags && t.tags.length ? renderTagsHTML(t.tags) : ''}
-    <div class="btns">
-      <button class="btn primary" id="focusCompletar">✅ Completar</button>
-      <button class="btn" id="focusAnterior" ${focusIdx === 0 ? 'disabled style="opacity:.4"' : ''}>⏮ Anterior</button>
-      <button class="btn" id="focusSiguiente" ${focusIdx >= focusLista.length - 1 ? 'disabled style="opacity:.4"' : ''}>Siguiente ⏭</button>
-    </div>
+    <div class="btns"><button class="btn primary" id="focusCompletar">✅ Completar</button><button class="btn" id="focusAnterior" ${focusIdx === 0 ? 'disabled style="opacity:.4"' : ''}>⏮ Anterior</button><button class="btn" id="focusSiguiente" ${focusIdx >= focusLista.length - 1 ? 'disabled style="opacity:.4"' : ''}>Siguiente ⏭</button></div>
   </div>`;
   const btnC = $('focusCompletar');
   if (btnC) btnC.onclick = () => {
@@ -1187,7 +1219,7 @@ function renderFocus() {
     tr.hecha = true; tr.completadaEn = new Date().toISOString();
     tr.fecha = tr.fecha || new Date().toISOString();
     if (tr.recurrencia && tr.fecha) tareas.unshift({ ...tr, id: nuevoId(), fecha: proximaFecha(tr.fecha, tr.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
-    LS.set('tareas', tareas); pushASync();
+    LS.set('tareas', tareas); pendingPush = true; pushASync();
     focusLista = focusLista.filter(x => !eqId(x.id, t.id));
     renderTareas(); renderCalendario(); toast('✅ Completada');
     if (focusIdx >= focusLista.length) focusIdx = Math.max(0, focusLista.length - 1);
@@ -1223,14 +1255,13 @@ $('adjInput').onchange = async (e) => {
       thumbBase64 = await blobADataURL(thumb);
     } catch(err) { blobFull = file; }
   } else if (file.size < 500 * 1024) { try { thumbBase64 = await blobADataURL(file); } catch(e){} }
-  try { await idbPut(adjId, blobFull); } catch(err) { return toast('❌ Error guardando'); }
+  try { await idbPut(adjId, blobFull); } catch(err) { return toast('❌ Error'); }
   nota.adjuntos = nota.adjuntos || [];
   nota.adjuntos.push({ id: adjId, tipo, nombre: file.name, size: blobFull.size, mime: blobFull.type || file.type, thumb: thumbBase64 });
   nota.fecha = new Date().toISOString();
-  LS.set('notas', notas); pushASync(); renderNotas();
+  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas();
   toast(`📎 ${thumbBase64 ? 'Sincronizado' : 'Local'}`);
 };
-
 async function renderAdjuntosHTML(nota) {
   if (!nota.adjuntos || !nota.adjuntos.length) return '';
   let html = '<div class="adjuntos-grid">';
@@ -1239,11 +1270,7 @@ async function renderAdjuntosHTML(nota) {
     if (adj.tipo === 'image') {
       try { const blob = await idbGet(adj.id); if (blob) { srcImg = URL.createObjectURL(blob); esLocal = true; } } catch(e){}
       if (!srcImg && adj.thumb) srcImg = adj.thumb;
-      html += `<div class="adjunto" data-adj-id="${adj.id}">
-        ${srcImg ? `<img src="${srcImg}" alt="">` : '<span style="color:var(--muted);font-size:.7rem">sin imagen</span>'}
-        ${esLocal ? '<span class="local-badge">HD</span>' : '<span class="sync-badge">Sync</span>'}
-        <button class="x-adj" data-del-adj="${adj.id}" data-nota-id="${nota.id}">✕</button>
-      </div>`;
+      html += `<div class="adjunto" data-adj-id="${adj.id}">${srcImg ? `<img src="${srcImg}" alt="">` : '<span style="color:var(--muted);font-size:.7rem">sin imagen</span>'}${esLocal ? '<span class="local-badge">HD</span>' : '<span class="sync-badge">Sync</span>'}<button class="x-adj" data-del-adj="${adj.id}" data-nota-id="${nota.id}">✕</button></div>`;
     } else if (adj.tipo === 'audio') {
       html += `<div class="adjunto audio" data-adj-id="${adj.id}"><div class="icono">🎵</div><div class="nombre">${escapeHtml(adj.nombre.slice(0,20))}</div><button class="x-adj" data-del-adj="${adj.id}" data-nota-id="${nota.id}">✕</button></div>`;
     } else {
@@ -1253,16 +1280,10 @@ async function renderAdjuntosHTML(nota) {
   html += '</div>';
   return html;
 }
-
 async function abrirVisorAdjunto(adjId) {
   try {
     let blob = await idbGet(adjId);
-    if (!blob) {
-      for (const n of notas) {
-        const adj = (n.adjuntos||[]).find(a => a.id === adjId);
-        if (adj && adj.thumb) { blob = await dataURLABlob(adj.thumb); break; }
-      }
-    }
+    if (!blob) { for (const n of notas) { const a = (n.adjuntos||[]).find(x => x.id === adjId); if (a && a.thumb) { blob = await dataURLABlob(a.thumb); break; } } }
     if (!blob) return toast('⚠️ No disponible');
     const cont = $('visorContenido'); cont.innerHTML = '';
     if (blob.type.startsWith('image/')) cont.innerHTML = `<img src="${URL.createObjectURL(blob)}" alt="">`;
@@ -1272,14 +1293,13 @@ async function abrirVisorAdjunto(adjId) {
   } catch(e) { toast('Error'); }
 }
 $('visorCerrar').onclick = () => $('visorAdjunto').classList.remove('show');
-
 async function eliminarAdjunto(notaId, adjId) {
   if (!confirm('¿Eliminar adjunto?')) return;
   const nota = notas.find(n => eqId(n.id, notaId)); if (!nota) return;
   nota.adjuntos = (nota.adjuntos||[]).filter(a => a.id !== adjId);
   nota.fecha = new Date().toISOString();
   try { await idbDelete(adjId); } catch(e){}
-  LS.set('notas', notas); pushASync(); renderNotas();
+  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas();
   toast('🗑️ Eliminado');
 }
 
@@ -1287,11 +1307,7 @@ async function eliminarAdjunto(notaId, adjId) {
 function abrirModalCompartir(notaId) {
   const nota = notas.find(n => eqId(n.id, notaId)); if (!nota) return;
   const cont = $('compartirOpciones');
-  cont.innerHTML = `
-    <div class="opcion" data-comp="share"><span class="ico">📱</span> Compartir</div>
-    <div class="opcion" data-comp="email"><span class="ico">📧</span> Correo</div>
-    <div class="opcion" data-comp="whatsapp"><span class="ico">💬</span> WhatsApp</div>
-    <div class="opcion" data-comp="copiar"><span class="ico">📋</span> Copiar texto</div>`;
+  cont.innerHTML = `<div class="opcion" data-comp="share"><span class="ico">📱</span> Compartir</div><div class="opcion" data-comp="email"><span class="ico">📧</span> Correo</div><div class="opcion" data-comp="whatsapp"><span class="ico">💬</span> WhatsApp</div><div class="opcion" data-comp="copiar"><span class="ico">📋</span> Copiar</div>`;
   cont.querySelectorAll('[data-comp]').forEach(b => { b.onclick = async () => { $('modalCompartir').classList.remove('show'); await compartirNota(nota, b.dataset.comp); }; });
   $('modalCompartir').classList.add('show');
 }
@@ -1322,67 +1338,44 @@ async function compartirNota(nota, modo) {
   else { copiar(texto); toast('📋 Copiado'); }
 }
 
-/* ===== TRADUCIR CON CONTROLES (v23) ===== */
+/* ===== TRADUCIR ===== */
 $('btnTraducir').onclick = () => {
   const t = txt.value.trim(); if (!t) return toast('No hay texto');
-  detenerTodo();  // ⬅ PARAR GRABACIÓN
-  TTS.stop();     // ⬅ PARAR TTS
+  detenerTodo(); TTS.stop();
   $('modalTraducir').classList.add('show');
 };
 $('tradCancelar').onclick = () => $('modalTraducir').classList.remove('show');
-document.querySelectorAll('#modalTraducir [data-lang]').forEach(b => {
-  b.onclick = async () => { $('modalTraducir').classList.remove('show'); await ejecutarTraduccion(b.dataset.lang); };
-});
-
-$('btnCerrarTrad').onclick = () => {
-  $('traduccionBox').classList.remove('show');
-  $('traduccionTexto').innerHTML = '';
-  TTS.stop();
-};
-
+document.querySelectorAll('#modalTraducir [data-lang]').forEach(b => { b.onclick = async () => { $('modalTraducir').classList.remove('show'); await ejecutarTraduccion(b.dataset.lang); }; });
+$('btnCerrarTrad').onclick = () => { $('traduccionBox').classList.remove('show'); $('traduccionTexto').innerHTML = ''; TTS.stop(); };
 async function ejecutarTraduccion(code) {
-  detenerTodo();  // Parar grabación por si acaso
-  TTS.stop();
+  detenerTodo(); TTS.stop();
   const texto = txt.value.trim();
   const nombre = code === 'en' ? 'Inglés' : 'Español';
   const bandera = code === 'en' ? '🇬🇧' : '🇪🇸';
-  const box = $('traduccionBox');
-  const out = $('traduccionTexto');
+  const box = $('traduccionBox'); const out = $('traduccionTexto');
   $('traduccionLabel').textContent = `${bandera} Traducción a ${nombre}`;
   box.classList.add('show');
   out.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⏳ Traduciendo...</div>';
-
   try {
     const trad = await traducirTexto(texto, code);
-    out.innerHTML = `
-      <div class="traduccion-result">${escapeHtml(trad)}</div>
+    out.innerHTML = `<div class="traduccion-result">${escapeHtml(trad)}</div>
       <div class="traduccion-actions">
         <button class="btn primary small" data-trad="play">▶ Reproducir</button>
         <button class="btn small" data-trad="pause">⏸ Pausa</button>
         <button class="btn small" data-trad="stop">⏹ Detener</button>
         <button class="btn small" data-trad="copiar">📋 Copiar</button>
       </div>`;
-
     out.querySelectorAll('[data-trad]').forEach(btn => {
       btn.onclick = () => {
         const action = btn.dataset.trad;
-        if (action === 'play') {
-          TTS.play(trad, code);
-          toast(`🔊 Leyendo en ${nombre}`);
-        } else if (action === 'pause') {
-          TTS.pauseToggle();
-        } else if (action === 'stop') {
-          TTS.stop();
-        } else if (action === 'copiar') {
-          copiar(trad);
-        }
+        if (action === 'play') { TTS.play(trad, code); toast(`🔊 Leyendo en ${nombre}`); }
+        else if (action === 'pause') TTS.pauseToggle();
+        else if (action === 'stop') TTS.stop();
+        else if (action === 'copiar') copiar(trad);
       };
     });
-  } catch(e) {
-    out.innerHTML = '<div style="color:#ff8a80;padding:10px">❌ Error: ' + escapeHtml(e.message) + '</div>';
-  }
+  } catch(e) { out.innerHTML = '<div style="color:#ff8a80;padding:10px">❌ ' + escapeHtml(e.message) + '</div>'; }
 }
-
 async function traducirTexto(texto, targetLang){
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(texto)}`;
   const res = await fetch(url); if(!res.ok) throw new Error('HTTP ' + res.status);
@@ -1405,11 +1398,9 @@ document.querySelectorAll('nav button').forEach(b=>{
     if(b.dataset.tab==='personas') renderPersonas();
     if(b.dataset.tab==='buscar') renderBusquedaGlobal();
     if(b.dataset.tab==='stats') renderEstadisticas();
-    if(b.dataset.tab==='config') { renderPapelera(); actualizarIndicatorSync(); actualizarEstadoApiKey(); }
-    if (tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true);
+    if(b.dataset.tab==='config') { renderPapelera(); actualizarIndicatorSync(); actualizarEstadoApiKey(); actualizarBannerModoLocal(); }
   };
 });
-
 let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
 const modales = ['modalAdjuntar','modalCompartir','modalTraducir','visorAdjunto','focusOverlay','panelDia'];
 document.addEventListener('touchstart', (e) => {
@@ -1478,8 +1469,7 @@ function crearReconocimiento() {
   r.lang = 'es-CL'; r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
   r.onstart = () => { reiniciando = false; ultimoResultado = Date.now(); };
   r.onresult = (e) => {
-    ultimoResultado = Date.now();
-    let interim = '';
+    ultimoResultado = Date.now(); let interim = '';
     for (let i = e.resultIndex; i < e.results.length; i++) {
       const res = e.results[i]; const alt = res[0]; const t = alt.transcript;
       const esFinalReal = res.isFinal && !(ES_MOVIL && alt.confidence === 0);
@@ -1499,7 +1489,7 @@ function crearReconocimiento() {
   return r;
 }
 async function iniciarVivo() {
-  if (!SR) { alert('Este navegador no soporta reconocimiento.'); return; }
+  if (!SR) { alert('Navegador sin reconocimiento.'); return; }
   if (!(await asegurarPermisoMic())) return;
   if (!rec) rec = crearReconocimiento();
   modo = 'continuo';
@@ -1517,14 +1507,13 @@ async function iniciarEstable() {
   try { audioStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
   catch(e) { alert('Sin acceso al micrófono.'); return; }
   audioChunks = [];
-  const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
-  try { mediaRecorder = mimeType ? new MediaRecorder(audioStream, { mimeType }) : new MediaRecorder(audioStream); }
+  const mt = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+  try { mediaRecorder = mt ? new MediaRecorder(audioStream, { mimeType: mt }) : new MediaRecorder(audioStream); }
   catch(e) { toast('No soportado'); audioStream.getTracks().forEach(t => t.stop()); return; }
   mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
   mediaRecorder.onstop = async () => {
     const blob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
-    audioChunks = [];
-    audioStream.getTracks().forEach(t => t.stop()); audioStream = null;
+    audioChunks = []; audioStream.getTracks().forEach(t => t.stop()); audioStream = null;
     btnPTT.classList.remove('rec'); btnPTT.classList.add('proc');
     $('fabLabel').textContent = 'TRANSCRIBIENDO'; $('fabSub').textContent = 'espera...';
     try {
@@ -1534,8 +1523,7 @@ async function iniciarEstable() {
     } catch(e) { toast('❌ ' + e.message); }
     grabandoEstable = false; btnPTT.classList.remove('proc'); actualizarUI();
   };
-  mediaRecorder.start();
-  grabandoEstable = true;
+  mediaRecorder.start(); grabandoEstable = true;
   btnPTT.classList.add('rec');
   $('fabLabel').textContent = 'GRABANDO'; $('fabSub').textContent = 'toca para parar';
   toast('🎙️ Grabando...');
@@ -1597,7 +1585,7 @@ function guardarNotaRapida() {
   notas.unshift(nueva);
   LS.set('notas', notas);
   localStorage.removeItem('jarvis_draft');
-  pushASync(true);
+  pendingPush = true; pushASync(true);
   $('pgTitulo').textContent = '✅ Guardada';
   $('panelGuardado').classList.add('show');
   clearTimeout(timerPanelGuardado);
@@ -1617,7 +1605,7 @@ $('btnPasar').onclick = () => {
   notas.unshift(nueva);
   LS.set('notas', notas);
   localStorage.removeItem('jarvis_draft');
-  pushASync(true);
+  pendingPush = true; pushASync(true);
   bufferFinal = ''; interimActual = ''; txt.value = '';
   $('traduccionBox').classList.remove('show');
   toast('📤 Abriendo Notas...');
@@ -1638,8 +1626,7 @@ async function renderNotas(){
     const estaLeyendo = TTS.activo && eqId(TTS.notaIdActual, n.id);
     const adjuntosHtml = await renderAdjuntosHTML(n);
     const vinculosHtml = (n.personasVinculadas && n.personasVinculadas.length)
-      ? `<div class="vinculos">${n.personasVinculadas.map(pid => { const p = getPersona(pid); return p ? `<span class="vinculo-chip" data-vincular-persona="${pid}">👤 ${escapeHtml(p.nombre)}</span>` : ''; }).join('')}</div>`
-      : '';
+      ? `<div class="vinculos">${n.personasVinculadas.map(pid => { const p = getPersona(pid); return p ? `<span class="vinculo-chip" data-vincular-persona="${pid}">👤 ${escapeHtml(p.nombre)}</span>` : ''; }).join('')}</div>` : '';
     let textoHtml;
     if (estaLeyendo && TTS.chunks.length) {
       textoHtml = TTS.chunks.map((c, i) => `<span class="hl-chunk ${i === TTS.i ? 'hl-activo' : ''}" data-hl="${i}">${escapeHtml(c)}</span> `).join('');
@@ -1649,9 +1636,7 @@ async function renderNotas(){
       <input type="checkbox" class="check" data-check="${n.id}" ${sel?'checked':''}>
       <h3>${escapeHtml(n.titulo)}</h3>
       <div class="texto" data-texto-nota="${n.id}">${textoHtml}</div>
-      <div class="nota-play-row">
-        <button class="nota-play-btn ${estaLeyendo ? 'playing' : ''}" data-play-nota="${n.id}">${estaLeyendo ? '⏹ Detener' : '▶ Escuchar nota'}</button>
-      </div>
+      <div class="nota-play-row"><button class="nota-play-btn ${estaLeyendo ? 'playing' : ''}" data-play-nota="${n.id}">${estaLeyendo ? '⏹ Detener' : '▶ Escuchar nota'}</button></div>
       ${renderTagsHTML(n.tags)}
       ${adjuntosHtml}
       ${vinculosHtml}
@@ -1690,7 +1675,6 @@ function togglePlayNota(notaId) {
   TTS.play(nota.texto, idioma, nota.id);
   toast(`🔊 Leyendo (${idioma.toUpperCase()})`);
 }
-
 function renderBarraSeleccion(){ const n = seleccionadas.size; const barra = $('barraSeleccion'); if (n >= 2) { barra.classList.add('show'); $('selCount').textContent = n + ' seleccionadas'; } else barra.classList.remove('show'); }
 $('btnCancelarSel').onclick = () => { seleccionadas.clear(); renderBarraSeleccion(); renderNotas(); };
 $('btnUnirSel').onclick = () => {
@@ -1702,7 +1686,7 @@ $('btnUnirSel').onclick = () => {
   const nueva = { id: nuevoId(), titulo: titulo.trim(), texto: textoUnido, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
-  LS.set('notas', notas); pushASync();
+  LS.set('notas', notas); pendingPush = true; pushASync();
   seleccionadas.clear(); renderBarraSeleccion(); renderNotas();
   toast('🔗 Unificada');
 };
@@ -1711,7 +1695,7 @@ $('buscarNotas').oninput = renderNotas;
 function manejarAccionNota(accion, id) {
   const idStr = String(id);
   const idx = notas.findIndex(n => eqId(n.id, idStr));
-  if (idx === -1) { toast('⚠️ Nota no encontrada'); renderNotas(); return; }
+  if (idx === -1) { toast('⚠️ Nota no encontrada (recargando)'); renderNotas(); return; }
   const nota = notas[idx];
   switch(accion) {
     case 'copiar': copiar(nota.texto); break;
@@ -1724,22 +1708,19 @@ function manejarAccionNota(accion, id) {
     case 'concatenar': concatenarCon(nota); break;
     case 'tags': editarTagsNota(nota); break;
     case 'editar':
-      const nuevoTitulo = prompt('Nuevo título:', nota.titulo);
-      if (nuevoTitulo && nuevoTitulo.trim()) {
-        nota.titulo = nuevoTitulo.trim();
-        nota.fecha = new Date().toISOString();
-        LS.set('notas', notas); pushASync(); renderNotas(); toast('✏️ Actualizado');
-      }
+      const nt = prompt('Nuevo título:', nota.titulo);
+      if (nt && nt.trim()) { nota.titulo = nt.trim(); nota.fecha = new Date().toISOString(); LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas(); toast('✏️ Actualizado'); }
       break;
     case 'eliminar':
       if (!confirm('¿Mover a papelera?')) return;
-      // Copia antes de borrar (para papelera)
-      const copiaParaPapelera = JSON.parse(JSON.stringify(nota));
-      moverAPapelera('notas', copiaParaPapelera);
+      /* LOCAL FIRST: borrar siempre local, después sincronizar */
+      const copia = JSON.parse(JSON.stringify(nota));
+      moverAPapelera('notas', copia);
       notas.splice(idx, 1);
       LS.set('notas', notas);
       renderNotas(); renderPapelera();
-      pushASync();
+      pendingPush = true;
+      pushASync(true);  /* en background, no bloquea */
       toast('🗑️ Eliminada');
       break;
   }
@@ -1759,19 +1740,18 @@ function concatenarCon(nota) {
   const nueva = { id: nuevoId(), titulo: titulo.trim(), texto: `[${nota.titulo}]\n${nota.texto}\n\n---\n\n[${otra.titulo}]\n${otra.texto}`, fecha: new Date().toISOString(), concatenadaDe: [nota.id, otra.id], tags: [], adjuntos: [] };
   nueva.personasVinculadas = vincularPersonasPorTexto(nueva);
   notas.unshift(nueva);
-  LS.set('notas', notas); pushASync(); renderNotas(); toast('🔗 Unificada');
+  LS.set('notas', notas); pendingPush = true; pushASync(); renderNotas(); toast('🔗 Unificada');
 }
-
 function guardarNotaEnCalendario(nota) {
   const fecha = prompt('¿Qué día? (YYYY-MM-DD)', new Date().toISOString().slice(0,10));
   if (!fecha) return;
   tareas.unshift({ id: nuevoId(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha, hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
-  LS.set('tareas', tareas); pushASync();
+  LS.set('tareas', tareas); pendingPush = true; pushASync();
   renderTareas(); renderCalendario(); toast('📅 Guardado');
 }
 function crearTareaDesdeNota(nota) {
   tareas.unshift({ id: nuevoId(), descripcion: nota.titulo, persona: '', contacto: '', personaId: null, fecha: '', hora: '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), tags: [] });
-  LS.set('tareas', tareas); pushASync(); renderTareas(); toast('✅ Tarea creada');
+  LS.set('tareas', tareas); pendingPush = true; pushASync(); renderTareas(); toast('✅ Tarea creada');
 }
 
 async function analizarNota(nota) {
@@ -1780,9 +1760,9 @@ async function analizarNota(nota) {
   panel.innerHTML = '<div class="txt">⏳ Analizando...</div>';
   detenerTodo(); TTS.stop();
   const hoy = new Date().toISOString().slice(0,10);
-  const prompt2 = `Analiza esta nota y devuelve SOLO un JSON válido sin markdown:
+  const prompt2 = `Analiza y devuelve SOLO JSON sin markdown:
 {"resumen":"1-2 líneas","tareas":[{"descripcion":"qué","persona":"","fecha":"YYYY-MM-DD o vacío","hora":"HH:MM o vacío","contacto":"","prioridad":"alta|media|baja","recurrencia":"diario|semanal|mensual|anual|"}],"soluciones":["opción"],"recordatorios":["record"],"riesgos":["riesgo"]}
-Hoy es ${hoy}. No inventes datos.
+Hoy es ${hoy}. No inventes.
 NOTA:
 """${nota.texto}"""`;
   try {
@@ -1793,9 +1773,9 @@ NOTA:
     let data;
     try { data = JSON.parse(limpio); } catch(e) { panel.innerHTML = `<div class="txt">${escapeHtml(raw)}</div>`; return; }
     if (data.tareas) {
-      const vinculadas = new Set(nota.personasVinculadas || []);
-      data.tareas.forEach(t => { if (t.persona) { const p = buscarPersonaPorNombre(t.persona); if (p) vinculadas.add(String(p.id)); } });
-      nota.personasVinculadas = Array.from(vinculadas);
+      const v = new Set(nota.personasVinculadas || []);
+      data.tareas.forEach(t => { if (t.persona) { const p = buscarPersonaPorNombre(t.persona); if (p) v.add(String(p.id)); } });
+      nota.personasVinculadas = Array.from(v);
       LS.set('notas', notas);
     }
     panel.innerHTML = renderAnalisis(data, nota);
@@ -1810,20 +1790,10 @@ function renderAnalisis(data, nota) {
   if (data.tareas && data.tareas.length) {
     html += `<div class="seccion"><h4>✅ TAREAS (${data.tareas.length})</h4>`;
     data.tareas.forEach((t,i) => {
-      const pMatch = t.persona ? buscarPersonaPorNombre(t.persona) : null;
-      html += `<div class="tarea-item">
-        <div class="desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄 ${t.recurrencia}</span>` : ''}</div>
-        <div class="meta">
-          ${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pMatch ? ' ✓' : ''}</span>` : ''}
-          ${t.fecha ? `<span>📅 ${escapeHtml(t.fecha)}</span>` : ''}
-          ${t.hora ? `<span>🕐 ${escapeHtml(t.hora)}</span>` : ''}
-          ${t.prioridad ? `<span>⚡ ${escapeHtml(t.prioridad)}</span>` : ''}
-        </div>
-        <div class="botones">
-          <button class="btn primary small" data-accion-t="${i}" data-tipo="cal">📅 Cal</button>
-          <button class="btn small" data-accion-t="${i}" data-tipo="tarea">✅ Tarea</button>
-          <button class="btn small" data-accion-t="${i}" data-tipo="record">🔔 Record.</button>
-        </div>
+      const pM = t.persona ? buscarPersonaPorNombre(t.persona) : null;
+      html += `<div class="tarea-item"><div class="desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄 ${t.recurrencia}</span>` : ''}</div>
+        <div class="meta">${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pM ? ' ✓' : ''}</span>` : ''}${t.fecha ? `<span>📅 ${escapeHtml(t.fecha)}</span>` : ''}${t.hora ? `<span>🕐 ${escapeHtml(t.hora)}</span>` : ''}${t.prioridad ? `<span>⚡ ${escapeHtml(t.prioridad)}</span>` : ''}</div>
+        <div class="botones"><button class="btn primary small" data-accion-t="${i}" data-tipo="cal">📅 Cal</button><button class="btn small" data-accion-t="${i}" data-tipo="tarea">✅ Tarea</button><button class="btn small" data-accion-t="${i}" data-tipo="record">🔔 Record.</button></div>
       </div>`;
     });
     html += '</div>';
@@ -1834,19 +1804,16 @@ function renderAnalisis(data, nota) {
   html += `<div class="acciones-finales"><button class="btn primary" data-af="escuchar">🔊 Escuchar</button><button class="btn" data-af="copiar">📋</button><button class="btn ghost" data-af="cerrar">❌</button></div>`;
   return html;
 }
-
 function bindAnalisis(panel, data, nota) {
   panel.querySelectorAll('[data-accion-t]').forEach(b => {
     b.onclick = () => {
-      const idx = +b.dataset.accionT;
-      const tipo = b.dataset.tipo;
-      const t = data.tareas[idx]; if (!t) return;
+      const idx = +b.dataset.accionT; const tipo = b.dataset.tipo; const t = data.tareas[idx]; if (!t) return;
       if (tipo === 'cal') agregarTarea(t, nota, true);
       if (tipo === 'tarea') agregarTarea(t, nota, false);
       if (tipo === 'record') {
         const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
         tareas.unshift({ id: nuevoId(), descripcion: '🔔 ' + t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: t.fecha || '', hora: t.hora || '', hecha: false, completadaEn: null, recordatorio: true, fechaCreacion: Date.now(), tags: [] });
-        LS.set('tareas', tareas); pushASync(); renderTareas(); renderCalendario(); toast('🔔 Recordatorio');
+        LS.set('tareas', tareas); pendingPush = true; pushASync(); renderTareas(); renderCalendario(); toast('🔔 Recordatorio');
       }
       b.textContent = '✓'; b.disabled = true;
     };
@@ -1860,26 +1827,19 @@ function bindAnalisis(panel, data, nota) {
     };
   });
 }
-
 function agregarTarea(t, nota, conFecha) {
   const p = t.persona ? buscarPersonaPorNombre(t.persona) : null;
   tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', contacto: t.contacto || '', personaId: p ? p.id : null, fecha: conFecha ? (t.fecha || new Date().toISOString().slice(0,10)) : '', hora: t.hora || '', hecha: false, completadaEn: null, notaId: nota.id, fechaCreacion: Date.now(), recurrencia: t.recurrencia || '', tags: [] });
-  LS.set('tareas', tareas); pushASync();
-  renderTareas(); renderCalendario();
-  toast(conFecha ? '📅 Tarea con fecha' : '✅ Tarea');
+  LS.set('tareas', tareas); pendingPush = true; pushASync();
+  renderTareas(); renderCalendario(); toast(conFecha ? '📅 Tarea con fecha' : '✅ Tarea');
 }
-
 async function resumirNota(nota) {
-  const panel = $('panel-' + nota.id);
-  panel.classList.add('show');
+  const panel = $('panel-' + nota.id); panel.classList.add('show');
   panel.innerHTML = '<div class="txt">⏳ Resumiendo...</div>';
   try {
     const raw = await llamarGroq(`Resume en máx 5 puntos:\n\n${nota.texto}`);
-    panel.innerHTML = `<div class="seccion"><h4>📝 RESUMEN</h4><div class="txt">${escapeHtml(raw)}</div></div>
-      <div class="acciones-finales"><button class="btn primary" data-res="escuchar">🔊</button><button class="btn" data-res="copiar">📋</button><button class="btn ghost" data-res="cerrar">❌</button></div>`;
-    panel.querySelectorAll('[data-res]').forEach(b => {
-      b.onclick = () => { const a = b.dataset.res; if (a === 'escuchar') TTS.play(raw, detectarIdioma(raw)); if (a === 'copiar') copiar(raw); if (a === 'cerrar') panel.classList.remove('show'); };
-    });
+    panel.innerHTML = `<div class="seccion"><h4>📝 RESUMEN</h4><div class="txt">${escapeHtml(raw)}</div></div><div class="acciones-finales"><button class="btn primary" data-res="escuchar">🔊</button><button class="btn" data-res="copiar">📋</button><button class="btn ghost" data-res="cerrar">❌</button></div>`;
+    panel.querySelectorAll('[data-res]').forEach(b => { b.onclick = () => { const a = b.dataset.res; if (a === 'escuchar') TTS.play(raw, detectarIdioma(raw)); if (a === 'copiar') copiar(raw); if (a === 'cerrar') panel.classList.remove('show'); }; });
   } catch(e) { panel.innerHTML = '<div class="txt">❌ ' + escapeHtml(e.message) + '</div>'; }
 }
 
@@ -1919,39 +1879,35 @@ function renderCalendario(){
   for(let dia=1; dia<=diasMes; dia++){
     const iso = `${calAnio}-${String(calMes+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
     const td = tareas.filter(t=>t.fecha === iso);
-    const pend = td.filter(t=>!t.hecha).length;
-    const hech = td.filter(t=>t.hecha).length;
+    const pend = td.filter(t=>!t.hecha).length, hech = td.filter(t=>t.hecha).length;
     const clases = ['cal-day'];
     const dow = new Date(iso + 'T12:00:00').getDay();
     if (dow === 0 || dow === 6) clases.push('finde');
     if (FERIADOS_CHILE[iso]) clases.push('feriado');
     if (cumpleEnFecha(iso)) clases.push('cumple');
     if (iso === hoyISO) clases.push('today');
-    const titulo = FERIADOS_CHILE[iso] || (cumpleEnFecha(iso) ? '🎂 ' + cumpleEnFecha(iso) : '');
-    html += `<div class="${clases.join(' ')}" data-iso="${iso}" title="${titulo}"><span>${dia}</span><div class="dots">${Array(Math.min(pend,3)).fill('<span class="dot"></span>').join('')}${Array(Math.min(hech,2)).fill('<span class="dot done"></span>').join('')}</div></div>`;
+    html += `<div class="${clases.join(' ')}" data-iso="${iso}" title="${FERIADOS_CHILE[iso] || ''}"><span>${dia}</span><div class="dots">${Array(Math.min(pend,3)).fill('<span class="dot"></span>').join('')}${Array(Math.min(hech,2)).fill('<span class="dot done"></span>').join('')}</div></div>`;
   }
   $('calGrid').innerHTML = html;
   $('calGrid').querySelectorAll('.cal-day').forEach(el=>{ el.onclick = () => abrirPanelDia(el.dataset.iso); });
 }
 function cumpleEnFecha(iso){
   const [, mes, dia] = iso.split('-');
-  const cumples = personas.filter(p => p.cumpleanos && p.cumpleanos.slice(5) === mes+'-'+dia);
-  if (!cumples.length) return null;
-  return cumples.map(p => p.nombre).join(', ');
+  const c = personas.filter(p => p.cumpleanos && p.cumpleanos.slice(5) === mes+'-'+dia);
+  return c.length ? c.map(p => p.nombre).join(', ') : null;
 }
 function abrirPanelDia(iso){
   $('panelDiaTitulo').textContent = 'Día ' + iso;
   const td = tareas.filter(t => t.fecha === iso);
-  const cumple = cumpleEnFecha(iso);
-  const feriado = FERIADOS_CHILE[iso];
+  const cu = cumpleEnFecha(iso); const fe = FERIADOS_CHILE[iso];
   let html = '';
-  if (feriado) html += `<p class="hint">🎉 Feriado: <b>${escapeHtml(feriado)}</b></p>`;
-  if (cumple) html += `<p class="hint">🎂 Cumpleaños: <b>${escapeHtml(cumple)}</b></p>`;
+  if (fe) html += `<p class="hint">🎉 Feriado: <b>${escapeHtml(fe)}</b></p>`;
+  if (cu) html += `<p class="hint">🎂 ${escapeHtml(cu)}</p>`;
   html += `<h4 style="color:var(--gold);font-size:.85rem;margin-top:14px">Tareas del día</h4>`;
   html += td.length ? td.map(renderTareaHTML).join('') : '<p class="hint">Sin tareas.</p>';
   html += `<h4 style="color:var(--gold);font-size:.85rem;margin-top:16px">➕ Agregar tarea</h4>
     <input id="pdDesc" placeholder="Descripción">
-    <div class="row"><div><label>Persona</label><input id="pdPersona" placeholder="Nombre"></div><div><label>Hora</label><input id="pdHora" type="time"></div></div>
+    <div class="row"><div><label>Persona</label><input id="pdPersona"></div><div><label>Hora</label><input id="pdHora" type="time"></div></div>
     <label>Recurrencia</label><select id="pdRecur"><option value="">No repetir</option><option value="diario">Diario</option><option value="semanal">Semanal</option><option value="mensual">Mensual</option><option value="anual">Anual</option></select>
     <label>Etiquetas</label><input id="pdTags" placeholder="trabajo, urgente">
     <button class="btn primary block" id="pdGuardar" style="margin-top:10px">Guardar</button>`;
@@ -1960,10 +1916,10 @@ function abrirPanelDia(iso){
   $('pdGuardar').onclick = () => {
     const desc = $('pdDesc').value.trim();
     if (!desc) return toast('Escribe descripción');
-    const personaTxt = $('pdPersona').value.trim();
-    const pObj = personaTxt ? buscarPersonaPorNombre(personaTxt) : null;
-    tareas.unshift({ id: nuevoId(), descripcion: desc, persona: personaTxt, contacto: pObj ? (pObj.whatsapp || pObj.telefono || '') : '', personaId: pObj ? pObj.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), recurrencia: $('pdRecur').value, tags: parseTags($('pdTags').value) });
-    LS.set('tareas', tareas); pushASync();
+    const pt = $('pdPersona').value.trim();
+    const pO = pt ? buscarPersonaPorNombre(pt) : null;
+    tareas.unshift({ id: nuevoId(), descripcion: desc, persona: pt, contacto: pO ? (pO.whatsapp || pO.telefono || '') : '', personaId: pO ? pO.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), recurrencia: $('pdRecur').value, tags: parseTags($('pdTags').value) });
+    LS.set('tareas', tareas); pendingPush = true; pushASync();
     renderCalendario(); renderTareas(); renderTagsFilter();
     abrirPanelDia(iso);
     toast('✅ Tarea agregada');
@@ -1980,21 +1936,12 @@ function renderTareaHTML(t){
   const pObj = t.personaId ? getPersona(t.personaId) : null;
   return `<div class="task-item ${t.hecha?'done':''}" data-id="${t.id}">
     <input type="checkbox" ${t.hecha?'checked':''} data-check="${t.id}">
-    <div style="flex:1">
-      <div class="t-desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄 ${t.recurrencia}</span>` : ''}</div>
+    <div style="flex:1"><div class="t-desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄 ${t.recurrencia}</span>` : ''}</div>
       ${renderTagsHTML(t.tags)}
-      <div class="t-meta">
-        ${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}
-        ${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}
-        ${t.fecha ? `<span>📅 ${t.fecha}</span>` : ''}
-        ${t.recordatorio ? `<span>🔔</span>` : ''}
-      </div>
+      <div class="t-meta">${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}${t.fecha ? `<span>📅 ${t.fecha}</span>` : ''}${t.recordatorio ? `<span>🔔</span>` : ''}</div>
       ${hechaTag}
     </div>
-    <div style="display:flex;flex-direction:column;gap:4px">
-      <button class="btn ghost small" data-tags-t="${t.id}" style="padding:4px 8px">🏷️</button>
-      <button class="btn ghost small" data-delT="${t.id}" style="padding:4px 8px">✕</button>
-    </div>
+    <div style="display:flex;flex-direction:column;gap:4px"><button class="btn ghost small" data-tags-t="${t.id}" style="padding:4px 8px">🏷️</button><button class="btn ghost small" data-delT="${t.id}" style="padding:4px 8px">✕</button></div>
   </div>`;
 }
 function bindTareas(cont, isoPanel){
@@ -2009,27 +1956,26 @@ function bindTareas(cont, isoPanel){
         tareas.unshift({ ...t, id: nuevoId(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null, fechaCreacion: Date.now() });
         toast('🔄 Siguiente creada');
       }
-      LS.set('tareas', tareas); pushASync();
+      LS.set('tareas', tareas); pendingPush = true; pushASync();
       renderCalendario(); renderTareas();
       if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
     };
   });
-  cont.querySelectorAll('[data-tags-t]').forEach(b=>{
-    b.onclick = () => { const t = tareas.find(x => eqId(x.id, b.dataset.tagsT)); if (t) editarTagsTarea(t); };
-  });
+  cont.querySelectorAll('[data-tags-t]').forEach(b=>{ b.onclick = () => { const t = tareas.find(x => eqId(x.id, b.dataset.tagsT)); if (t) editarTagsTarea(t); }; });
   cont.querySelectorAll('[data-delT]').forEach(b=>{
     b.onclick = () => {
       if(!confirm('¿Mover a papelera?')) return;
       const idx = tareas.findIndex(x => eqId(x.id, b.dataset.delT));
       if (idx === -1) { toast('⚠️ Ya no existe'); renderTareas(); return; }
-      const tarea = tareas[idx];
-      const copia = JSON.parse(JSON.stringify(tarea));
+      /* LOCAL FIRST */
+      const copia = JSON.parse(JSON.stringify(tareas[idx]));
       moverAPapelera('tareas', copia);
       tareas.splice(idx, 1);
       LS.set('tareas', tareas);
       renderCalendario(); renderTareas(); renderPapelera();
       if (isoPanel && $('panelDia').classList.contains('show')) abrirPanelDia(isoPanel);
-      pushASync();
+      pendingPush = true;
+      pushASync(true);
       toast('🗑️ Eliminada');
     };
   });
@@ -2039,8 +1985,7 @@ $('tabPend').onclick = () => { filtroTareas = 'pend'; renderTareas(); };
 $('tabHist').onclick = () => { filtroTareas = 'hist'; renderTareas(); };
 $('tabTodas').onclick = () => { filtroTareas = 'todas'; renderTareas(); };
 function renderTareas(){
-  const pend = tareas.filter(t=>!t.hecha).length;
-  const hist = tareas.filter(t=>t.hecha).length;
+  const pend = tareas.filter(t=>!t.hecha).length, hist = tareas.filter(t=>t.hecha).length;
   $('tabPend').textContent = `⏳ Pendientes (${pend})`;
   $('tabHist').textContent = `📜 Historial (${hist})`;
   $('tabTodas').textContent = `📋 Todas (${tareas.length})`;
@@ -2058,48 +2003,33 @@ function renderTareas(){
 }
 
 /* ===== PERSONAS ===== */
-$('btnNuevaPersona').onclick = () => {
-  $('formPersona').classList.add('show');
-  $('pId').value = '';
-  ['pNombre','pTel','pWa','pCorreo','pEmpresa','pCargo','pCumple'].forEach(id => $(id).value = '');
-};
+$('btnNuevaPersona').onclick = () => { $('formPersona').classList.add('show'); $('pId').value = ''; ['pNombre','pTel','pWa','pCorreo','pEmpresa','pCargo','pCumple'].forEach(id => $(id).value = ''); };
 $('btnCancelarPersona').onclick = () => $('formPersona').classList.remove('show');
 $('btnGuardarPersona').onclick = () => {
-  const nombre = $('pNombre').value.trim();
-  if (!nombre) return toast('Nombre obligatorio');
+  const nombre = $('pNombre').value.trim(); if (!nombre) return toast('Nombre obligatorio');
   const idRaw = $('pId').value;
   const existente = idRaw ? personas.findIndex(p => eqId(p.id, idRaw)) : -1;
   const id = idRaw && existente >= 0 ? personas[existente].id : nuevoId();
   const persona = { id, nombre, telefono: $('pTel').value.trim(), whatsapp: $('pWa').value.trim(), correo: $('pCorreo').value.trim(), empresa: $('pEmpresa').value.trim(), cargo: $('pCargo').value.trim(), cumpleanos: $('pCumple').value, fecha: new Date().toISOString() };
   if (existente >= 0) personas[existente] = persona; else personas.unshift(persona);
-  LS.set('personas', personas); pushASync();
+  LS.set('personas', personas); pendingPush = true; pushASync();
   $('formPersona').classList.remove('show');
-  renderPersonas(); renderCalendario(); renderNotas();
-  toast('👥 Guardada');
+  renderPersonas(); renderCalendario(); renderNotas(); toast('👥 Guardada');
 };
 function renderPersonas(){
   const cont = $('listaPersonas');
   if (!personas.length) { cont.innerHTML = '<p class="hint">No hay personas.</p>'; return; }
   cont.innerHTML = personas.map(p => {
-    const notasRel = getNotasDePersona(p.id);
-    const tareasRel = getTareasDePersona(p.id);
+    const nR = getNotasDePersona(p.id), tR = getTareasDePersona(p.id);
     let relHtml = '';
-    if (notasRel.length || tareasRel.length) {
+    if (nR.length || tR.length) {
       relHtml += `<div class="relacionadas">`;
-      if (notasRel.length) { relHtml += `<h4>📝 Notas (${notasRel.length})</h4>`; relHtml += notasRel.slice(0,3).map(n => `<div class="rel-item"><div class="rel-title">${escapeHtml(n.titulo.slice(0,60))}</div><div class="rel-fecha">${new Date(n.fecha).toLocaleDateString('es-CL')}</div></div>`).join(''); if (notasRel.length > 3) relHtml += `<div class="hint">+${notasRel.length - 3} más</div>`; }
-      if (tareasRel.length) { relHtml += `<h4>✅ Tareas (${tareasRel.length})</h4>`; relHtml += tareasRel.slice(0,3).map(t => `<div class="rel-item"><div class="rel-title">${escapeHtml(t.descripcion.slice(0,60))}</div><div class="rel-fecha">${t.fecha || 'sin fecha'}${t.hecha ? ' · ✓' : ''}</div></div>`).join(''); if (tareasRel.length > 3) relHtml += `<div class="hint">+${tareasRel.length - 3} más</div>`; }
+      if (nR.length) { relHtml += `<h4>📝 Notas (${nR.length})</h4>`; relHtml += nR.slice(0,3).map(n => `<div class="rel-item"><div class="rel-title">${escapeHtml(n.titulo.slice(0,60))}</div><div class="rel-fecha">${new Date(n.fecha).toLocaleDateString('es-CL')}</div></div>`).join(''); if (nR.length > 3) relHtml += `<div class="hint">+${nR.length - 3} más</div>`; }
+      if (tR.length) { relHtml += `<h4>✅ Tareas (${tR.length})</h4>`; relHtml += tR.slice(0,3).map(t => `<div class="rel-item"><div class="rel-title">${escapeHtml(t.descripcion.slice(0,60))}</div><div class="rel-fecha">${t.fecha || 'sin fecha'}${t.hecha ? ' · ✓' : ''}</div></div>`).join(''); if (tR.length > 3) relHtml += `<div class="hint">+${tR.length - 3} más</div>`; }
       relHtml += `</div>`;
     }
-    return `<div class="persona-card">
-      <h3>${escapeHtml(p.nombre)}</h3>
-      <div class="info">
-        ${p.telefono ? `<div>📞 <b>${escapeHtml(p.telefono)}</b></div>` : ''}
-        ${p.whatsapp ? `<div>💬 WhatsApp: <b>${escapeHtml(p.whatsapp)}</b></div>` : ''}
-        ${p.correo ? `<div>📧 ${escapeHtml(p.correo)}</div>` : ''}
-        ${p.empresa ? `<div>🏢 ${escapeHtml(p.empresa)}</div>` : ''}
-        ${p.cargo ? `<div>💼 ${escapeHtml(p.cargo)}</div>` : ''}
-        ${p.cumpleanos ? `<div>🎂 ${new Date(p.cumpleanos + 'T12:00:00').toLocaleDateString('es-CL')}</div>` : ''}
-      </div>
+    return `<div class="persona-card"><h3>${escapeHtml(p.nombre)}</h3>
+      <div class="info">${p.telefono ? `<div>📞 <b>${escapeHtml(p.telefono)}</b></div>` : ''}${p.whatsapp ? `<div>💬 WhatsApp: <b>${escapeHtml(p.whatsapp)}</b></div>` : ''}${p.correo ? `<div>📧 ${escapeHtml(p.correo)}</div>` : ''}${p.empresa ? `<div>🏢 ${escapeHtml(p.empresa)}</div>` : ''}${p.cargo ? `<div>💼 ${escapeHtml(p.cargo)}</div>` : ''}${p.cumpleanos ? `<div>🎂 ${new Date(p.cumpleanos + 'T12:00:00').toLocaleDateString('es-CL')}</div>` : ''}</div>
       ${relHtml}
       <div class="acciones"><button data-edit="${p.id}">✏️</button><button data-del-p="${p.id}">🗑️</button></div>
     </div>`;
@@ -2110,13 +2040,12 @@ function renderPersonas(){
       if (!confirm('¿Mover a papelera?')) return;
       const idx = personas.findIndex(x => eqId(x.id, b.dataset.delP));
       if (idx === -1) { toast('⚠️ Ya no existe'); renderPersonas(); return; }
-      const p = personas[idx];
-      const copia = JSON.parse(JSON.stringify(p));
+      const copia = JSON.parse(JSON.stringify(personas[idx]));
       moverAPapelera('personas', copia);
       personas.splice(idx, 1);
       LS.set('personas', personas);
       renderPersonas(); renderCalendario(); renderPapelera();
-      pushASync();
+      pendingPush = true; pushASync(true);
       toast('🗑️ Eliminada');
     };
   });
@@ -2132,50 +2061,82 @@ function actualizarModoToggle(){
 $('modoVivo').onclick = () => { modoGrabacion = 'vivo'; LS.set('modoGrabacion','vivo'); detenerTodo(); actualizarModoToggle(); };
 $('modoEstable').onclick = () => { modoGrabacion = 'estable'; LS.set('modoGrabacion','estable'); detenerTodo(); actualizarModoToggle(); };
 
-/* ===== CONFIG ===== */
+/* ===== BANNER MODO LOCAL ===== */
+function actualizarBannerModoLocal() {
+  const b = $('modoLocalBanner'); if (!b) return;
+  if (modoLocalHasta > Date.now()) {
+    const mins = Math.ceil((modoLocalHasta - Date.now()) / 60000);
+    b.style.display = 'block';
+    b.innerHTML = `⏸ <b>Modo local activo</b> por ${mins} min más<br><span style="font-size:.72rem">Todo funciona local. Se sincronizará cuando termine.</span>`;
+  } else {
+    b.style.display = 'none';
+  }
+}
+setInterval(actualizarBannerModoLocal, 30000);
+
+/* ===== CONFIG UI ===== */
 $('syncToken').value = getToken();
 $('syncGistId').value = getGistId();
-$('btnGuardarKey').onclick = async () => {
-  const key = $('apiKey').value.trim();
-  if (!key) return toast('Escribe la API key');
-  await guardarApiKeyPersistente(key);
-  toast('🔑 Guardada (persistente)');
-};
+$('btnGuardarKey').onclick = async () => { const k = $('apiKey').value.trim(); if (!k) return toast('Escribe la API key'); await guardarApiKeyPersistente(k); toast('🔑 Guardada persistente'); };
 $('btnGuardarSync').onclick = async () => {
-  const token = $('syncToken').value.trim();
-  const gistId = $('syncGistId').value.trim();
-  if (!token || !gistId) return toast('Completa ambos');
-  localStorage.setItem(SYNC_TOKEN_KEY, token);
-  localStorage.setItem(SYNC_GIST_KEY, gistId);
+  const t = $('syncToken').value.trim(); const g = $('syncGistId').value.trim();
+  if (!t || !g) return toast('Completa ambos');
+  localStorage.setItem(SYNC_TOKEN_KEY, t); localStorage.setItem(SYNC_GIST_KEY, g);
   localStorage.removeItem(SYNC_FILE_KEY);
-  $('syncStatus').className = 'sync-status info';
-  $('syncStatus').textContent = '⏳ Detectando archivo y sincronizando...';
+  modoLocalHasta = 0; LS.set('modoLocalHasta', 0);
+  proximaSyncPermitida = 0; syncBackoffIdx = 0;
+  $('syncStatus').className = 'sync-status info'; $('syncStatus').textContent = '⏳ Sincronizando...';
   const ok = await sincronizar(true);
-  if (ok) { $('syncStatus').className = 'sync-status ok'; $('syncStatus').textContent = '✅ Configurado. Archivo: ' + getNombreArchivo() + '\nAuto-sync cada 15s'; iniciarAutoSync(); }
-  else { $('syncStatus').className = 'sync-status err'; $('syncStatus').textContent = '❌ Error. Usa 🩺 Diagnóstico'; }
+  if (ok) { $('syncStatus').className = 'sync-status ok'; $('syncStatus').textContent = '✅ Configurado\nArchivo: ' + getNombreArchivo() + '\nAuto-sync cada 2 min'; iniciarAutoSync(); }
+  else { $('syncStatus').className = 'sync-status err'; $('syncStatus').textContent = '❌ Error. Usa 🩺'; }
+  actualizarBannerModoLocal();
 };
 $('btnProbarSync').onclick = async () => {
-  const st = $('syncStatus');
-  st.className = 'sync-status info'; st.textContent = '⏳ Probando...';
-  const token = $('syncToken').value.trim() || getToken();
-  const gistId = $('syncGistId').value.trim() || getGistId();
-  if (!token || !gistId) { st.className='sync-status err'; st.textContent='❌ Faltan datos'; return; }
+  const st = $('syncStatus'); st.className = 'sync-status info'; st.textContent = '⏳ Probando...';
+  const t = $('syncToken').value.trim() || getToken(); const g = $('syncGistId').value.trim() || getGistId();
+  if (!t || !g) { st.className = 'sync-status err'; st.textContent = '❌ Faltan'; return; }
   try {
-    const res = await fetch(`https://api.github.com/gists/${gistId}`, { headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' } });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const g = await res.json(); const files = Object.keys(g.files || {});
-    st.className = 'sync-status ok'; st.textContent = `✅ OK\nArchivos: ${files.join(', ')}\nSe usará: ${files.includes('jarvis.json') ? 'jarvis.json' : (files[0] || 'ninguno')}`;
+    const res = await fetch(`https://api.github.com/gists/${g}`, { headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' } });
+    if (!res.ok) {
+      const txt = await res.text();
+      if (res.status === 403 && /rate limit/i.test(txt)) {
+        modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta);
+        st.className = 'sync-status err'; st.textContent = '⏸ RATE LIMIT de GitHub. Modo local 30 min activado.\nEspera o espera al reset (1h).';
+        actualizarBannerModoLocal(); return;
+      }
+      throw new Error(`HTTP ${res.status}`);
+    }
+    const gg = await res.json(); const files = Object.keys(gg.files || {});
+    st.className = 'sync-status ok'; st.textContent = `✅ OK\nArchivos: ${files.join(', ')}`;
   } catch (e) { st.className = 'sync-status err'; st.textContent = '❌ ' + e.message; }
 };
-$('btnSyncAhora').onclick = async () => { await sincronizar(false); };
+$('btnSyncAhora').onclick = async () => { proximaSyncPermitida = 0; await sincronizar(false); actualizarBannerModoLocal(); };
 $('btnDiagnostico').onclick = diagnostico;
+$('btnPausarSync').onclick = () => {
+  if (modoLocalHasta > Date.now()) {
+    modoLocalHasta = 0; LS.set('modoLocalHasta', 0);
+    proximaSyncPermitida = 0;
+    toast('▶ Sync reactivado');
+  } else {
+    modoLocalHasta = Date.now() + 60 * 60 * 1000; LS.set('modoLocalHasta', modoLocalHasta);
+    toast('⏸ Sync pausado 1h');
+  }
+  actualizarIndicatorSync(); actualizarBannerModoLocal();
+};
+$('btnReparar').onclick = () => {
+  const r = repararDatosLocales();
+  renderNotas(); renderTareas(); renderPersonas(); renderCalendario();
+  if (r.reparados > 0) toast(`🔧 ${r.reparados} duplicados eliminados`);
+  else toast('✅ Sin problemas detectados');
+};
 $('btnBorrarSync').onclick = () => {
   if (!confirm('¿Borrar config de sync?')) return;
   localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY); localStorage.removeItem(SYNC_FILE_KEY);
   $('syncToken').value = ''; $('syncGistId').value = '';
   $('syncStatus').className = 'sync-status'; $('syncStatus').textContent = '';
   if (autoSyncTimer) clearInterval(autoSyncTimer); autoSyncTimer = null;
-  actualizarIndicatorSync(); toast('Config borrada');
+  modoLocalHasta = 0; LS.set('modoLocalHasta', 0);
+  actualizarIndicatorSync(); actualizarBannerModoLocal(); toast('Config borrada');
 };
 $('btnExportJSON').onclick = exportarJSON;
 $('btnImportJSON').onclick = () => $('fileImportJSON').click();
@@ -2188,29 +2149,38 @@ if ('Notification' in window) {
 }
 $('buscarGlobal').oninput = renderBusquedaGlobal;
 
-/* ===== RESET MEJORADO ===== */
+/* ===== RESET ===== */
 $('btnReset').onclick = async () => {
-  if (!confirm('⚠️ Borrar TODOS los datos LOCALES:\n\n• Notas, tareas, personas\n• Papelera\n• API key\n• Config sync\n• Adjuntos en IndexedDB\n\n(Los datos en la nube NO se borran)\n\n¿Continuar?')) return;
+  if (!confirm('⚠️ Borrar TODOS los datos LOCALES:\n\n• Notas, tareas, personas\n• Papelera\n• API key\n• Config sync\n• Adjuntos en IndexedDB\n\n(La nube NO se borra)\n\n¿Continuar?')) return;
   if (!confirm('⚠️ CONFIRMAR: ¿Realmente borrar todo el contenido local?')) return;
-  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera','sync-file','notifHechas'].forEach(k => localStorage.removeItem('jarvis_' + k));
+  ['notas','tareas','personas','apiKey','modoGrabacion','eliminados','draft','ultimaSync','papelera','sync-file','notifHechas','modoLocalHasta','syncBackoffIdx','ultimoHashSync','pendingPush'].forEach(k => localStorage.removeItem('jarvis_' + k));
   localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY);
   try { await idbClear(); } catch(e){}
-  if (autoSyncTimer) clearInterval(autoSyncTimer);
-  autoSyncTimer = null;
+  if (autoSyncTimer) clearInterval(autoSyncTimer); autoSyncTimer = null;
   notas = []; tareas = []; personas = []; papelera = [];
   eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
+  modoLocalHasta = 0; proximaSyncPermitida = 0; syncBackoffIdx = 0; ultimoHashSync = ''; pendingPush = false;
   $('apiKey').value = ''; $('syncToken').value = ''; $('syncGistId').value = '';
   actualizarEstadoApiKey(); actualizarIndicatorSync();
   renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera();
   toast('🗑️ Todo borrado');
 };
 
-/* ===== EVENTOS GLOBALES ===== */
-document.addEventListener('visibilitychange', () => { if (!document.hidden && tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true); });
-window.addEventListener('focus', () => { if (tieneSync() && !operacionCritica && !syncEnProgreso) sincronizar(true); });
-window.addEventListener('online', () => { if (tieneSync() && !operacionCritica) sincronizar(true); });
-window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica) pushASync(true); });
-window.addEventListener('beforeunload', () => { if (tieneSync() && !operacionCritica) pushASync(true); });
+/* ===== EVENTOS ===== */
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && tieneSync() && !operacionCritica && !syncEnProgreso) {
+    if (modoLocalHasta > Date.now()) return;
+    if (pendingPush) sincronizar(true);
+    else if (hashDatos() !== ultimoHashSync) sincronizar(true);
+  }
+});
+window.addEventListener('focus', () => {
+  if (tieneSync() && !operacionCritica && !syncEnProgreso && modoLocalHasta <= Date.now() && pendingPush) sincronizar(true);
+});
+window.addEventListener('online', () => {
+  if (tieneSync() && !operacionCritica && modoLocalHasta <= Date.now()) sincronizar(true);
+});
+window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica && pendingPush && modoLocalHasta <= Date.now()) pushASync(true); });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     ['focusOverlay','visorAdjunto','modalAdjuntar','modalCompartir','modalTraducir','panelDia'].forEach(id => { if ($(id)?.classList.contains('show')) $(id).classList.remove('show'); });
@@ -2220,12 +2190,14 @@ document.addEventListener('keydown', (e) => {
 
 /* ===== INIT ===== */
 (async function init() {
-  const apiKeyGuardada = await cargarApiKeyPersistente();
-  if (apiKeyGuardada) $('apiKey').value = apiKeyGuardada;
+  const k = await cargarApiKeyPersistente();
+  if (k) $('apiKey').value = k;
+  /* Reparación automática al iniciar */
+  const r = repararDatosLocales();
+  if (r.reparados > 0) console.log(`Reparados automáticamente: ${r.reparados}`);
   renderNotas(); renderTareas(); renderCalendario(); renderPersonas();
   renderTagsFilter(); renderPapelera();
-  actualizarModoToggle();
-  actualizarIndicatorSync();
+  actualizarModoToggle(); actualizarIndicatorSync(); actualizarBannerModoLocal();
   if (window.speechSynthesis) { speechSynthesis.onvoiceschanged = () => {}; }
   setTimeout(() => {
     const draft = LS.get('draft', null);
@@ -2238,7 +2210,15 @@ document.addEventListener('keydown', (e) => {
       }
     }
   }, 1500);
-  if (tieneSync()) { sincronizar(true); iniciarAutoSync(); }
+  if (tieneSync()) {
+    if (modoLocalHasta > Date.now()) {
+      actualizarBannerModoLocal();
+      setTimeout(() => sincronizar(true), 5000);
+    } else {
+      setTimeout(() => sincronizar(true), 5000);
+    }
+    iniciarAutoSync();
+  }
   if ('serviceWorker' in navigator) {
     let refreshing = false;
     const hadController = !!navigator.serviceWorker.controller;
