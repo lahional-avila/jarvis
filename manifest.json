@@ -12,5 +12,9 @@
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Nueva nota", "short_name": "Nota", "description": "Abrir pantalla de grabación", "url": "./index.html?tab=grabar", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Ver tareas", "short_name": "Tareas", "description": "Lista de tareas pendientes", "url": "./index.html?tab=tareas", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
   ]
 }
