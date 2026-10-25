@@ -21,6 +21,7 @@
     --green:#00E676; --red:#FF5252;
     --finde:rgba(0,229,255,0.03); --finde-line:rgba(0,229,255,0.12);
     --ia:#3B82F6; --ia2:#60A5FA;
+    --scrollbar-color: #00E5FF;
   }
   html[data-workspace="trabajo"]{
     --bg:#0d0505; --bg2:#180808; --panel:rgba(30,15,10,0.72); --panel-solid:#1e0f0a;
@@ -30,8 +31,20 @@
     --txt:#f5e8d0; --muted:#a89080;
     --finde:rgba(255,152,0,0.04); --finde-line:rgba(255,152,0,0.18);
     --ia:#FFC107; --ia2:#FFD700;
+    --scrollbar-color: #FF9800;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+  /* SCROLLBAR ACORDE AL TEMA */
+  *{
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color) transparent;
+  }
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:rgba(0,0,0,0.15);border-radius:4px}
+  ::-webkit-scrollbar-thumb{background:var(--scrollbar-color);border-radius:4px;opacity:.7}
+  ::-webkit-scrollbar-thumb:hover{background:var(--scrollbar-color);opacity:1}
+
   html,body{height:100%;margin:0;overflow:hidden}
   body{
     display:flex;flex-direction:column;
@@ -60,7 +73,6 @@
   #matrixCanvas{position:fixed;inset:0;pointer-events:none;opacity:0.14;z-index:0;transition:opacity .5s;}
   header, main, #drawer, #drawerOverlay, #btnDrawer, #quickNav, #barraSeleccion, #ttsPlayer, .app-footer{ position:relative; z-index:2; }
 
-  /* HEADER: créditos centrados */
   header{
     flex-shrink:0; padding:8px 14px 6px;
     display:flex;align-items:center;justify-content:center;
@@ -77,11 +89,10 @@
   .credits-top{
     font-size:.72rem;color:var(--cyan);letter-spacing:1.5px;font-weight:700;
     text-shadow:0 0 8px rgba(0,229,255,0.4);
-    margin-right:-1.5px; /* centra perfecto compensando letter-spacing */
+    margin-right:-1.5px;
   }
   html[data-workspace="trabajo"] .credits-top{color:#FF9800;text-shadow:0 0 8px rgba(255,152,0,0.5)}
 
-  /* FOOTER JARVIS FIJO */
   .app-footer{
     position:fixed;bottom:0;left:0;right:0;
     padding:10px 0 calc(10px + env(safe-area-inset-bottom,0));
@@ -256,7 +267,7 @@
   .nota-card.borrador{border-left-color:var(--amber);background:linear-gradient(135deg,rgba(42,31,8,0.75),rgba(15,20,32,0.7));box-shadow:0 4px 15px rgba(0,0,0,0.3),0 0 15px rgba(255,179,0,0.15)}
   .nota-card h3{margin:0 0 8px;font-size:1rem;color:var(--gold);text-shadow:0 0 8px rgba(255,215,0,0.35);padding-right:80px}
   .nota-card .fecha-mini{font-size:.68rem;color:var(--muted);font-weight:400;letter-spacing:0;margin-left:8px;text-shadow:none;vertical-align:middle;opacity:.85}
-  .nota-card .texto{font-size:.88rem;line-height:1.5;white-space:pre-wrap;word-break:break-word;max-height:180px;overflow-y:auto}
+  .nota-card .texto{font-size:.88rem;line-height:1.5;white-space:pre-wrap;word-break:break-word;transition:all .15s}
   .nota-card .meta{font-size:.7rem;color:var(--muted);margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;flex-direction:column}
   .nota-card .meta span{display:inline-flex;align-items:center;gap:4px}
   .nota-card .badge{display:inline-block;padding:2px 9px;border-radius:12px;font-size:.66rem;background:rgba(0,229,255,0.12);color:var(--cyan);border:1px solid rgba(0,229,255,0.4);font-weight:700;align-self:flex-start}
@@ -264,8 +275,18 @@
   .nota-card .badge.tarea{background:rgba(0,230,118,0.13);color:var(--green);border-color:rgba(0,230,118,0.5)}
   .nota-card .badge.evento{background:rgba(59,130,246,0.15);color:var(--ia2);border-color:rgba(59,130,246,0.5)}
   .nota-card .borrador-hint{font-size:.72rem;color:var(--amber);font-weight:600;margin-top:8px;padding:8px 10px;background:rgba(255,179,0,0.1);border-radius:8px;text-align:center;border:1px dashed rgba(255,179,0,0.5)}
-  .collapse-btn{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:8px;border:1px solid var(--line);background:rgba(10,14,24,0.85);color:var(--cyan);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:3;font-family:inherit;transition:all .15s}
+
+  /* CHEVRON BUTTON */
+  .collapse-btn{
+    position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:8px;
+    border:1px solid var(--line);background:rgba(10,14,24,0.85);color:var(--cyan);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    z-index:3;font-family:inherit;transition:all .2s;
+  }
   .collapse-btn:hover{background:rgba(0,229,255,0.15);border-color:rgba(0,229,255,0.5)}
+  .collapse-btn svg{width:18px;height:18px;transition:transform .2s}
+  .nota-card.expanded .collapse-btn svg{transform:rotate(180deg)}
+
   .nota-card.collapsed{padding:12px 15px}
   .nota-card.collapsed h3{margin:0;padding-right:50px;font-size:.95rem}
   .nota-card.collapsed .texto,
@@ -282,14 +303,19 @@
   .nota-actions-grid button:hover,.nota-actions-grid button:active{background:rgba(0,229,255,0.08);border-color:rgba(0,229,255,0.4);box-shadow:0 0 10px rgba(0,229,255,0.2)}
   .nota-actions-grid button.danger-btn{color:#ff8a80;border-color:rgba(229,57,53,0.4)}
 
-  .analisis-panel{margin-top:12px;padding:14px;border-radius:12px;background:rgba(10,20,26,0.85);backdrop-filter:blur(10px);border:1px solid var(--cyan);display:none;max-height:60vh;overflow-y:auto;scroll-behavior:smooth;box-shadow:0 0 20px rgba(0,229,255,0.15)}
+  .analisis-panel{margin-top:12px;padding:14px;border-radius:12px;background:rgba(10,20,26,0.85);backdrop-filter:blur(10px);border:1px solid var(--cyan);display:none;scroll-behavior:smooth;box-shadow:0 0 20px rgba(0,229,255,0.15)}
   .analisis-panel.show{display:block}
   .analisis-panel h4{margin:0 0 8px;font-size:.82rem;color:var(--cyan);letter-spacing:.5px}
+  .analisis-panel .txt{font-size:.82rem;line-height:1.55;white-space:pre-wrap}
 
-  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:6px}
+  /* CALENDARIO con botón Hoy */
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:6px;flex-wrap:wrap}
   .cal-head button{width:38px;height:38px;padding:0;border-radius:10px;flex-shrink:0}
-  .cal-head .cal-selectors{flex:1;display:flex;gap:4px;justify-content:center}
+  .cal-head .cal-selectors{flex:1;display:flex;gap:4px;justify-content:center;min-width:140px}
   .cal-head select{font-size:.85rem;padding:8px 6px;border-radius:8px;border:1px solid var(--line);background:rgba(15,20,32,0.85);color:var(--txt);font-family:inherit;font-weight:600;cursor:pointer;outline:none}
+  .cal-head .btn-hoy{width:auto;padding:0 12px;height:38px;font-size:.78rem;font-weight:700;border-radius:10px;border:1px solid var(--cyan);background:rgba(0,229,255,0.1);color:var(--cyan);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;flex-shrink:0}
+  .cal-head .btn-hoy:active{transform:scale(.95)}
+  html[data-workspace="trabajo"] .cal-head .btn-hoy{border-color:var(--cyan);background:rgba(255,152,0,0.12);color:#FF9800}
   .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
   .cal-dow{font-size:.68rem;color:var(--muted);text-align:center;padding:4px 0;letter-spacing:.5px}
   .cal-day{aspect-ratio:1;border-radius:10px;border:1px solid var(--line);background:rgba(15,20,32,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.82rem;cursor:pointer;position:relative;transition:all .15s}
@@ -302,6 +328,24 @@
   .cal-day .dot{width:5px;height:5px;border-radius:50%;background:var(--amber)}
   .cal-day .dot.done{background:var(--green)}
   .cal-day .cumple-mark{position:absolute;top:2px;right:3px;font-size:.55rem}
+
+  /* RESUMEN DEL MES */
+  .resumen-mes{
+    margin-top:14px;padding:12px;border-radius:12px;
+    background:rgba(10,20,26,0.6);border:1px solid var(--line);
+  }
+  .resumen-mes h4{margin:0 0 10px;font-size:.82rem;color:var(--cyan);letter-spacing:.5px;text-transform:uppercase}
+  .resumen-mes .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+  .resumen-mes .item{padding:8px;border-radius:8px;background:rgba(0,229,255,0.05);border:1px solid var(--line);text-align:center}
+  .resumen-mes .item .num{font-size:1.3rem;font-weight:800;color:var(--cyan);line-height:1}
+  .resumen-mes .item .lbl{font-size:.64rem;color:var(--muted);letter-spacing:.3px;margin-top:4px;text-transform:uppercase}
+  .resumen-mes .lista-dias{margin-top:10px;font-size:.8rem;line-height:1.6}
+  .resumen-mes .lista-dias .dia-item{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px dashed var(--line)}
+  .resumen-mes .lista-dias .dia-item:last-child{border-bottom:none}
+  .resumen-mes .lista-dias .dia-item .dia-fecha{color:var(--amber);font-weight:700;flex-shrink:0}
+  .resumen-mes .lista-dias .dia-item .dia-txt{color:var(--txt);text-align:right;flex:1}
+  .resumen-mes .vacio{font-size:.82rem;color:var(--muted);text-align:center;padding:10px 0}
+
   .upcoming-cumples{margin-bottom:14px;padding:12px;border-radius:10px;background:rgba(255,105,180,0.08);border:1px solid rgba(255,105,180,0.35)}
   .upcoming-cumples h4{margin:0 0 8px;font-size:.78rem;color:#ff69b4;font-weight:700;letter-spacing:.5px}
   .upcoming-cumples .item{font-size:.82rem;color:var(--txt);padding:4px 0;display:flex;justify-content:space-between;gap:8px}
@@ -331,9 +375,11 @@
   .persona-card .info b{color:var(--txt)}
   .persona-card .acciones{position:absolute;top:10px;right:10px;display:flex;gap:4px}
   .persona-card .acciones button{width:32px;height:32px;padding:0;border-radius:7px;border:1px solid var(--line);background:rgba(10,14,24,0.7);color:var(--txt);cursor:pointer;font-size:.85rem}
-  .persona-card .toggle-pers{position:absolute;top:10px;right:110px;width:32px;height:32px;padding:0;border-radius:7px;border:1px solid var(--line);background:rgba(10,14,24,0.85);color:var(--cyan);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;z-index:2}
+  .persona-card .toggle-pers{position:absolute;top:10px;right:120px;width:36px;height:36px;padding:0;border-radius:8px;border:1px solid var(--line);background:rgba(10,14,24,0.85);color:var(--cyan);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;transition:all .2s}
+  .persona-card .toggle-pers svg{width:18px;height:18px;transition:transform .2s}
+  .persona-card.expanded .toggle-pers svg{transform:rotate(180deg)}
   .persona-card.collapsed{padding:12px 13px}
-  .persona-card.collapsed h3{margin:0;padding-right:150px}
+  .persona-card.collapsed h3{margin:0;padding-right:160px}
   .persona-card.collapsed .info,
   .persona-card.collapsed .relacionadas{ display:none !important; }
   .persona-card .fecha-mini{font-size:.66rem;color:var(--muted);font-weight:400;letter-spacing:0;margin-left:8px;opacity:.85;vertical-align:middle}
@@ -347,7 +393,6 @@
   textarea:focus,input:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,0.18)}
   label{font-size:.75rem;color:var(--muted);display:block;margin:10px 0 4px;letter-spacing:.5px}
 
-  /* Input fecha tipo botón (abre wheel picker) */
   .fecha-input{
     width:100%;padding:12px;border-radius:10px;border:1px solid var(--line);
     background:rgba(10,14,24,0.85);color:var(--txt);font-size:.92rem;font-family:inherit;
@@ -356,7 +401,6 @@
     background-repeat:no-repeat;background-position:right 12px center;
   }
   .fecha-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,229,255,0.18)}
-  .fecha-input:empty::before{content:attr(data-placeholder);color:var(--muted)}
 
   .config-acc{background:rgba(15,20,32,0.7);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
   .config-acc[open]{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,229,255,0.15)}
@@ -419,6 +463,8 @@
   .search-input-wrap{position:relative;margin-bottom:12px}
   .search-input-wrap input{padding-left:40px;font-size:1rem;padding-top:14px;padding-bottom:14px}
   .search-input-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+  .search-resultado{cursor:pointer;transition:all .15s}
+  .search-resultado:hover{border-color:var(--cyan);box-shadow:0 0 14px rgba(0,229,255,0.3)}
 
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:950;padding:20px;overflow-y:auto;backdrop-filter:blur(6px)}
   .modal-overlay.show{display:flex}
@@ -473,7 +519,6 @@
   #modalCompartirPersona .field-check input{width:20px;height:20px;accent-color:var(--cyan);cursor:pointer;margin:0}
   #modalCompartirPersona .field-check label{cursor:pointer;flex:1;margin:0;color:var(--txt);font-size:.88rem}
 
-  /* WHEEL DATE PICKER */
   .wheel-picker{display:flex;gap:6px;justify-content:center;height:200px;position:relative;padding:0 4px;margin-bottom:14px}
   .wheel-picker .col{
     flex:1;height:200px;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;
@@ -483,9 +528,7 @@
   }
   .wheel-picker .col::-webkit-scrollbar{display:none}
   .wheel-picker .col::before,
-  .wheel-picker .col::after{
-    content:'';display:block;height:80px;pointer-events:none;
-  }
+  .wheel-picker .col::after{content:'';display:block;height:80px;pointer-events:none}
   .wheel-picker .col .item{
     height:40px;display:flex;align-items:center;justify-content:center;
     scroll-snap-align:center;font-size:1rem;color:var(--muted);
@@ -493,14 +536,9 @@
   }
   .wheel-picker .col .item.sel{color:var(--cyan);font-weight:700;font-size:1.15rem;text-shadow:0 0 10px rgba(0,229,255,0.5)}
   html[data-workspace="trabajo"] .wheel-picker .col .item.sel{color:#FF9800;text-shadow:0 0 10px rgba(255,152,0,0.5)}
-  .wheel-picker .col .item:hover{color:var(--txt)}
-  .wheel-picker-wrapper{
-    position:relative;
-  }
+  .wheel-picker-wrapper{position:relative}
   .wheel-picker-wrapper::before,
-  .wheel-picker-wrapper::after{
-    content:'';position:absolute;left:0;right:0;height:40px;pointer-events:none;z-index:2;
-  }
+  .wheel-picker-wrapper::after{content:'';position:absolute;left:0;right:0;height:40px;pointer-events:none;z-index:2}
   .wheel-picker-wrapper::before{top:0;background:linear-gradient(180deg, rgba(15,20,32,0.95), transparent)}
   .wheel-picker-wrapper::after{bottom:0;background:linear-gradient(0deg, rgba(15,20,32,0.95), transparent)}
   .wheel-picker-wrapper .highlight-line{
@@ -574,11 +612,12 @@
     <div class="upcoming-cumples" id="upcomingCumples" style="display:none"></div>
     <div class="cal-head">
       <button class="btn" id="mesPrev">‹</button>
+      <button class="btn-hoy" id="btnHoyMes">📅 Hoy</button>
       <div class="cal-selectors"><select id="calSelMes"></select><select id="calSelAnio"></select></div>
       <button class="btn" id="mesNext">›</button>
     </div>
     <div class="cal-grid" id="calGrid"></div>
-    <div class="hint" style="margin-top:12px;text-align:center">Toca un día para ver/agregar</div>
+    <div class="resumen-mes" id="resumenMes"></div>
   </section>
 
   <section id="tab-tareas">
@@ -791,7 +830,6 @@
   <button id="ttsStop" title="Detener">⏹️</button>
 </div>
 
-<!-- WHEEL DATE PICKER MODAL -->
 <div id="modalFecha" class="modal-overlay">
   <div class="modal-box">
     <h3 class="modal-title">📅 Elegir fecha</h3>
@@ -811,13 +849,13 @@
 
 <div class="app-footer" id="appFooter" role="button" tabindex="0">
   <span class="footer-text">JARVIS</span>
-  <span class="v-badge">v28.9</span>
+  <span class="v-badge">v29.0</span>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const VERSION = '28.9';
+const VERSION = '29.0';
 const LS = { get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} }, set(k, v){ localStorage.setItem('jarvis_'+k, JSON.stringify(v)); } };
 const SYNC_TOKEN_KEY = 'jarvis-sync-token';
 const SYNC_GIST_KEY = 'jarvis-sync-gist';
@@ -880,8 +918,9 @@ if (!eliminados._ts) eliminados._ts = {};
 let modoLocalHasta = LS.get('modoLocalHasta', 0);
 let ultimoHashSync = LS.get('ultimoHashSync', '');
 let pendingPush = LS.get('pendingPush', false);
-let notasColapsadas = LS.get('notasColapsadas', {});
-let personasColapsadas = LS.get('personasColapsadas', {});
+// Por defecto TODO colapsado: solo expandido si está en true
+let notasExpandidas = LS.get('notasExpandidas', {});
+let personasExpandidas = LS.get('personasExpandidas', {});
 
 const $ = id => document.getElementById(id);
 const txt = $('txt');
@@ -902,14 +941,13 @@ const eqId = (a, b) => String(a) === String(b);
   resize(); window.addEventListener('resize', resize); draw();
 })();
 
-// Ir a sección
 function irASeccion(tab) {
   document.querySelectorAll('#drawer .drawer-nav button').forEach(x => x.classList.toggle('activo', x.dataset.tab === tab));
   document.querySelectorAll('main section').forEach(x => x.classList.remove('active'));
   $('tab-'+tab).classList.add('active');
   if (tab === 'notas') renderNotas();
   if (tab === 'tareas') renderTareas();
-  if (tab === 'calendario') { renderCalendario(); llenarSelectores(); renderUpcomingCumples(); }
+  if (tab === 'calendario') { renderCalendario(); llenarSelectores(); renderUpcomingCumples(); renderResumenMes(); }
   if (tab === 'personas') renderPersonas();
   if (tab === 'buscar') renderBuscar();
   if (tab === 'stats') renderStats();
@@ -930,7 +968,7 @@ document.querySelectorAll('.workspace-picker button').forEach(b => {
   b.onclick = () => {
     espacioActual = b.dataset.espacio; LS.set('espacioActual', espacioActual);
     actualizarTema(espacioActual); limpiarSeleccion();
-    renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderStats(); renderUpcomingCumples();
+    renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderStats(); renderUpcomingCumples(); renderResumenMes();
     toast(espacioActual === 'trabajo' ? '💼 Modo Trabajo activado' : '🏠 Modo Casa activado');
     cerrarDrawer();
   };
@@ -947,16 +985,8 @@ function actualizarQuickNav(){
   const needs = s.scrollHeight > s.clientHeight + 150;
   $('quickNav').classList.toggle('show', needs);
 }
-$('btnScrollTop').onclick = () => {
-  const ap = document.querySelector('.analisis-panel.show');
-  if (ap) { ap.scrollTo({top:0, behavior:'smooth'}); return; }
-  const s = seccionActiva(); if (s) s.scrollTo({top:0, behavior:'smooth'});
-};
-$('btnScrollBottom').onclick = () => {
-  const ap = document.querySelector('.analisis-panel.show');
-  if (ap) { ap.scrollTo({top: ap.scrollHeight, behavior:'smooth'}); return; }
-  const s = seccionActiva(); if (s) s.scrollTo({top: s.scrollHeight, behavior:'smooth'});
-};
+$('btnScrollTop').onclick = () => { const s = seccionActiva(); if (s) s.scrollTo({top:0, behavior:'smooth'}); };
+$('btnScrollBottom').onclick = () => { const s = seccionActiva(); if (s) s.scrollTo({top: s.scrollHeight, behavior:'smooth'}); };
 document.querySelectorAll('main section').forEach(s => s.addEventListener('scroll', actualizarQuickNav));
 setInterval(actualizarQuickNav, 2000);
 
@@ -1021,13 +1051,10 @@ $('btnSyncManual').onclick = async () => {
   cerrarDrawer();
 };
 
-// ================= TTS con MEJOR VOZ =================
+// ================= TTS: SIEMPRE LA MEJOR VOZ =================
 let _vocesListas = false;
 function cargarVocesAhora() {
-  try {
-    const v = speechSynthesis.getVoices();
-    if (v && v.length > 0) _vocesListas = true;
-  } catch(e) {}
+  try { const v = speechSynthesis.getVoices(); if (v && v.length > 0) _vocesListas = true; } catch(e) {}
 }
 if (window.speechSynthesis) {
   cargarVocesAhora();
@@ -1035,30 +1062,49 @@ if (window.speechSynthesis) {
   setTimeout(cargarVocesAhora, 100);
   setTimeout(cargarVocesAhora, 500);
   setTimeout(cargarVocesAhora, 1500);
+  setTimeout(cargarVocesAhora, 3000);
 }
 
-function mejorVoz() {
+function puntuarVoz(v, idioma) {
+  let p = 0;
+  const n = (v.name || '').toLowerCase();
+  const l = (v.lang || '').toLowerCase();
+  if (v.localService) p += 100;
+  if (n.includes('neural') || n.includes('natural') || n.includes('enhanced') || n.includes('premium') || n.includes('hd')) p += 80;
+  if (n.includes('google')) p += 40;
+  if (n.includes('siri') || n.includes('samantha') || n.includes('microsoft')) p += 30;
+  // Preferir es-CL si el idioma base es es
+  if (idioma === 'es') {
+    if (l === 'es-cl') p += 60;
+    else if (l === 'es-es') p += 50;
+    else if (l === 'es-mx') p += 45;
+    else if (l === 'es-ar') p += 40;
+    else if (l === 'es-us') p += 35;
+    else if (l.startsWith('es')) p += 20;
+  }
+  if (idioma === 'en') {
+    if (l === 'en-us') p += 60;
+    else if (l === 'en-gb') p += 50;
+    else if (l === 'en-au') p += 45;
+    else if (l.startsWith('en')) p += 20;
+  }
+  return p;
+}
+
+function mejorVozPara(idioma) {
+  idioma = idioma || 'es';
   try {
     const voces = speechSynthesis.getVoices();
     if (!voces || !voces.length) return null;
-    const es = voces.filter(v => v.lang && v.lang.toLowerCase().startsWith('es'));
-    if (!es.length) {
-      return voces.find(v => v.localService) || voces[0];
-    }
-    const prefLangs = ['es-CL', 'es-ES', 'es-MX', 'es-AR', 'es-US', 'es-CO', 'es-PE', 'es-VE', 'es-UY', 'es-419'];
-    for (const lang of prefLangs) {
-      const local = es.find(v => v.lang === lang && v.localService);
-      if (local) return local;
-    }
-    for (const lang of prefLangs) {
-      const v = es.find(v => v.lang === lang);
-      if (v) return v;
-    }
-    const esLocal = es.find(v => v.localService);
-    if (esLocal) return esLocal;
-    return es[0];
+    const matching = voces.filter(v => v.lang && v.lang.toLowerCase().startsWith(idioma.toLowerCase()));
+    if (!matching.length) return null;
+    const ordenadas = matching.map(v => ({ v, p: puntuarVoz(v, idioma) })).sort((a,b) => b.p - a.p);
+    return ordenadas[0].v;
   } catch(e) { return null; }
 }
+
+// Compatibilidad con llamadas que usan mejorVoz()
+function mejorVoz() { return mejorVozPara('es'); }
 
 const TTS = {
   chunks: [], i: 0, activo: false, idioma: 'es', gen: 0, intentos: 0,
@@ -1071,15 +1117,13 @@ const TTS = {
       this.idioma = idioma || 'es';
       this.chunks = this.dividir(texto);
       if (!this.chunks.length) { toast('Vacío'); return; }
-      // Si no hay voces cargadas aún, esperar
       if (!_vocesListas && this.intentos < 5) {
         this.intentos++;
-        setTimeout(() => { if (g === this.gen - 1 || this.chunks.length === 0) this.play(texto, idioma); }, 300);
+        setTimeout(() => { this.play(texto, idioma); }, 300);
         return;
       }
       this.intentos = 0;
-      this.i = 0;
-      this.activo = true;
+      this.i = 0; this.activo = true;
       $('ttsPlayer').classList.add('show');
       this._info();
       this._next(g);
@@ -1091,9 +1135,9 @@ const TTS = {
       if (g !== undefined && g !== this.gen) return;
       if (!this.activo || this.i >= this.chunks.length) { this._finish(); return; }
       const u = new SpeechSynthesisUtterance(this.chunks[this.i]);
-      u.lang = 'es-CL'; u.rate = 1.05;
-      const v = mejorVoz();
-      if (v) { u.voice = v; u.lang = v.lang; }
+      const v = mejorVozPara(this.idioma);
+      if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = this.idioma === 'en' ? 'en-US' : 'es-CL'; }
+      u.rate = 1.05;
       u.onend = () => { if (g !== this.gen || !this.activo) return; this.i++; this._info(); this._next(g); };
       u.onerror = () => { if (g !== this.gen || !this.activo) return; this.i++; this._info(); this._next(g); };
       speechSynthesis.speak(u);
@@ -1152,7 +1196,7 @@ function hashDatos() { const o = a => [...a].map(x => ({ i: String(x.id), t: x.t
 let syncDebounceTimer = null;
 function syncDebounced() { if (!tieneSync() || operacionCritica) return; pendingPush = true; LS.set('pendingPush', true); actualizarIndicator(); if (modoLocalHasta > Date.now()) return; clearTimeout(syncDebounceTimer); syncDebounceTimer = setTimeout(() => sincronizar(true), 5000); }
 function syncImmediate() { if (!tieneSync() || operacionCritica) return; pendingPush = true; LS.set('pendingPush', true); actualizarIndicator(); if (modoLocalHasta > Date.now()) return; clearTimeout(syncDebounceTimer); sincronizar(true); }
-function buildNube() { return { version: 12, notas, tareas, personas, eliminados, papelera, ultimaActualizacion: Date.now() }; }
+function buildNube() { return { version: 13, notas, tareas, personas, eliminados, papelera, ultimaActualizacion: Date.now() }; }
 function mergeArr(local, nube, elim) { const sE = new Set((elim || []).map(String)); const m = new Map(); for (const i of local) { const k = String(i.id); if (sE.has(k)) continue; m.set(k, i); } for (const i of nube) { const k = String(i.id); if (sE.has(k)) continue; const e = m.get(k); if (!e) m.set(k, i); else { const fL = Number(e.fecha) || 0, fN = Number(i.fecha) || 0; if (fN > fL) m.set(k, i); } } return Array.from(m.values()); }
 function mergeElim(local, nube) { return { notas: Array.from(new Set([...(local.notas||[]).map(String), ...(nube.notas||[]).map(String)])), tareas: Array.from(new Set([...(local.tareas||[]).map(String), ...(nube.tareas||[]).map(String)])), personas: Array.from(new Set([...(local.personas||[]).map(String), ...(nube.personas||[]).map(String)])), _ts: { ...(local._ts||{}), ...(nube._ts||{}) } }; }
 
@@ -1166,7 +1210,7 @@ async function sincronizar(silencioso = false) {
     const f = await detectarFile(); if (!f) throw new Error('No archivo');
     const gist = await ghReq('GET', `/gists/${getGistId()}`);
     const file = gist.files && gist.files[f];
-    let nube = { version: 12, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
+    let nube = { version: 13, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
     if (file && file.content) { const c = file.truncated ? await (await fetchT(file.raw_url)).text() : file.content; try { nube = JSON.parse(c); } catch(e){} }
     if (!nube.eliminados) nube.eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
     if (!nube.eliminados._ts) nube.eliminados._ts = {};
@@ -1184,7 +1228,7 @@ async function sincronizar(silencioso = false) {
     if (h !== ultimoHashSync || pendingPush) { const cS = JSON.stringify(buildNube(), null, 2); await ghReq('PATCH', `/gists/${getGistId()}`, { files: { [f]: { content: cS } } }); ultimoHashSync = h; LS.set('ultimoHashSync', h); pendingPush = false; LS.set('pendingPush', false); if (!silencioso) toast('✓ Sincronizado'); }
     else if (!silencioso) toast('Sin cambios');
     ultimaSync = Date.now(); LS.set('ultimaSync', ultimaSync);
-    renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera(); renderUpcomingCumples();
+    renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera(); renderUpcomingCumples(); renderResumenMes();
     return true;
   } catch (e) { console.warn('Sync:', e.message); if (!silencioso) toast('❌ ' + e.message); return false; }
   finally { syncEnProgreso = false; actualizarIndicator(); }
@@ -1198,7 +1242,7 @@ setInterval(actualizarIndicator, 1000);
 
 function moverPapelera(tipo, item) { papelera.push({ tipo, item: JSON.parse(JSON.stringify(item)), fecha: Date.now() }); LS.set('papelera', papelera); marcarElim(tipo, item.id); purgarPapelera(); }
 function purgarPapelera() { const l = Date.now() - PAPELERA_TTL, a = papelera.length; papelera = papelera.filter(p => p.fecha > l); if (papelera.length !== a) LS.set('papelera', papelera); }
-function restaurar(idx) { const p = papelera[idx]; if (!p) return; papelera.splice(idx, 1); LS.set('papelera', papelera); eliminados[p.tipo] = (eliminados[p.tipo] || []).filter(x => !eqId(x, p.item.id)); LS.set('eliminados', eliminados); if (p.tipo === 'notas') notas.unshift(p.item); if (p.tipo === 'tareas') tareas.unshift(p.item); if (p.tipo === 'personas') personas.unshift(p.item); LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas); syncDebounced(); renderPapelera(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderUpcomingCumples(); toast('♻️ Restaurado'); }
+function restaurar(idx) { const p = papelera[idx]; if (!p) return; papelera.splice(idx, 1); LS.set('papelera', papelera); eliminados[p.tipo] = (eliminados[p.tipo] || []).filter(x => !eqId(x, p.item.id)); LS.set('eliminados', eliminados); if (p.tipo === 'notas') notas.unshift(p.item); if (p.tipo === 'tareas') tareas.unshift(p.item); if (p.tipo === 'personas') personas.unshift(p.item); LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas); syncDebounced(); renderPapelera(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderUpcomingCumples(); renderResumenMes(); toast('♻️ Restaurado'); }
 
 function renderPapelera() {
   const c = $('listaPapelera'); if (!c) return;
@@ -1231,7 +1275,7 @@ $('btnVaciarPapelera').onclick = async () => {
   papelera = []; LS.set('papelera', papelera); await pushASync(false); renderPapelera(); toast('🗑️ Vaciada');
 };
 
-function exportJSON() { const d = { version: 12, fecha: new Date().toISOString(), notas, tareas, personas, eliminados, papelera }; const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = `jarvis-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(u); toast('📥 Descargado'); }
+function exportJSON() { const d = { version: 13, fecha: new Date().toISOString(), notas, tareas, personas, eliminados, papelera }; const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = `jarvis-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(u); toast('📥 Descargado'); }
 async function importJSON(f) {
   try {
     const d = JSON.parse(await f.text());
@@ -1240,7 +1284,7 @@ async function importJSON(f) {
     notas = d.notas || []; tareas = d.tareas || []; personas = d.personas || []; eliminados = d.eliminados || { notas: [], tareas: [], personas: [], _ts: {} }; ['notas','tareas','personas'].forEach(t => { eliminados[t] = (eliminados[t]||[]).map(String); }); papelera = d.papelera || [];
     LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas); LS.set('eliminados', eliminados); LS.set('papelera', papelera);
     ultimoHashSync = ''; pendingPush = true; syncDebounced();
-    renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderPapelera(); renderUpcomingCumples();
+    renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderPapelera(); renderUpcomingCumples(); renderResumenMes();
     toast('📤 Importado');
   } catch(e) { toast('❌ ' + e.message); }
 }
@@ -1254,7 +1298,63 @@ function renderChipsEtiquetas(contenedor, seleccionadas) {
 function proximaFecha(fs, rec) { if (!fs) return ''; const f = new Date(fs + 'T12:00:00'); if (rec === 'diario') f.setDate(f.getDate() + 1); else if (rec === 'semanal') f.setDate(f.getDate() + 7); else if (rec === 'mensual') f.setMonth(f.getMonth() + 1); else if (rec === 'anual') f.setFullYear(f.getFullYear() + 1); return f.toISOString().slice(0,10); }
 
 function buscar(q) { const q2 = (q || '').toLowerCase().trim(); if (!q2) return { notas: [], tareas: [], personas: [] }; const fN = notas.filter(n => n.espacio === espacioActual), fT = tareas.filter(t => t.espacio === espacioActual), fP = personas.filter(p => p.espacio === espacioActual); return { notas: fN.filter(n => (n.titulo||'').toLowerCase().includes(q2) || (n.texto||'').toLowerCase().includes(q2)), tareas: fT.filter(t => (t.descripcion||'').toLowerCase().includes(q2) || (t.persona||'').toLowerCase().includes(q2)), personas: fP.filter(p => (p.nombre||'').toLowerCase().includes(q2)) }; }
-function renderBuscar() { const q = $('buscarGlobal').value, c = $('resultadosBusqueda'); const r = buscar(q); if (!q.trim()) { c.innerHTML = '<p class="hint">Escribe algo.</p>'; return; } const total = r.notas.length + r.tareas.length + r.personas.length; if (!total) { c.innerHTML = '<p class="hint">Sin resultados</p>'; return; } let h = ''; if (r.notas.length) { h += `<h3 style="color:var(--cyan);font-size:.85rem;margin:14px 0 8px">📝 Notas (${r.notas.length})</h3>`; h += r.notas.map(n => `<div class="nota-card"><h3>${escapeHtml(n.titulo)}</h3><div class="texto">${escapeHtml((n.texto||'').slice(0,200))}</div></div>`).join(''); } if (r.tareas.length) { h += `<h3 style="color:var(--cyan);font-size:.85rem;margin:14px 0 8px">✅ Tareas (${r.tareas.length})</h3>`; h += r.tareas.map(renderTareaHTML).join(''); } if (r.personas.length) { h += `<h3 style="color:var(--cyan);font-size:.85rem;margin:14px 0 8px">👥 Personas (${r.personas.length})</h3>`; h += r.personas.map(p => `<div class="persona-card"><h3>${escapeHtml(p.nombre)}</h3></div>`).join(''); } c.innerHTML = h; }
+
+function irYResaltar(tab, id, selector) {
+  irASeccion(tab);
+  setTimeout(() => {
+    const el = document.querySelector(selector);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.transition = 'box-shadow .5s';
+      el.style.boxShadow = '0 0 30px rgba(0,229,255,0.8)';
+      setTimeout(() => { el.style.boxShadow = ''; }, 2000);
+    }
+  }, 300);
+}
+
+function renderBuscar() {
+  const q = $('buscarGlobal').value, c = $('resultadosBusqueda');
+  const r = buscar(q);
+  if (!q.trim()) { c.innerHTML = '<p class="hint">Escribe algo.</p>'; return; }
+  const total = r.notas.length + r.tareas.length + r.personas.length;
+  if (!total) { c.innerHTML = '<p class="hint">Sin resultados</p>'; return; }
+  let h = '';
+  if (r.notas.length) {
+    h += `<h3 style="color:var(--cyan);font-size:.85rem;margin:14px 0 8px">📝 Notas (${r.notas.length})</h3>`;
+    r.notas.forEach(n => {
+      h += `<div class="nota-card search-resultado" data-buscar-tipo="nota" data-buscar-id="${n.id}"><h3>${escapeHtml(n.titulo)}</h3><div class="texto">${escapeHtml((n.texto||'').slice(0,200))}</div></div>`;
+    });
+  }
+  if (r.tareas.length) {
+    h += `<h3 style="color:var(--cyan);font-size:.85rem;margin:14px 0 8px">✅ Tareas (${r.tareas.length})</h3>`;
+    r.tareas.forEach(t => {
+      h += `<div class="task-item search-resultado" data-buscar-tipo="tarea" data-buscar-id="${t.id}" style="cursor:pointer"><div style="flex:1"><div class="t-desc">${escapeHtml(t.descripcion)}</div><div class="t-meta">${t.fecha ? `📅 ${t.fecha}` : ''}${t.persona ? ` · 👤 ${escapeHtml(t.persona)}` : ''}</div></div></div>`;
+    });
+  }
+  if (r.personas.length) {
+    h += `<h3 style="color:var(--cyan);font-size:.85rem;margin:14px 0 8px">👥 Personas (${r.personas.length})</h3>`;
+    r.personas.forEach(p => {
+      h += `<div class="persona-card search-resultado" data-buscar-tipo="persona" data-buscar-id="${p.id}"><h3>${escapeHtml(p.nombre)}</h3><div class="info">${p.telefono ? `📞 ${escapeHtml(p.telefono)}` : ''}${p.correo ? ` · 📧 ${escapeHtml(p.correo)}` : ''}</div></div>`;
+    });
+  }
+  c.innerHTML = h;
+  c.querySelectorAll('[data-buscar-tipo]').forEach(el => {
+    el.onclick = () => {
+      const tipo = el.dataset.buscarTipo;
+      const id = el.dataset.buscarId;
+      if (tipo === 'nota') {
+        // Expandir la nota antes de ir
+        notasExpandidas[id] = true; LS.set('notasExpandidas', notasExpandidas);
+        irYResaltar('notas', id, `.nota-card[data-id="${id}"]`);
+      } else if (tipo === 'tarea') {
+        irYResaltar('tareas', id, `.task-item[data-id="${id}"]`);
+      } else if (tipo === 'persona') {
+        personasExpandidas[id] = true; LS.set('personasExpandidas', personasExpandidas);
+        irYResaltar('personas', id, `.persona-card[data-id="${id}"]`);
+      }
+    };
+  });
+}
 
 function renderStats() {
   const fN = notas.filter(n => n.espacio === espacioActual), fT = tareas.filter(t => t.espacio === espacioActual), fP = personas.filter(p => p.espacio === espacioActual);
@@ -1279,7 +1379,6 @@ function renderStats() {
       const tab = card.dataset.ir;
       irASeccion(tab);
       if (tab === 'config') {
-        // abrir el details de papelera
         setTimeout(() => {
           const details = Array.from(document.querySelectorAll('details.config-acc')).find(d => d.textContent.includes('Papelera'));
           if (details) details.open = true;
@@ -1344,22 +1443,29 @@ $('btnTraducir').onclick = () => { if (!txt.value.trim()) return toast('No hay t
 $('tradCancelar').onclick = () => $('modalTraducir').classList.remove('show');
 document.querySelectorAll('#modalTraducir [data-lang]').forEach(b => { b.onclick = async () => { $('modalTraducir').classList.remove('show'); await traducirYMostrar(b.dataset.lang); }; });
 $('btnCerrarTrad').onclick = () => { $('traduccionBox').classList.remove('show'); $('traduccionTexto').innerHTML = ''; TTS.stop(); };
-async function traducirYMostrar(code) { detenerTodo(); TTS.stop(); const t = txt.value.trim(); const nom = code === 'en' ? 'Inglés' : 'Español'; const box = $('traduccionBox'), out = $('traduccionTexto'); $('traduccionLabel').textContent = `🌐 Traducción a ${nom}`; box.classList.add('show'); out.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⏳...</div>'; try { const trad = await traducir(t, code); out.innerHTML = `<div style="margin-bottom:8px">${escapeHtml(trad)}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn primary small" data-trad="play">▶</button><button class="btn small" data-trad="pause">⏸</button><button class="btn small" data-trad="stop">⏹</button><button class="btn small" data-trad="copiar">📋</button></div>`; out.querySelectorAll('[data-trad]').forEach(b => { b.onclick = () => { const a = b.dataset.trad; if (a === 'play') TTS.play(trad, code); else if (a === 'pause') TTS.pauseToggle(); else if (a === 'stop') TTS.stop(); else if (a === 'copiar') copiar(trad); }; }); } catch(e) { out.innerHTML = '<div style="color:#ff8a80;padding:10px">❌ ' + escapeHtml(e.message) + '</div>'; } }
+async function traducirYMostrar(code) {
+  detenerTodo(); TTS.stop();
+  const t = txt.value.trim();
+  const nom = code === 'en' ? 'Inglés' : 'Español';
+  const box = $('traduccionBox'), out = $('traduccionTexto');
+  $('traduccionLabel').textContent = `🌐 Traducción a ${nom}`;
+  box.classList.add('show'); out.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⏳...</div>';
+  try {
+    const trad = await traducir(t, code);
+    out.innerHTML = `<div style="margin-bottom:8px">${escapeHtml(trad)}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn primary small" data-trad="play">▶</button><button class="btn small" data-trad="pause">⏸</button><button class="btn small" data-trad="stop">⏹</button><button class="btn small" data-trad="copiar">📋</button></div>`;
+    out.querySelectorAll('[data-trad]').forEach(b => { b.onclick = () => { const a = b.dataset.trad; if (a === 'play') TTS.play(trad, code); else if (a === 'pause') TTS.pauseToggle(); else if (a === 'stop') TTS.stop(); else if (a === 'copiar') copiar(trad); }; });
+  } catch(e) { out.innerHTML = '<div style="color:#ff8a80;padding:10px">❌ ' + escapeHtml(e.message) + '</div>'; }
+}
 async function traducir(t, lang) { const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(t)}`; const r = await fetch(url); if (!r.ok) throw new Error('HTTP ' + r.status); const d = await r.json(); if (Array.isArray(d) && d[0] && Array.isArray(d[0][0])) return d[0].map(s => s[0]).join(' '); throw new Error('Inválida'); }
 
-// ================= WHEEL DATE PICKER =================
+// WHEEL DATE PICKER
 let datePickerTarget = null;
 function padN(n) { return String(n).padStart(2, '0'); }
-
-function setupWheelCol(colId, items, valorSel, tipo) {
-  const col = $(colId);
-  col.innerHTML = '';
+function setupWheelCol(colId, items, tipo) {
+  const col = $(colId); col.innerHTML = '';
   items.forEach(v => {
     const item = document.createElement('div');
-    item.className = 'item';
-    item.dataset.val = v.val;
-    item.dataset.tipo = tipo;
-    item.textContent = v.label;
+    item.className = 'item'; item.dataset.val = v.val; item.dataset.tipo = tipo; item.textContent = v.label;
     item.onclick = () => scrollDateCol(colId, v.val);
     col.appendChild(item);
   });
@@ -1374,64 +1480,39 @@ function setupWheelCol(colId, items, valorSel, tipo) {
         const d = Math.abs(itCenter - center);
         if (d < distMin) { distMin = d; closest = it; }
       });
-      if (closest) {
-        items2.forEach(it => it.classList.remove('sel'));
-        closest.classList.add('sel');
-      }
+      if (closest) { items2.forEach(it => it.classList.remove('sel')); closest.classList.add('sel'); }
     }, 80);
   };
 }
-
 function scrollDateCol(colId, valor) {
-  const col = $(colId);
-  const items = col.querySelectorAll('.item');
+  const col = $(colId); const items = col.querySelectorAll('.item');
   const target = Array.from(items).find(it => +it.dataset.val === valor);
-  if (target) {
-    const offset = target.offsetTop - (col.clientHeight - target.offsetHeight) / 2;
-    col.scrollTo({ top: offset, behavior: 'smooth' });
-  }
+  if (target) { const offset = target.offsetTop - (col.clientHeight - target.offsetHeight) / 2; col.scrollTo({ top: offset, behavior: 'smooth' }); }
 }
-
 function abrirDatePicker(targetId) {
   datePickerTarget = targetId;
   const inp = $(targetId);
   let valorIso = inp.dataset.iso || '';
   const hoy = new Date();
   let a = hoy.getFullYear(), m = hoy.getMonth() + 1, d = hoy.getDate();
-  if (valorIso) {
-    const parts = valorIso.split('-').map(Number);
-    if (parts.length === 3 && parts[0] > 1900) { a = parts[0]; m = parts[1]; d = parts[2]; }
-  }
-  const dias = [];
-  for (let i = 1; i <= 31; i++) dias.push({ val: i, label: padN(i) });
-  const meses = [];
-  MESES_NOMBRES.forEach((n, i) => meses.push({ val: i + 1, label: n }));
-  const anios = [];
-  const anioActual = new Date().getFullYear();
+  if (valorIso) { const parts = valorIso.split('-').map(Number); if (parts.length === 3 && parts[0] > 1900) { a = parts[0]; m = parts[1]; d = parts[2]; } }
+  const dias = []; for (let i = 1; i <= 31; i++) dias.push({ val: i, label: padN(i) });
+  const meses = []; MESES_NOMBRES.forEach((n, i) => meses.push({ val: i + 1, label: n }));
+  const anios = []; const anioActual = new Date().getFullYear();
   for (let y = anioActual - 100; y <= anioActual + 10; y++) anios.push({ val: y, label: y });
-
-  setupWheelCol('dpDia', dias, d, 'dia');
-  setupWheelCol('dpMes', meses, m, 'mes');
-  setupWheelCol('dpAnio', anios, a, 'anio');
-
+  setupWheelCol('dpDia', dias, 'dia');
+  setupWheelCol('dpMes', meses, 'mes');
+  setupWheelCol('dpAnio', anios, 'anio');
   $('modalFecha').classList.add('show');
-
   setTimeout(() => {
-    scrollDateCol('dpDia', d);
-    scrollDateCol('dpMes', m);
-    scrollDateCol('dpAnio', a);
-    // marcar seleccionados iniciales
+    scrollDateCol('dpDia', d); scrollDateCol('dpMes', m); scrollDateCol('dpAnio', a);
     ['dpDia', 'dpMes', 'dpAnio'].forEach(id => {
-      const col = $(id);
-      const items = col.querySelectorAll('.item');
+      const col = $(id); const items = col.querySelectorAll('.item');
       const targetVal = id === 'dpDia' ? d : id === 'dpMes' ? m : a;
-      items.forEach(it => {
-        if (+it.dataset.val === targetVal) it.classList.add('sel');
-      });
+      items.forEach(it => { if (+it.dataset.val === targetVal) it.classList.add('sel'); });
     });
   }, 150);
 }
-
 $('btnAceptarFecha').onclick = () => {
   if (!datePickerTarget) return;
   const dia = +($('dpDia').querySelector('.item.sel')?.dataset.val || 1);
@@ -1439,51 +1520,19 @@ $('btnAceptarFecha').onclick = () => {
   const anio = +($('dpAnio').querySelector('.item.sel')?.dataset.val || new Date().getFullYear());
   const iso = `${anio}-${padN(mes)}-${padN(dia)}`;
   const inp = $(datePickerTarget);
-  inp.dataset.iso = iso;
-  inp.value = `${padN(dia)}/${padN(mes)}/${anio}`;
-  $('modalFecha').classList.remove('show');
-  datePickerTarget = null;
+  inp.dataset.iso = iso; inp.value = `${padN(dia)}/${padN(mes)}/${anio}`;
+  $('modalFecha').classList.remove('show'); datePickerTarget = null;
 };
-$('btnLimpiarFecha').onclick = () => {
-  if (datePickerTarget) {
-    const inp = $(datePickerTarget);
-    inp.dataset.iso = '';
-    inp.value = '';
-  }
-  $('modalFecha').classList.remove('show');
-  datePickerTarget = null;
-};
-$('btnCancelarFecha').onclick = () => {
-  $('modalFecha').classList.remove('show');
-  datePickerTarget = null;
-};
-
-// Delegación de click para abrir el picker en cualquier input de fecha
-document.addEventListener('click', (e) => {
-  const el = e.target.closest('.fecha-input');
-  if (el) {
-    e.preventDefault();
-    abrirDatePicker(el.id);
-  }
-});
-
-// Helper para setear valor de fecha en un input
+$('btnLimpiarFecha').onclick = () => { if (datePickerTarget) { const inp = $(datePickerTarget); inp.dataset.iso = ''; inp.value = ''; } $('modalFecha').classList.remove('show'); datePickerTarget = null; };
+$('btnCancelarFecha').onclick = () => { $('modalFecha').classList.remove('show'); datePickerTarget = null; };
+document.addEventListener('click', (e) => { const el = e.target.closest('.fecha-input'); if (el) { e.preventDefault(); abrirDatePicker(el.id); } });
 function setFechaInput(id, iso) {
-  const inp = $(id);
-  if (!inp) return;
-  if (iso) {
-    const parts = iso.split('-');
-    if (parts.length === 3) {
-      inp.dataset.iso = iso;
-      inp.value = `${parts[2]}/${parts[1]}/${parts[0]}`;
-      return;
-    }
-  }
-  inp.dataset.iso = '';
-  inp.value = '';
+  const inp = $(id); if (!inp) return;
+  if (iso) { const parts = iso.split('-'); if (parts.length === 3) { inp.dataset.iso = iso; inp.value = `${parts[2]}/${parts[1]}/${parts[0]}`; return; } }
+  inp.dataset.iso = ''; inp.value = '';
 }
 
-// ================= VOZ =================
+// VOZ
 let permPrimed = false;
 async function permMic() { if (permPrimed) return true; if (!navigator.mediaDevices?.getUserMedia) return true; try { const s = await navigator.mediaDevices.getUserMedia({ audio: true }); s.getTracks().forEach(t => t.stop()); permPrimed = true; return true; } catch(e) { alerta('Micrófono bloqueado', 'Error', '🎤'); return false; } }
 const ES_MOVIL = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
@@ -1605,14 +1654,14 @@ $('btnGuardarNom').onclick = () => {
     tareas.unshift({ id: nuevoId(), descripcion: nom, persona: pTxt, contacto: pObj ? (pObj.whatsapp || pObj.telefono || '') : '', personaId: pObj ? pObj.id : null, fecha, hora, hecha: false, completadaEn: null, notaId: notaActual.id, fechaCreacion: Date.now(), recurrencia: recur, tags: [...etiquetasModal], espacio: espacioActual });
     LS.set('tareas', tareas);
   }
-  LS.set('notas', notas); syncImmediate(); $('modalNombrar').classList.remove('show'); renderNotas(); renderTareas(); renderCalendario(); toast('✅ Guardado como ' + propSel); notaActual = null;
+  LS.set('notas', notas); syncImmediate(); $('modalNombrar').classList.remove('show'); renderNotas(); renderTareas(); renderCalendario(); renderResumenMes(); toast('✅ Guardado como ' + propSel); notaActual = null;
 };
 
 async function groq(p) { const k = LS.get('apiKey', '') || $('apiKey').value.trim(); if (!k) throw new Error('Falta API key'); const tryM = async (model) => { const r = await fetch('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k }, body: JSON.stringify({ model, messages: [{ role: 'system', content: 'Eres JARVIS, asistente de Lahional Ávila. Respondes en español.' }, { role: 'user', content: p }], temperature: 0.4, max_tokens: 1500 }) }); if (!r.ok) { if (r.status === 404) throw new Error('MODEL_NOT_FOUND'); throw new Error('Error ' + r.status); } const d = await r.json(); return (d.choices?.[0]?.message?.content || '').trim() || '(sin respuesta)'; }; try { return await tryM('openai/gpt-oss-120b'); } catch(e) { if (e.message === 'MODEL_NOT_FOUND') return await tryM('llama-3.1-8b-instant'); throw e; } }
 
 let calAnio, calMes; { const h = new Date(); calAnio = h.getFullYear(); calMes = h.getMonth(); }
 function fmtISO(d){ const p = n => String(n).padStart(2,'0'); return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()); }
-function llenarSelectores() { const sM = $('calSelMes'), sA = $('calSelAnio'); const m = MESES_NOMBRES; if (sM.options.length !== 12) sM.innerHTML = m.map((x, i) => `<option value="${i}">${x}</option>`).join(''); sM.value = calMes; const aA = new Date().getFullYear(); if (sA.options.length === 0) { const an = []; for (let a = aA - 3; a <= aA + 5; a++) an.push(a); sA.innerHTML = an.map(a => `<option value="${a}">${a}</option>`).join(''); } sA.value = calAnio; sM.onchange = () => { calMes = +sM.value; renderCalendario(); renderUpcomingCumples(); }; sA.onchange = () => { calAnio = +sA.value; renderCalendario(); renderUpcomingCumples(); }; }
+function llenarSelectores() { const sM = $('calSelMes'), sA = $('calSelAnio'); const m = MESES_NOMBRES; if (sM.options.length !== 12) sM.innerHTML = m.map((x, i) => `<option value="${i}">${x}</option>`).join(''); sM.value = calMes; const aA = new Date().getFullYear(); if (sA.options.length === 0) { const an = []; for (let a = aA - 3; a <= aA + 5; a++) an.push(a); sA.innerHTML = an.map(a => `<option value="${a}">${a}</option>`).join(''); } sA.value = calAnio; sM.onchange = () => { calMes = +sM.value; renderCalendario(); renderUpcomingCumples(); renderResumenMes(); }; sA.onchange = () => { calAnio = +sA.value; renderCalendario(); renderUpcomingCumples(); renderResumenMes(); }; }
 function cumplesEnFecha(iso) { const parts = iso.split('-'); if (parts.length !== 3) return []; const mes = parts[1], dia = parts[2]; return personas.filter(p => { if (!p.cumpleanos || p.espacio !== espacioActual) return false; const cp = String(p.cumpleanos).split('-'); return cp.length === 3 && cp[1] === mes && cp[2] === dia; }); }
 function renderCalendario() {
   const p = new Date(calAnio, calMes, 1); const dM = new Date(calAnio, calMes+1, 0).getDate();
@@ -1637,6 +1686,60 @@ function renderCalendario() {
   $('calGrid').innerHTML = h;
   $('calGrid').querySelectorAll('.cal-day').forEach(el => { el.onclick = () => abrirDia(el.dataset.iso); });
 }
+
+function renderResumenMes() {
+  const cont = $('resumenMes'); if (!cont) return;
+  const fT = tareas.filter(t => {
+    if (t.espacio !== espacioActual || !t.fecha) return false;
+    const d = new Date(t.fecha + 'T12:00:00');
+    return d.getFullYear() === calAnio && d.getMonth() === calMes;
+  });
+  const pend = fT.filter(t => !t.hecha).length;
+  const hechas = fT.filter(t => t.hecha).length;
+  const cumplesMes = personas.filter(p => {
+    if (!p.cumpleanos || p.espacio !== espacioActual) return false;
+    const parts = p.cumpleanos.split('-');
+    return parts.length === 3 && +parts[1] === (calMes + 1);
+  });
+  // Agrupado por día
+  const porDia = {};
+  fT.forEach(t => {
+    if (!porDia[t.fecha]) porDia[t.fecha] = [];
+    porDia[t.fecha].push(t);
+  });
+  const diasOrdenados = Object.keys(porDia).sort();
+  let lista = '';
+  if (diasOrdenados.length) {
+    diasOrdenados.forEach(fecha => {
+      const tareasDia = porDia[fecha];
+      const txt = tareasDia.map(t => t.descripcion + (t.hecha ? ' ✓' : '')).join(', ');
+      const dia = fecha.split('-')[2];
+      lista += `<div class="dia-item"><span class="dia-fecha">${dia}/${String(calMes+1).padStart(2,'0')}</span><span class="dia-txt">${escapeHtml(txt)}</span></div>`;
+    });
+  }
+  cont.innerHTML = `
+    <h4>📊 Resumen de ${MESES_NOMBRES[calMes]}</h4>
+    <div class="grid">
+      <div class="item"><div class="num">${fT.length}</div><div class="lbl">Total tareas</div></div>
+      <div class="item"><div class="num">${pend}</div><div class="lbl">Pendientes</div></div>
+      <div class="item"><div class="num">${hechas}</div><div class="lbl">Completadas</div></div>
+      <div class="item"><div class="num">${cumplesMes.length}</div><div class="lbl">🎂 Cumpleaños</div></div>
+    </div>
+    ${diasOrdenados.length ? `<div class="lista-dias">${lista}</div>` : '<div class="vacio">Sin tareas este mes</div>'}
+  `;
+}
+
+$('btnHoyMes').onclick = () => {
+  const h = new Date();
+  calAnio = h.getFullYear();
+  calMes = h.getMonth();
+  renderCalendario();
+  llenarSelectores();
+  renderUpcomingCumples();
+  renderResumenMes();
+  toast('📅 Volviste a hoy');
+};
+
 function renderUpcomingCumples() {
   const cont = $('upcomingCumples'); if (!cont) return;
   const fP = personas.filter(p => p.espacio === espacioActual && p.cumpleanos);
@@ -1660,18 +1763,18 @@ function abrirDia(iso) {
   $('panelDiaContenido').innerHTML = h;
   bindTareas($('panelDiaContenido'), iso);
   const etiqTemp = []; renderChipsEtiquetas($('pdEtiquetas'), etiqTemp);
-  $('pdGuardar').onclick = () => { const d = $('pdDesc').value.trim(); if (!d) return toast('Descripción'); const pt = $('pdPersona').value.trim(); const pO = pt ? buscarPersona(pt) : null; tareas.unshift({ id: nuevoId(), descripcion: d, persona: pt, contacto: pO ? (pO.whatsapp || pO.telefono || '') : '', personaId: pO ? pO.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), tags: [...etiqTemp], espacio: espacioActual }); LS.set('tareas', tareas); syncDebounced(); renderCalendario(); renderTareas(); abrirDia(iso); toast('✅'); };
+  $('pdGuardar').onclick = () => { const d = $('pdDesc').value.trim(); if (!d) return toast('Descripción'); const pt = $('pdPersona').value.trim(); const pO = pt ? buscarPersona(pt) : null; tareas.unshift({ id: nuevoId(), descripcion: d, persona: pt, contacto: pO ? (pO.whatsapp || pO.telefono || '') : '', personaId: pO ? pO.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), tags: [...etiqTemp], espacio: espacioActual }); LS.set('tareas', tareas); syncDebounced(); renderCalendario(); renderTareas(); renderResumenMes(); abrirDia(iso); toast('✅'); };
   $('panelDia').classList.add('show');
 }
 $('cerrarPanelDia').onclick = () => $('panelDia').classList.remove('show');
-$('mesPrev').onclick = () => { calMes--; if (calMes < 0) { calMes = 11; calAnio--; } renderCalendario(); llenarSelectores(); renderUpcomingCumples(); };
-$('mesNext').onclick = () => { calMes++; if (calMes > 11) { calMes = 0; calAnio++; } renderCalendario(); llenarSelectores(); renderUpcomingCumples(); };
+$('mesPrev').onclick = () => { calMes--; if (calMes < 0) { calMes = 11; calAnio--; } renderCalendario(); llenarSelectores(); renderUpcomingCumples(); renderResumenMes(); };
+$('mesNext').onclick = () => { calMes++; if (calMes > 11) { calMes = 0; calAnio++; } renderCalendario(); llenarSelectores(); renderUpcomingCumples(); renderResumenMes(); };
 
 function renderTareaHTML(t) { const hechaTag = (t.hecha && t.completadaEn) ? `<div class="t-done-tag">✓ ${new Date(t.completadaEn).toLocaleString('es-CL')}</div>` : ''; const pObj = t.personaId ? getPersona(t.personaId) : null; const selClass = modoSelTareas ? 'seleccionable' : ''; const checked = selTareas.has(String(t.id)) ? 'checked' : ''; const checkHtml = modoSelTareas ? `<input type="checkbox" class="check-sel" data-sel-tarea="${t.id}" ${checked}>` : ''; return `<div class="task-item ${t.hecha ? 'done' : ''} ${selClass}" data-id="${t.id}">${checkHtml}<input type="checkbox" ${t.hecha ? 'checked' : ''} data-check="${t.id}"><div style="flex:1"><div class="t-desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄</span>` : ''}</div>${renderTags(t.tags)}<div class="t-meta">${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}${t.fecha ? `<span>📅 ${t.fecha}</span>` : ''}</div>${hechaTag}</div><div style="display:flex;flex-direction:column;gap:4px">${modoSelTareas ? '' : `<button class="btn ghost small" data-del-t="${t.id}" style="padding:4px 8px">✕</button>`}</div></div>`; }
 function bindTareas(c, isoPanel) {
-  c.querySelectorAll('[data-check]').forEach(ch => { ch.onchange = () => { const t = tareas.find(x => eqId(x.id, ch.dataset.check)); if (!t) return; t.hecha = ch.checked; t.completadaEn = ch.checked ? new Date().toISOString() : null; t.fecha = t.fecha || new Date().toISOString(); if (ch.checked && t.recurrencia && t.fecha) tareas.unshift({ ...t, id: nuevoId(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null }); LS.set('tareas', tareas); syncDebounced(); renderCalendario(); renderTareas(); if (isoPanel && $('panelDia').classList.contains('show')) abrirDia(isoPanel); }; });
+  c.querySelectorAll('[data-check]').forEach(ch => { ch.onchange = () => { const t = tareas.find(x => eqId(x.id, ch.dataset.check)); if (!t) return; t.hecha = ch.checked; t.completadaEn = ch.checked ? new Date().toISOString() : null; t.fecha = t.fecha || new Date().toISOString(); if (ch.checked && t.recurrencia && t.fecha) tareas.unshift({ ...t, id: nuevoId(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null }); LS.set('tareas', tareas); syncDebounced(); renderCalendario(); renderTareas(); renderResumenMes(); if (isoPanel && $('panelDia').classList.contains('show')) abrirDia(isoPanel); }; });
   c.querySelectorAll('[data-sel-tarea]').forEach(ch => { ch.onchange = () => { const id = String(ch.dataset.selTarea); if (ch.checked) selTareas.add(id); else selTareas.delete(id); actualizarBarra(); }; });
-  c.querySelectorAll('[data-del-t]').forEach(b => { b.onclick = async (e) => { e.stopPropagation(); const idT = String(b.dataset.delT); const t = tareas.find(x => eqId(x.id, idT)); if (!t) { toast('⚠ Ya no existe'); return; } if (!(await confirmar(`"${t.descripcion}"`, '¿Mover a papelera?', '🗑️'))) return; moverPapelera('tareas', t); tareas = tareas.filter(x => String(x.id) !== idT); LS.set('tareas', tareas); renderCalendario(); renderTareas(); renderPapelera(); if (isoPanel && $('panelDia').classList.contains('show')) abrirDia(isoPanel); syncImmediate(); toast('🗑️ Movida'); }; });
+  c.querySelectorAll('[data-del-t]').forEach(b => { b.onclick = async (e) => { e.stopPropagation(); const idT = String(b.dataset.delT); const t = tareas.find(x => eqId(x.id, idT)); if (!t) { toast('⚠ Ya no existe'); return; } if (!(await confirmar(`"${t.descripcion}"`, '¿Mover a papelera?', '🗑️'))) return; moverPapelera('tareas', t); tareas = tareas.filter(x => String(x.id) !== idT); LS.set('tareas', tareas); renderCalendario(); renderTareas(); renderPapelera(); renderResumenMes(); if (isoPanel && $('panelDia').classList.contains('show')) abrirDia(isoPanel); syncImmediate(); toast('🗑️ Movida'); }; });
 }
 let filtroT = 'pend';
 $('tabPend').onclick = () => { filtroT = 'pend'; renderTareas(); };
@@ -1688,7 +1791,7 @@ $('btnGuardarPersona').onclick = () => {
   if (ex >= 0) personas[ex] = p; else personas.unshift(p);
   LS.set('personas', personas); syncDebounced();
   $('formPersona').classList.remove('show');
-  renderPersonas(); renderCalendario(); renderNotas(); renderUpcomingCumples();
+  renderPersonas(); renderCalendario(); renderNotas(); renderUpcomingCumples(); renderResumenMes();
   toast('👥 Guardada');
 };
 
@@ -1696,42 +1799,41 @@ function renderPersonas() {
   const c = $('listaPersonas'); const fP = personas.filter(p => p.espacio === espacioActual);
   if (!fP.length) { c.innerHTML = '<p class="hint">Sin personas.</p>'; return; }
   c.innerHTML = fP.map(p => {
-    const colapsada = personasColapsadas[String(p.id)] || false;
+    const expandida = personasExpandidas[String(p.id)] === true;
+    const colapsada = !expandida;
     const nR = notasDePersona(p.id), tR = tareasDePersona(p.id);
     let rel = '';
     if (!colapsada && (nR.length || tR.length)) { rel += `<div class="relacionadas" style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)">`; if (nR.length) { rel += `<h4 style="font-size:.72rem;color:var(--muted);margin:8px 0 6px">📝 Notas (${nR.length})</h4>`; rel += nR.slice(0, 3).map(n => `<div style="background:rgba(0,229,255,0.05);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:4px;font-size:.82rem"><div style="color:var(--gold);font-weight:600">${escapeHtml(n.titulo.slice(0, 60))}</div></div>`).join(''); } if (tR.length) { rel += `<h4 style="font-size:.72rem;color:var(--muted);margin:8px 0 6px">✅ Tareas (${tR.length})</h4>`; rel += tR.slice(0, 3).map(t => `<div style="background:rgba(0,229,255,0.05);border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:4px;font-size:.82rem"><div style="color:var(--gold);font-weight:600">${escapeHtml(t.descripcion.slice(0, 60))}</div><div style="font-size:.65rem;color:var(--muted)">${t.fecha || 'sin fecha'}${t.hecha ? ' ✓' : ''}</div></div>`).join(''); } rel += `</div>`; }
     const selClass = modoSelPersonas ? 'seleccionable' : '';
     const checked = selPersonas.has(String(p.id)) ? 'checked' : '';
     const checkHtml = modoSelPersonas ? `<input type="checkbox" class="check-sel" data-sel-pers="${p.id}" ${checked}>` : '';
-    const toggleBtn = !modoSelPersonas ? `<button class="toggle-pers" data-toggle-pers="${p.id}" title="Minimizar/Expandir">${colapsada ? '⊞' : '⊟'}</button>` : '';
+    const toggleBtn = !modoSelPersonas ? `<button class="toggle-pers" data-toggle-pers="${p.id}" title="Minimizar/Expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>` : '';
     const fechaMini = colapsada && p.fecha ? `<span class="fecha-mini">${new Date(p.fecha).toLocaleDateString('es-CL')}</span>` : '';
-    return `<div class="persona-card ${selClass} ${colapsada ? 'collapsed' : ''}" data-id="${p.id}">${checkHtml}${toggleBtn}<h3>${escapeHtml(p.nombre)}${fechaMini}</h3><div class="info">${p.telefono ? `<div>📞 Personal: <b>${escapeHtml(p.telefono)}</b></div>` : ''}${p.telefonoTrabajo ? `<div>☎️ Trabajo: <b>${escapeHtml(p.telefonoTrabajo)}</b></div>` : ''}${p.whatsapp ? `<div>💬 WhatsApp: <b>${escapeHtml(p.whatsapp)}</b></div>` : ''}${p.correo ? `<div>📧 ${escapeHtml(p.correo)}</div>` : ''}${p.empresa ? `<div>🏢 ${escapeHtml(p.empresa)}</div>` : ''}${p.cargo ? `<div>💼 ${escapeHtml(p.cargo)}</div>` : ''}${p.cumpleanos ? `<div>🎂 ${new Date(p.cumpleanos + 'T12:00:00').toLocaleDateString('es-CL')}</div>` : ''}</div>${rel}${modoSelPersonas ? '' : `<div class="acciones"><button data-share-p="${p.id}" title="Compartir">📤</button><button data-edit="${p.id}" title="Editar">✏️</button><button data-del-p="${p.id}" title="Eliminar">🗑️</button></div>`}</div>`;
+    return `<div class="persona-card ${selClass} ${colapsada ? 'collapsed' : 'expanded'}" data-id="${p.id}">${checkHtml}${toggleBtn}<h3>${escapeHtml(p.nombre)}${fechaMini}</h3><div class="info">${p.telefono ? `<div>📞 Personal: <b>${escapeHtml(p.telefono)}</b></div>` : ''}${p.telefonoTrabajo ? `<div>☎️ Trabajo: <b>${escapeHtml(p.telefonoTrabajo)}</b></div>` : ''}${p.whatsapp ? `<div>💬 WhatsApp: <b>${escapeHtml(p.whatsapp)}</b></div>` : ''}${p.correo ? `<div>📧 ${escapeHtml(p.correo)}</div>` : ''}${p.empresa ? `<div>🏢 ${escapeHtml(p.empresa)}</div>` : ''}${p.cargo ? `<div>💼 ${escapeHtml(p.cargo)}</div>` : ''}${p.cumpleanos ? `<div>🎂 ${new Date(p.cumpleanos + 'T12:00:00').toLocaleDateString('es-CL')}</div>` : ''}</div>${rel}${modoSelPersonas ? '' : `<div class="acciones"><button data-share-p="${p.id}" title="Compartir">📤</button><button data-edit="${p.id}" title="Editar">✏️</button><button data-del-p="${p.id}" title="Eliminar">🗑️</button></div>`}</div>`;
   }).join('');
-  // Toggle expandir/colapsar
   c.querySelectorAll('[data-toggle-pers]').forEach(b => {
     b.onclick = (e) => {
       e.stopPropagation();
       const id = String(b.dataset.togglePers);
-      personasColapsadas[id] = !personasColapsadas[id];
-      LS.set('personasColapsadas', personasColapsadas);
+      personasExpandidas[id] = !personasExpandidas[id];
+      LS.set('personasExpandidas', personasExpandidas);
       renderPersonas();
     };
   });
-  // Click en la tarjeta también toggle
   c.querySelectorAll('.persona-card').forEach(card => {
     card.onclick = (e) => {
       if (e.target.closest('button') || e.target.closest('input')) return;
       if (modoSelPersonas) return;
       const id = String(card.dataset.id);
-      personasColapsadas[id] = !personasColapsadas[id];
-      LS.set('personasColapsadas', personasColapsadas);
+      personasExpandidas[id] = !personasExpandidas[id];
+      LS.set('personasExpandidas', personasExpandidas);
       renderPersonas();
     };
   });
   c.querySelectorAll('[data-share-p]').forEach(b => { b.onclick = (e) => { e.stopPropagation(); const p = personas.find(x => eqId(x.id, b.dataset.shareP)); if (p) abrirCompartirPersona(p); }; });
   c.querySelectorAll('[data-edit]').forEach(b => { b.onclick = (e) => { e.stopPropagation(); const p = personas.find(x => eqId(x.id, b.dataset.edit)); if (!p) return; $('pId').value = p.id; $('pNombre').value = p.nombre || ''; $('pTel').value = p.telefono || ''; $('pTelTrabajo').value = p.telefonoTrabajo || ''; $('pWa').value = p.whatsapp || ''; $('pCorreo').value = p.correo || ''; $('pEmpresa').value = p.empresa || ''; $('pCargo').value = p.cargo || ''; setFechaInput('pCumple', p.cumpleanos || ''); $('formPersona').classList.add('show'); $('formPersona').scrollIntoView({ behavior: 'smooth' }); }; });
   c.querySelectorAll('[data-sel-pers]').forEach(ch => { ch.onchange = () => { const id = String(ch.dataset.selPers); if (ch.checked) selPersonas.add(id); else selPersonas.delete(id); actualizarBarra(); }; });
-  c.querySelectorAll('[data-del-p]').forEach(b => { b.onclick = async (e) => { e.stopPropagation(); const idT = String(b.dataset.delP); const p = personas.find(x => eqId(x.id, idT)); if (!p) { toast('⚠ Ya no existe'); return; } if (!(await confirmar(`"${p.nombre}"`, '¿Mover a papelera?', '🗑️'))) return; moverPapelera('personas', p); personas = personas.filter(x => String(x.id) !== idT); LS.set('personas', personas); renderPersonas(); renderCalendario(); renderPapelera(); renderUpcomingCumples(); syncImmediate(); toast('🗑️ Movida'); }; });
+  c.querySelectorAll('[data-del-p]').forEach(b => { b.onclick = async (e) => { e.stopPropagation(); const idT = String(b.dataset.delP); const p = personas.find(x => eqId(x.id, idT)); if (!p) { toast('⚠ Ya no existe'); return; } if (!(await confirmar(`"${p.nombre}"`, '¿Mover a papelera?', '🗑️'))) return; moverPapelera('personas', p); personas = personas.filter(x => String(x.id) !== idT); LS.set('personas', personas); renderPersonas(); renderCalendario(); renderPapelera(); renderUpcomingCumples(); renderResumenMes(); syncImmediate(); toast('🗑️ Movida'); }; });
 }
 
 function actModoToggle() { $('modoVivo').classList.toggle('activo', modoGrabacion === 'vivo'); $('modoEstable').classList.toggle('activo', modoGrabacion === 'estable'); actUI(); }
@@ -1778,8 +1880,9 @@ function renderNotas() {
     const checked = selNotas.has(String(n.id)) ? 'checked' : '';
     const checkHtml = modoSelNotas ? `<input type="checkbox" class="check-sel" data-sel-nota="${n.id}" ${checked}>` : '';
     const badge = n.proposito === 'tarea' ? '<span class="badge tarea">✅ Tarea</span>' : n.proposito === 'evento' ? '<span class="badge evento">📅 Evento</span>' : esBorrador ? '<span class="badge borrador">📄 Borrador</span>' : '<span class="badge">📝 Nota</span>';
-    const isColapsada = notasColapsadas[String(n.id)] || false;
-    const collapseIcon = isColapsada ? '⊞' : '⊟';
+    const expandida = notasExpandidas[String(n.id)] === true;
+    const isColapsada = !expandida;
+    const chevronBtn = !modoSelNotas ? `<button class="collapse-btn" data-collapse="${n.id}" title="Minimizar/Expandir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>` : '';
     const fechaMini = isColapsada ? `<span class="fecha-mini">${new Date(n.fecha).toLocaleDateString('es-CL')}</span>` : '';
     const accH = modoSelNotas ? '' : (esBorrador
       ? `<button data-accion="editar" data-id="${n.id}"><span class="ico">✏️</span><span class="lbl">Nombrar</span></button><button data-accion="copiar" data-id="${n.id}"><span class="ico">📋</span><span class="lbl">Copiar</span></button><button class="danger-btn" data-accion="eliminar" data-id="${n.id}"><span class="ico">🗑️</span><span class="lbl">Eliminar</span></button>`
@@ -1787,9 +1890,9 @@ function renderNotas() {
     const creada = n.fechaCreacion ? new Date(n.fechaCreacion).toLocaleString('es-CL') : new Date(n.fecha).toLocaleString('es-CL');
     const editada = (n.historial && n.historial.length > 1) ? new Date(n.fecha).toLocaleString('es-CL') : null;
     const metaHtml = `<div class="meta">${badge}<span>📅 Creada: ${creada}</span>${editada ? `<span>✏️ Modificada: ${editada}</span>` : ''}</div>`;
-    return `<div class="nota-card ${esBorrador ? 'borrador' : ''} ${selClass} ${isColapsada ? 'collapsed' : ''}" data-id="${n.id}" data-clickable="${esBorrador && !modoSelNotas ? '1' : '0'}">${checkHtml}${!modoSelNotas ? `<button class="collapse-btn" data-collapse="${n.id}" title="Minimizar/Expandir">${collapseIcon}</button>` : ''}<h3>${escapeHtml(n.titulo)}${fechaMini}</h3><div class="texto">${escapeHtml(n.texto)}</div>${renderTags(n.tags)}${metaHtml}${esBorrador && !modoSelNotas && !isColapsada ? '<div class="borrador-hint">👆 Toca para nombrar</div>' : ''}${accH ? `<div class="nota-actions-grid">${accH}</div>` : ''}<div class="analisis-panel" id="panel-${n.id}"></div></div>`;
+    return `<div class="nota-card ${esBorrador ? 'borrador' : ''} ${selClass} ${isColapsada ? 'collapsed' : 'expanded'}" data-id="${n.id}" data-clickable="${esBorrador && !modoSelNotas ? '1' : '0'}">${checkHtml}${chevronBtn}<h3>${escapeHtml(n.titulo)}${fechaMini}</h3><div class="texto">${escapeHtml(n.texto)}</div>${renderTags(n.tags)}${metaHtml}${esBorrador && !modoSelNotas && !isColapsada ? '<div class="borrador-hint">👆 Toca para nombrar</div>' : ''}${accH ? `<div class="nota-actions-grid">${accH}</div>` : ''}<div class="analisis-panel" id="panel-${n.id}"></div></div>`;
   }).join('');
-  c.querySelectorAll('[data-collapse]').forEach(b => { b.onclick = (e) => { e.stopPropagation(); const id = String(b.dataset.collapse); notasColapsadas[id] = !notasColapsadas[id]; LS.set('notasColapsadas', notasColapsadas); renderNotas(); }; });
+  c.querySelectorAll('[data-collapse]').forEach(b => { b.onclick = (e) => { e.stopPropagation(); const id = String(b.dataset.collapse); notasExpandidas[id] = !notasExpandidas[id]; LS.set('notasExpandidas', notasExpandidas); renderNotas(); }; });
   c.querySelectorAll('[data-clickable="1"]').forEach(card => { card.addEventListener('click', (e) => { if (e.target.closest('button') || e.target.closest('input')) return; const n = notas.find(x => eqId(x.id, card.dataset.id)); if (n) abrirModalNombrar(n); }); });
   c.querySelectorAll('[data-sel-nota]').forEach(ch => { ch.onchange = () => { const id = String(ch.dataset.selNota); if (ch.checked) selNotas.add(id); else selNotas.delete(id); actualizarBarra(); }; });
   c.querySelectorAll('[data-accion]').forEach(b => { b.onclick = async (e) => { e.stopPropagation(); const n = notas.find(x => eqId(x.id, b.dataset.id)); if (!n) return; const a = b.dataset.accion; if (a === 'editar') { if (n.proposito) { abrirEditarNota(n); } else abrirModalNombrar(n); return; } await ejecutarAccion(n, a); }; });
@@ -1874,20 +1977,33 @@ async function analizarN(n) {
     const raw = await groq(p);
     let limpio = raw.replace(/```json|```/g, '').trim(); const ini = limpio.indexOf('{'), fin = limpio.lastIndexOf('}');
     if (ini !== -1 && fin !== -1) limpio = limpio.slice(ini, fin + 1);
-    let d; try { d = JSON.parse(limpio); } catch(e) { panel.innerHTML = `<div style="font-size:.82rem;white-space:pre-wrap">${escapeHtml(raw)}</div>`; return; }
+    let d; try { d = JSON.parse(limpio); } catch(e) { panel.innerHTML = `<div class="txt">${escapeHtml(raw)}</div>`; return; }
     let h = '';
-    if (d.resumen) h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">📌 RESUMEN</h4><div style="font-size:.82rem">${escapeHtml(d.resumen)}</div></div>`;
-    if (d.tareas && d.tareas.length) { h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">✅ TAREAS (${d.tareas.length})</h4>`; d.tareas.forEach((t, i) => { h += `<div style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.3);border-radius:8px;padding:8px;margin-bottom:6px"><div style="font-size:.82rem;font-weight:600;margin-bottom:4px">${escapeHtml(t.descripcion)}</div><div style="font-size:.7rem;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">${t.persona ? `👤 ${escapeHtml(t.persona)}` : ''}${t.fecha ? `📅 ${t.fecha}` : ''}${t.hora ? `🕐 ${t.hora}` : ''}</div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn primary small" data-at="${i}" data-tp="cal">📅 Cal</button><button class="btn small" data-at="${i}" data-tp="tarea">✅ Tarea</button><button class="btn small" data-at="${i}" data-tp="notif">🔔 Notif</button></div></div>`; }); h += `</div>`; }
-    if (d.soluciones && d.soluciones.length) h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">💡 SOLUCIONES</h4><div style="font-size:.82rem;white-space:pre-wrap">${d.soluciones.map(s => '• ' + escapeHtml(s)).join('\n')}</div></div>`;
-    if (d.recordatorios && d.recordatorios.length) h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">⏰ RECORDATORIOS</h4><div style="font-size:.82rem;white-space:pre-wrap">${d.recordatorios.map(s => '• ' + escapeHtml(s)).join('\n')}</div></div>`;
-    h += `<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btn primary small" data-af="escuchar">🔊</button><button class="btn small" data-af="copiar">📋</button><button class="btn ghost small" data-af="cerrar">❌</button></div>`;
+    if (d.resumen) h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">📌 RESUMEN</h4><div class="txt">${escapeHtml(d.resumen)}</div></div>`;
+    if (d.tareas && d.tareas.length) { h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">✅ TAREAS (${d.tareas.length})</h4>`; d.tareas.forEach((t, i) => { h += `<div style="background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.3);border-radius:8px;padding:8px;margin-bottom:6px"><div class="txt" style="font-weight:600;margin-bottom:4px">${escapeHtml(t.descripcion)}</div><div style="font-size:.7rem;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">${t.persona ? `👤 ${escapeHtml(t.persona)}` : ''}${t.fecha ? `📅 ${t.fecha}` : ''}${t.hora ? `🕐 ${t.hora}` : ''}</div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn primary small" data-at="${i}" data-tp="cal">📅 Cal</button><button class="btn small" data-at="${i}" data-tp="tarea">✅ Tarea</button><button class="btn small" data-at="${i}" data-tp="notif">🔔 Notif</button></div></div>`; }); h += `</div>`; }
+    if (d.soluciones && d.soluciones.length) h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">💡 SOLUCIONES</h4><div class="txt">${d.soluciones.map(s => '• ' + escapeHtml(s)).join('\n')}</div></div>`;
+    if (d.recordatorios && d.recordatorios.length) h += `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">⏰ RECORDATORIOS</h4><div class="txt">${d.recordatorios.map(s => '• ' + escapeHtml(s)).join('\n')}</div></div>`;
+    h += `<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btn primary small" data-af="escuchar">🔊 Escuchar</button><button class="btn small" data-af="pausar">⏸️</button><button class="btn small" data-af="parar">⏹️</button><button class="btn small" data-af="copiar">📋</button><button class="btn ghost small" data-af="cerrar">❌</button></div>`;
     panel.innerHTML = h;
     actualizarQuickNav();
-    panel.querySelectorAll('[data-at]').forEach(b => { b.onclick = async () => { const i = +b.dataset.at, tp = b.dataset.tp, t = d.tareas[i]; if (!t) return; const p = t.persona ? buscarPersona(t.persona) : null; if (tp === 'notif') { const f = await preguntar('Fecha YYYY-MM-DD:', 'Notificar', '🔔', new Date().toISOString().slice(0,10)); if (!f) return; const hh = await preguntar('Hora HH:MM:', 'Notificar', '🔔', '09:00'); if (!hh) return; tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', personaId: p ? p.id : null, fecha: f, hora: hh, hecha: false, completadaEn: null, notaId: n.id, fechaCreacion: Date.now(), tags: [], notificar: true, espacio: espacioActual }); } else { tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', personaId: p ? p.id : null, fecha: tp === 'cal' ? (t.fecha || new Date().toISOString().slice(0,10)) : '', hora: t.hora || '', hecha: false, completadaEn: null, notaId: n.id, fechaCreacion: Date.now(), tags: [], espacio: espacioActual }); } LS.set('tareas', tareas); syncDebounced(); renderTareas(); renderCalendario(); toast('✅'); b.textContent = '✓'; b.disabled = true; }; });
-    panel.querySelectorAll('[data-af]').forEach(b => { b.onclick = () => { const a = b.dataset.af; if (a === 'escuchar') TTS.play(panel.textContent, 'es'); if (a === 'copiar') copiar(panel.textContent); if (a === 'cerrar') { panel.classList.remove('show'); actualizarQuickNav(); } }; });
+    panel.querySelectorAll('[data-at]').forEach(b => { b.onclick = async () => { const i = +b.dataset.at, tp = b.dataset.tp, t = d.tareas[i]; if (!t) return; const p = t.persona ? buscarPersona(t.persona) : null; if (tp === 'notif') { const f = await preguntar('Fecha YYYY-MM-DD:', 'Notificar', '🔔', new Date().toISOString().slice(0,10)); if (!f) return; const hh = await preguntar('Hora HH:MM:', 'Notificar', '🔔', '09:00'); if (!hh) return; tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', personaId: p ? p.id : null, fecha: f, hora: hh, hecha: false, completadaEn: null, notaId: n.id, fechaCreacion: Date.now(), tags: [], notificar: true, espacio: espacioActual }); } else { tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', personaId: p ? p.id : null, fecha: tp === 'cal' ? (t.fecha || new Date().toISOString().slice(0,10)) : '', hora: t.hora || '', hecha: false, completadaEn: null, notaId: n.id, fechaCreacion: Date.now(), tags: [], espacio: espacioActual }); } LS.set('tareas', tareas); syncDebounced(); renderTareas(); renderCalendario(); renderResumenMes(); toast('✅'); b.textContent = '✓'; b.disabled = true; }; });
+    panel.querySelectorAll('[data-af]').forEach(b => {
+      b.onclick = () => {
+        const a = b.dataset.af;
+        if (a === 'escuchar') {
+          // SOLO el texto de la sección .txt, NO botones
+          const textos = Array.from(panel.querySelectorAll('.txt')).map(el => el.textContent).filter(Boolean).join('. ');
+          TTS.play(textos, 'es');
+        }
+        if (a === 'pausar') TTS.pauseToggle();
+        if (a === 'parar') TTS.stop();
+        if (a === 'copiar') copiar(panel.textContent);
+        if (a === 'cerrar') { panel.classList.remove('show'); actualizarQuickNav(); }
+      };
+    });
   } catch(e) { panel.innerHTML = '<div style="color:#ff8a80">❌ ' + escapeHtml(e.message) + '</div>'; }
 }
-async function resumirN(n) { const p = $('panel-' + n.id); p.classList.add('show'); p.innerHTML = '<div style="text-align:center;padding:12px;color:var(--muted)">⏳ Resumiendo...</div>'; try { const raw = await groq(`Resume en máx 5 puntos:\n\n${n.texto}`); p.innerHTML = `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">📝 RESUMEN</h4><div style="font-size:.82rem;white-space:pre-wrap">${escapeHtml(raw)}</div></div><div style="display:flex;gap:6px"><button class="btn primary small" data-res="esc">🔊</button><button class="btn small" data-res="cop">📋</button><button class="btn ghost small" data-res="cer">❌</button></div>`; actualizarQuickNav(); p.querySelectorAll('[data-res]').forEach(b => { b.onclick = () => { const a = b.dataset.res; if (a === 'esc') TTS.play(raw, 'es'); if (a === 'cop') copiar(raw); if (a === 'cer') { p.classList.remove('show'); actualizarQuickNav(); } }; }); } catch(e) { p.innerHTML = '<div style="color:#ff8a80">❌ ' + escapeHtml(e.message) + '</div>'; } }
+async function resumirN(n) { const p = $('panel-' + n.id); p.classList.add('show'); p.innerHTML = '<div style="text-align:center;padding:12px;color:var(--muted)">⏳ Resumiendo...</div>'; try { const raw = await groq(`Resume en máx 5 puntos:\n\n${n.texto}`); p.innerHTML = `<div style="margin-bottom:10px"><h4 style="margin:0 0 6px;font-size:.82rem;color:var(--cyan)">📝 RESUMEN</h4><div class="txt">${escapeHtml(raw)}</div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn primary small" data-res="esc">🔊</button><button class="btn small" data-res="pau">⏸️</button><button class="btn small" data-res="par">⏹️</button><button class="btn small" data-res="cop">📋</button><button class="btn ghost small" data-res="cer">❌</button></div>`; actualizarQuickNav(); p.querySelectorAll('[data-res]').forEach(b => { b.onclick = () => { const a = b.dataset.res; if (a === 'esc') { const t = p.querySelector('.txt')?.textContent || raw; TTS.play(t, 'es'); } if (a === 'pau') TTS.pauseToggle(); if (a === 'par') TTS.stop(); if (a === 'cop') copiar(raw); if (a === 'cer') { p.classList.remove('show'); actualizarQuickNav(); } }; }); } catch(e) { p.innerHTML = '<div style="color:#ff8a80">❌ ' + escapeHtml(e.message) + '</div>'; } }
 
 (async function init() {
   const k = await cargarKey(); if (k) $('apiKey').value = k;
@@ -1895,8 +2011,16 @@ async function resumirN(n) { const p = $('panel-' + n.id); p.classList.add('show
   tareas.forEach(t => { if (!t.espacio) t.espacio = 'personal'; });
   personas.forEach(p => { if (!p.espacio) p.espacio = 'personal'; });
   LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas);
+  // MIGRACIÓN: forzar todo colapsado la primera vez con v29
+  if (!LS.get('migrado_v29', false)) {
+    LS.set('notasExpandidas', {});
+    LS.set('personasExpandidas', {});
+    notasExpandidas = {};
+    personasExpandidas = {};
+    LS.set('migrado_v29', true);
+  }
   actualizarTema(espacioActual);
-  renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera(); renderUpcomingCumples();
+  renderNotas(); renderTareas(); renderCalendario(); renderPersonas(); renderPapelera(); renderUpcomingCumples(); renderResumenMes();
   actModoToggle(); actualizarIndicator();
   llenarSelectores();
   actualizarQuickNav();
