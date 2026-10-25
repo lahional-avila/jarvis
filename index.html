@@ -16,10 +16,12 @@
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%;margin:0;overflow:hidden}
   body{display:flex;flex-direction:column;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:radial-gradient(circle at 50% -10%,#2a1808 0%,var(--bg) 55%);color:var(--txt)}
-  header{flex-shrink:0;padding:10px 18px 8px;text-align:center;border-bottom:1px solid var(--line)}
-  header h1{margin:0;font-size:1.15rem;letter-spacing:3px;font-weight:600;color:var(--gold);text-shadow:0 0 14px rgba(255,215,0,.55)}
-  header p{margin:2px 0 0;font-size:.68rem;color:var(--muted);letter-spacing:1px}
+  header{flex-shrink:0;padding:12px 18px 10px;text-align:center;border-bottom:1px solid var(--line)}
+  header h1{margin:0;font-size:1.5rem;letter-spacing:4px;font-weight:700;color:var(--gold);text-shadow:0 0 18px rgba(255,215,0,.65)}
+  header p{margin:4px 0 0;font-size:.68rem;color:var(--muted);letter-spacing:1px}
   #syncIndicator{font-weight:700;margin-left:4px}
+  .header-version{font-size:1.05rem;color:var(--gold);font-weight:800;letter-spacing:2px;margin-top:8px;text-shadow:0 0 12px rgba(255,215,0,.55)}
+  .header-credits{font-size:.72rem;color:var(--muted);margin-top:3px;letter-spacing:.5px}
   nav{flex-shrink:0;display:flex;gap:4px;padding:8px;overflow-x:auto;background:rgba(10,8,6,.94);backdrop-filter:blur(8px);z-index:20;border-bottom:1px solid var(--line)}
   nav button{flex:1 0 auto;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--muted);font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:.15s}
   nav button.active{background:linear-gradient(180deg,#3a2508,#241600);color:var(--gold);border-color:var(--gold2);box-shadow:0 0 10px rgba(255,215,0,.3) inset}
@@ -65,6 +67,22 @@
   #panelGuardado .card .botones button{padding:14px;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;border:1px solid var(--gold2);display:flex;align-items:center;justify-content:center;gap:8px}
   #panelGuardado .card .botones button.primary{background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004}
   #panelGuardado .card .botones button.secondary{background:var(--panel);color:var(--txt)}
+  #modalDialog{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:950;padding:20px;backdrop-filter:blur(4px)}
+  #modalDialog.show{display:flex}
+  #modalDialog .card{background:linear-gradient(180deg,#2a1a08,#1a1208);border:2px solid var(--gold2);border-radius:20px;padding:24px 20px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 30px rgba(255,193,7,.3);animation:popCard .22s ease}
+  @keyframes popCard{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+  #modalDialog .ico{font-size:2.8rem;margin-bottom:10px}
+  #modalDialog .titulo{font-size:1.1rem;color:var(--gold);font-weight:800;margin-bottom:8px;letter-spacing:.3px}
+  #modalDialog .sub{font-size:.85rem;color:var(--txt);margin-bottom:4px;line-height:1.5;white-space:pre-wrap}
+  #modalDialog .input-wrap{margin-top:12px;display:none}
+  #modalDialog .input-wrap input{width:100%;padding:14px;border-radius:10px;border:1px solid var(--gold2);background:var(--bg2);color:var(--txt);font-size:1rem;font-family:inherit;text-align:center;outline:none;letter-spacing:.5px}
+  #modalDialog .input-wrap input:focus{box-shadow:0 0 0 2px rgba(255,215,0,.25)}
+  #modalDialog .botones{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+  #modalDialog .botones button{padding:14px;border-radius:12px;font-size:.92rem;font-weight:700;cursor:pointer;border:1px solid var(--gold2);display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s}
+  #modalDialog .botones button:active{transform:scale(.97)}
+  #modalDialog .botones button.primary{background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004}
+  #modalDialog .botones button.secondary{background:var(--panel);color:var(--txt)}
+  #modalDialog .botones button.danger{background:#5a1414;color:#ff8a80;border-color:#e53935}
   .nota-card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold2);border-radius:10px;padding:14px;margin-bottom:10px;position:relative;cursor:pointer;transition:.15s}
   .nota-card.borrador{border-left-color:var(--amber);background:linear-gradient(135deg,#2a1f08,#1e1608)}
   .nota-card.borrador:active{transform:scale(.99);background:#3a2508}
@@ -82,12 +100,6 @@
   .nota-actions-grid button{padding:10px 8px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--txt);font-size:.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:.15s;min-height:42px;line-height:1.2;text-align:center}
   .nota-actions-grid button:active{transform:scale(.96);background:#2a1a08}
   .nota-actions-grid button.danger-btn{color:#ff8a80;border-color:#6b2020}
-  .hl-chunk{transition:background-color .2s,color .2s,padding .2s}
-  .hl-chunk.hl-activo{background-color:var(--gold2);color:#1a1004;padding:2px 5px;border-radius:4px;font-weight:700;box-shadow:0 0 8px rgba(255,193,7,.6)}
-  .nota-play-btn{padding:9px 18px;border-radius:20px;border:1px solid var(--gold2);background:linear-gradient(180deg,#FFC107,#B8860B);color:#1a1004;font-size:.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s;touch-action:manipulation}
-  .nota-play-btn:active{transform:scale(.95)}
-  .nota-play-btn.playing{background:linear-gradient(180deg,#FF5252,#B71C1C);border-color:#e53935;color:#fff;animation:pulsePlay 1.5s infinite}
-  @keyframes pulsePlay{50%{box-shadow:0 0 15px rgba(229,57,53,.7)}}
   #barraSeleccion{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(58,37,8,.98);border:1px solid var(--gold2);border-radius:24px;padding:8px 14px;display:none;gap:8px;align-items:center;z-index:100;box-shadow:0 4px 20px rgba(255,215,0,.4)}
   #barraSeleccion.show{display:flex}
   #barraSeleccion span{font-size:.8rem;color:var(--gold);padding:0 6px}
@@ -101,7 +113,6 @@
   .analisis-panel .tarea-item .meta{font-size:.7rem;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
   .analisis-panel .tarea-item .meta b{color:var(--amber)}
   .analisis-panel .tarea-item .botones{display:flex;gap:4px;flex-wrap:wrap}
-  .analisis-panel .tarea-item .botones button{padding:5px 8px;font-size:.7rem}
   .analisis-panel .acciones-finales{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
   .analisis-panel .acciones-finales button{flex:1;min-width:90px;padding:8px;font-size:.78rem}
   .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:6px}
@@ -249,7 +260,6 @@
   .traduccion-result{margin-bottom:8px;font-size:.9rem;line-height:1.6;color:var(--txt)}
   .traduccion-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
   #modalDiag .info-box{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;font-family:ui-monospace,monospace;font-size:.75rem;line-height:1.6;white-space:pre-wrap;max-height:300px;overflow-y:auto;color:var(--txt)}
-  #versionFooter{position:fixed;bottom:4px;left:6px;font-size:.62rem;color:var(--muted);opacity:.6;z-index:9999;pointer-events:none;font-family:ui-monospace,monospace}
 </style>
 </head>
 <body>
@@ -257,6 +267,8 @@
 <header>
   <h1>J A R V I S</h1>
   <p>Grabar · Notas · Cal · Tareas · Personas · Stats <span id="syncIndicator">—</span></p>
+  <div class="header-version">v28.1</div>
+  <div class="header-credits">Proyecto hecho por Lahional Ávila</div>
 </header>
 
 <nav>
@@ -342,7 +354,7 @@
   </section>
 
   <section id="tab-config">
-    <details class="config-acc" open>
+    <details class="config-acc">
       <summary>🎙️ Modo de grabación</summary>
       <div class="acc-content">
         <p class="hint">En vivo: escribe mientras hablas. Estable: graba y transcribe al final con Whisper.</p>
@@ -420,12 +432,9 @@
 <div id="modalTraducir"><div class="box"><h3>🌐 Traducir a...</h3><div class="opcion" data-lang="en"><span class="ico">🇬🇧</span> Inglés</div><div class="opcion" data-lang="es"><span class="ico">🇪🇸</span> Español</div><button class="btn ghost cancelar" id="tradCancelar">Cancelar</button></div></div>
 <div id="visorAdjunto"><button class="cerrar-vis" id="visorCerrar">✕</button><div id="visorContenido"></div></div>
 
-<!-- MODAL NOMBRAR EN 3 PASOS -->
 <div id="modalNombrar">
   <div class="box">
     <h3>📝 Gestionar nota</h3>
-
-    <!-- Paso 1: Nombre + Analizar -->
     <div id="nomStep1">
       <p class="hint" style="margin-bottom:10px">Ponle un nombre y decide qué hacer con esta nota.</p>
       <label>Nombre de la nota *</label>
@@ -434,16 +443,12 @@
       <button class="btn-main secondary" id="btnSaltarAnalisis">📋 Gestionar sin analizar</button>
       <button class="btn-main ghost" id="btnCancelarNom">Cancelar</button>
     </div>
-
-    <!-- Paso 2: Análisis IA -->
     <div id="nomStep2" style="display:none">
       <div class="analisis-box" id="nomAnalisisBox">⏳ Analizando...</div>
       <button class="btn-main primary" id="btnAceptarAnalisis">✅ Aceptar análisis</button>
       <button class="btn-main secondary" id="btnIrGestionar">📋 Gestionar (elegir tipo)</button>
       <button class="btn-main ghost" id="btnVolver1">← Volver</button>
     </div>
-
-    <!-- Paso 3: Tipo + campos -->
     <div id="nomStep3" style="display:none">
       <label>¿Qué es?</label>
       <div class="prop-option">
@@ -452,18 +457,10 @@
         <button data-prop="evento"><span class="ico">📅</span>Evento</button>
       </div>
       <div id="nomExtraFields" style="display:none">
-        <label>Fecha</label>
-        <input id="nomFecha" type="date">
-        <label>Hora</label>
-        <input id="nomHora" type="time">
-        <div id="nomPersonaWrap">
-          <label>Persona (opcional)</label>
-          <input id="nomPersona" placeholder="Nombre">
-        </div>
-        <div id="nomRecurWrap">
-          <label>Recurrencia</label>
-          <select id="nomRecur"><option value="">No repetir</option><option value="diario">Diario</option><option value="semanal">Semanal</option><option value="mensual">Mensual</option><option value="anual">Anual</option></select>
-        </div>
+        <label>Fecha</label><input id="nomFecha" type="date">
+        <label>Hora</label><input id="nomHora" type="time">
+        <div id="nomPersonaWrap"><label>Persona (opcional)</label><input id="nomPersona" placeholder="Nombre"></div>
+        <div id="nomRecurWrap"><label>Recurrencia</label><select id="nomRecur"><option value="">No repetir</option><option value="diario">Diario</option><option value="semanal">Semanal</option><option value="mensual">Mensual</option><option value="anual">Anual</option></select></div>
         <label style="margin-top:14px"><input type="checkbox" id="nomNotif" style="width:auto;margin-right:6px"> Notificar 15 min antes</label>
       </div>
       <button class="btn-main primary" id="btnGuardarNom">💾 Guardar</button>
@@ -472,7 +469,6 @@
   </div>
 </div>
 
-<!-- MODAL DIAGNÓSTICO -->
 <div id="modalDiag">
   <div class="box">
     <h3>🔍 Diagnóstico</h3>
@@ -485,7 +481,6 @@
   </div>
 </div>
 
-<!-- MODAL GUARDAR -->
 <div id="panelGuardado">
   <div class="card">
     <div class="ico">✅</div>
@@ -498,7 +493,21 @@
   </div>
 </div>
 
-<!-- MODAL PASSWORD -->
+<div id="modalDialog">
+  <div class="card">
+    <div class="ico" id="dlgIco">❓</div>
+    <div class="titulo" id="dlgTitulo">¿Confirmar?</div>
+    <div class="sub" id="dlgMensaje"></div>
+    <div class="input-wrap" id="dlgInputWrap">
+      <input id="dlgInput" placeholder="">
+    </div>
+    <div class="botones">
+      <button class="primary" id="dlgSi">Aceptar</button>
+      <button class="secondary" id="dlgNo">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <div id="modalPassword">
   <div class="box" style="border-color:var(--red);max-width:380px">
     <h3 style="color:#ff8a80;text-align:center">🔒 Contraseña requerida</h3>
@@ -515,10 +524,9 @@
 <div id="panelDia"><div class="contenido"><button class="btn ghost small cerrar" id="cerrarPanelDia">✕</button><h3 id="panelDiaTitulo">Día</h3><div id="panelDiaContenido"></div></div></div>
 <div class="tts-player" id="ttsPlayer"><button id="ttsPause">⏸️</button><button id="ttsPrev">⏮️</button><span class="chunk-info" id="ttsInfo">1/1</span><button id="ttsNext">⏭️</button><button id="ttsStop">⏹️</button></div>
 <div class="toast" id="toast"></div>
-<div id="versionFooter">v28</div>
 
 <script>
-const VERSION = '28';
+const VERSION = '28.1';
 const LS = { get(k, def){ try{ const v = localStorage.getItem('jarvis_'+k); return v===null?def:JSON.parse(v);}catch(e){return def;} }, set(k, v){ localStorage.setItem('jarvis_'+k, JSON.stringify(v)); } };
 const SYNC_TOKEN_KEY = 'jarvis-sync-token';
 const SYNC_GIST_KEY = 'jarvis-sync-gist';
@@ -528,6 +536,50 @@ const PAPELERA_TTL = 30*24*60*60*1000;
 const RATE_LIMIT_PAUSE_MS = 30*60*1000;
 function nuevoId() { if (crypto.randomUUID) return crypto.randomUUID(); return 'id-' + Date.now() + '-' + Math.random().toString(36).slice(2, 11); }
 
+/* ===== DIALOG CUSTOM (reemplaza confirm/prompt/alert) ===== */
+let dialogActive = null;
+function dialog(opts) {
+  return new Promise(resolve => {
+    const { msg = '', titulo = '', ico = '❓', tipo = 'confirm', input = '', placeholder = '', siLabel = 'Aceptar', noLabel = 'Cancelar', danger = false } = opts;
+    $('dlgIco').textContent = ico;
+    $('dlgTitulo').textContent = titulo;
+    $('dlgMensaje').textContent = msg;
+    $('dlgMensaje').style.display = msg ? 'block' : 'none';
+    $('dlgInputWrap').style.display = tipo === 'prompt' ? 'block' : 'none';
+    if (tipo === 'prompt') { $('dlgInput').value = input; $('dlgInput').placeholder = placeholder; }
+    const si = $('dlgSi'), no = $('dlgNo');
+    si.textContent = siLabel;
+    si.classList.remove('primary', 'danger');
+    si.classList.add(danger ? 'danger' : 'primary');
+    no.textContent = noLabel;
+    no.style.display = noLabel ? 'flex' : 'none';
+    $('modalDialog').classList.add('show');
+    if (tipo === 'prompt') setTimeout(() => $('dlgInput').focus(), 100);
+
+    const onYes = () => { const val = tipo === 'prompt' ? $('dlgInput').value : true; cleanup(); resolve(val); };
+    const onNo = () => { cleanup(); resolve(tipo === 'prompt' ? null : false); };
+    function cleanup() {
+      $('modalDialog').classList.remove('show');
+      si.removeEventListener('click', onYes);
+      no.removeEventListener('click', onNo);
+      dialogActive = null;
+    }
+    si.addEventListener('click', onYes);
+    no.addEventListener('click', onNo);
+    dialogActive = onNo;
+  });
+}
+function confirmar(msg, titulo = '¿Confirmar?', ico = '❓', danger = false) {
+  return dialog({ msg, titulo, ico, tipo: 'confirm', siLabel: 'Sí', noLabel: 'No', danger });
+}
+function preguntar(msg, titulo = 'Escribe', ico = '✏️', placeholder = '', valorInicial = '') {
+  return dialog({ msg, titulo, ico, tipo: 'prompt', placeholder, input: valorInicial, siLabel: 'Aceptar', noLabel: 'Cancelar' });
+}
+function alerta(msg, titulo = 'Aviso', ico = 'ℹ️') {
+  return dialog({ msg, titulo, ico, tipo: 'confirm', siLabel: 'OK', noLabel: '' });
+}
+
+/* ===== INDEXEDDB ===== */
 const DB_NAME = 'jarvis-db';
 const DB_VERSION = 3;
 let _db = null;
@@ -585,12 +637,12 @@ function migrar() {
 function detectarIdioma(t) {
   if (!t || t.length < 5) return 'es';
   if (/[ñáéíóú¿¡]/i.test(t)) return 'es';
-  const txt = ' ' + t.toLowerCase().replace(/[.,;:!?"'""()]/g, ' ') + ' ';
+  const tx = ' ' + t.toLowerCase().replace(/[.,;:!?"'""()]/g, ' ') + ' ';
   const enW = [' the ',' and ',' is ',' are ',' was ',' were ',' you ',' have ',' has ',' had ',' that ',' this ',' with ',' for ',' from ',' they ',' their ',' what ',' when ',' where ',' how ',' but ',' not ',' can ',' will ',' would ',' should ',' could ',' about ',' which ',' there ',' been ',' being ',' more ',' most ',' some ',' any ',' than ',' too ',' very ',' just ',' also ',' into ',' your ',' our ',' we ',' he ',' she ',' it ',' them ',' his ',' her ',' its '];
   const esW = [' el ',' la ',' los ',' las ',' un ',' una ',' y ',' es ',' son ',' fue ',' fueron ',' tu ',' tiene ',' que ',' este ',' esta ',' con ',' para ',' desde ',' ellos ',' qué ',' cuando ',' dónde ',' cómo ',' pero ',' no ',' puede ',' será ',' sería ',' debería ',' podría ',' sobre ',' cual ',' su ',' hay ',' estado ',' siendo ',' más ',' algunos ',' muy ',' solo ',' también ',' por ',' como ',' porque ',' entre ',' hasta ',' donde ',' yo ',' él ',' ella ',' nosotros ',' mi ',' nuestro ',' al ',' del ',' se ',' lo ',' le ',' les '];
   let e = 0, s = 0;
-  for (const w of enW) e += (txt.split(w).length - 1);
-  for (const w of esW) s += (txt.split(w).length - 1);
+  for (const w of enW) e += (tx.split(w).length - 1);
+  for (const w of esW) s += (tx.split(w).length - 1);
   return e > s ? 'en' : 'es';
 }
 function mejorVoz(idioma) {
@@ -598,9 +650,9 @@ function mejorVoz(idioma) {
 }
 
 const TTS = {
-  chunks: [], i: 0, activo: false, pausado: false, idioma: 'es', notaIdActual: null, gen: 0,
+  chunks: [], i: 0, activo: false, idioma: 'es', gen: 0,
   dividir(texto, max = 180) { const p = String(texto||'').replace(/\s+/g, ' ').trim().split(' ').filter(Boolean); const ch = []; let buf = [], len = 0; for (const w of p) { if (len + w.length + 1 > max && buf.length) { ch.push(buf.join(' ')); buf = [w]; len = w.length; } else { buf.push(w); len += w.length + 1; } } if (buf.length) ch.push(buf.join(' ')); return ch; },
-  play(texto, idioma, notaId) { try { this.stop(); this.gen++; const g = this.gen; this.idioma = idioma || detectarIdioma(texto); this.notaIdActual = notaId || null; this.chunks = this.dividir(texto); if (!this.chunks.length) { toast('Vacío'); return; } if (!('speechSynthesis' in window)) { toast('Sin TTS'); return; } this.i = 0; this.activo = true; this.pausado = false; $('ttsPlayer').classList.add('show'); this._info(); this._next(g); } catch(e) { toast('Error TTS'); } },
+  play(texto, idioma) { try { this.stop(); this.gen++; const g = this.gen; this.idioma = idioma || detectarIdioma(texto); this.chunks = this.dividir(texto); if (!this.chunks.length) { toast('Vacío'); return; } if (!('speechSynthesis' in window)) { alerta('Este navegador no soporta lectura en voz alta', 'Sin TTS', '🔇'); return; } this.i = 0; this.activo = true; $('ttsPlayer').classList.add('show'); this._info(); this._next(g); } catch(e) { toast('Error TTS'); } },
   _info() { if ($('ttsInfo')) $('ttsInfo').textContent = (this.i+1) + '/' + this.chunks.length; },
   _next(g) { try { if (g !== undefined && g !== this.gen) return; if (!this.activo || this.i >= this.chunks.length) { this._finish(); return; } const u = new SpeechSynthesisUtterance(this.chunks[this.i]); u.lang = this.idioma === 'en' ? 'en-US' : 'es-CL'; u.rate = 1.05; const v = mejorVoz(this.idioma); if (v) u.voice = v; u.onend = () => { if (g !== this.gen || !this.activo) return; this.i++; this._info(); this._next(g); }; u.onerror = () => { if (g !== this.gen || !this.activo) return; this.i++; this._info(); this._next(g); }; speechSynthesis.speak(u); this._info(); } catch(e) { this._finish(); } },
   _finish() { this.activo = false; $('ttsPlayer').classList.remove('show'); },
@@ -620,7 +672,6 @@ async function urlToBlob(u) { return (await fetch(u)).blob(); }
 
 const FERIADOS = { '2025-01-01':'Año Nuevo','2025-04-18':'Viernes Santo','2025-04-19':'Sábado Santo','2025-05-01':'Día del Trabajo','2025-05-21':'Glorias Navales','2025-06-20':'Pueblos Indígenas','2025-06-29':'San Pedro y San Pablo','2025-07-16':'Virgen del Carmen','2025-08-15':'Asunción','2025-09-18':'Independencia','2025-09-19':'Glorias del Ejército','2025-10-12':'Encuentro Dos Mundos','2025-10-31':'Iglesias Evangélicas','2025-11-01':'Todos los Santos','2025-12-08':'Inmaculada Concepción','2025-12-25':'Navidad','2026-01-01':'Año Nuevo','2026-04-03':'Viernes Santo','2026-04-04':'Sábado Santo','2026-05-01':'Día del Trabajo','2026-05-21':'Glorias Navales','2026-06-21':'Pueblos Indígenas','2026-06-29':'San Pedro y San Pablo','2026-07-16':'Virgen del Carmen','2026-08-15':'Asunción','2026-09-18':'Independencia','2026-09-19':'Glorias del Ejército','2026-10-12':'Encuentro Dos Mundos','2026-10-31':'Iglesias Evangélicas','2026-11-01':'Todos los Santos','2026-12-08':'Inmaculada Concepción','2026-12-25':'Navidad' };
 
-/* ===== SYNC ===== */
 function getToken(){ return localStorage.getItem(SYNC_TOKEN_KEY) || ''; }
 function getGistId(){ return localStorage.getItem(SYNC_GIST_KEY) || ''; }
 function getFile(){ return localStorage.getItem(SYNC_FILE_KEY) || ''; }
@@ -632,18 +683,10 @@ async function fetchT(url, opts = {}, ms = 25000) { const c = new AbortControlle
 async function ghReq(method, path, body) {
   const token = getToken(), gistId = getGistId();
   if (!token || !gistId) throw new Error('Falta token o Gist ID');
-  let res, txt = '';
+  let res, t = '';
   try { res = await fetchT(`https://api.github.com${path}`, { method, headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined }); }
   catch (e) { if (e.name === 'AbortError') throw new Error('Timeout'); throw new Error('Sin conexión'); }
-  if (!res.ok) {
-    txt = await res.text().catch(() => '');
-    let msg = 'HTTP ' + res.status;
-    try { const e = JSON.parse(txt); msg = e.message || msg; } catch(e){}
-    if (res.status === 403 && /rate limit/i.test(txt)) { modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta); throw new Error('Rate limit'); }
-    if (res.status === 401) msg = 'Token inválido';
-    if (res.status === 404) msg = 'Gist no encontrado';
-    throw new Error(msg);
-  }
+  if (!res.ok) { t = await res.text().catch(() => ''); let msg = 'HTTP ' + res.status; try { const e = JSON.parse(t); msg = e.message || msg; } catch(e){} if (res.status === 403 && /rate limit/i.test(t)) { modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta); throw new Error('Rate limit'); } if (res.status === 401) msg = 'Token inválido'; if (res.status === 404) msg = 'Gist no encontrado'; throw new Error(msg); }
   return res.json();
 }
 
@@ -657,7 +700,7 @@ let syncDebounceTimer = null;
 function syncDebounced() { if (!tieneSync() || operacionCritica) return; pendingPush = true; LS.set('pendingPush', true); actualizarIndicator(); if (modoLocalHasta > Date.now()) return; clearTimeout(syncDebounceTimer); syncDebounceTimer = setTimeout(() => sincronizar(true), 5000); }
 function syncImmediate() { if (!tieneSync() || operacionCritica) return; pendingPush = true; LS.set('pendingPush', true); actualizarIndicator(); if (modoLocalHasta > Date.now()) return; clearTimeout(syncDebounceTimer); sincronizar(true); }
 
-function buildNube() { const ns = notas.map(n => { const c = { ...n }; if (c.adjuntos) c.adjuntos = c.adjuntos.map(a => ({ id: a.id, tipo: a.tipo, nombre: a.nombre, size: a.size, mime: a.mime, thumb: a.thumb || null })); return c; }); return { version: 4, notas: ns, tareas, personas, eliminados, papelera, ultimaActualizacion: Date.now() }; }
+function buildNube() { const ns = notas.map(n => { const c = { ...n }; if (c.adjuntos) c.adjuntos = c.adjuntos.map(a => ({ id: a.id, tipo: a.tipo, nombre: a.nombre, size: a.size, mime: a.mime, thumb: a.thumb || null })); return c; }); return { version: 5, notas: ns, tareas, personas, eliminados, papelera, ultimaActualizacion: Date.now() }; }
 function mergeArr(local, nube, elim) { const sE = new Set((elim || []).map(String)); const m = new Map(); for (const i of local) { const k = String(i.id); if (sE.has(k)) continue; m.set(k, i); } for (const i of nube) { const k = String(i.id); if (sE.has(k)) continue; const e = m.get(k); if (!e) m.set(k, i); else { const fL = Number(e.fecha) || 0, fN = Number(i.fecha) || 0; if (fN > fL) m.set(k, i); } } return Array.from(m.values()); }
 function mergeElim(local, nube) { return { notas: Array.from(new Set([...(local.notas||[]).map(String), ...(nube.notas||[]).map(String)])), tareas: Array.from(new Set([...(local.tareas||[]).map(String), ...(nube.tareas||[]).map(String)])), personas: Array.from(new Set([...(local.personas||[]).map(String), ...(nube.personas||[]).map(String)])), _ts: { ...(local._ts||{}), ...(nube._ts||{}) } }; }
 
@@ -671,7 +714,7 @@ async function sincronizar(silencioso = false) {
     const f = await detectarFile(); if (!f) throw new Error('No archivo');
     const gist = await ghReq('GET', `/gists/${getGistId()}`);
     const file = gist.files && gist.files[f];
-    let nube = { version: 4, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
+    let nube = { version: 5, notas: [], tareas: [], personas: [], eliminados: { notas: [], tareas: [], personas: [], _ts: {} }, papelera: [] };
     if (file && file.content) { const c = file.truncated ? await (await fetchT(file.raw_url)).text() : file.content; try { nube = JSON.parse(c); } catch(e){} }
     if (!nube.eliminados) nube.eliminados = { notas: [], tareas: [], personas: [], _ts: {} };
     if (!nube.eliminados._ts) nube.eliminados._ts = {};
@@ -691,7 +734,7 @@ async function sincronizar(silencioso = false) {
     if (h !== ultimoHashSync || pendingPush) {
       const cS = JSON.stringify(buildNube(), null, 2); const kB = Math.round(new Blob([cS]).size / 1024);
       await ghReq('PATCH', `/gists/${getGistId()}`, { files: { [f]: { content: cS } } });
-      ultimoHashSync = h; LS.set('ultimoHashSync', h); pendingPush = false; LS.set('pendingPush', false);
+      ultimoHashSync = h; LS.set('ultimoHashsync'.replace('s','S'), h); pendingPush = false; LS.set('pendingPush', false);
       if (!silencioso) toast(`✓ ${kB}KB`);
     } else if (!silencioso) toast('Sin cambios');
     ultimaSync = Date.now(); LS.set('ultimaSync', ultimaSync);
@@ -704,72 +747,88 @@ async function sincronizar(silencioso = false) {
 function marcarElim(tipo, id) { const s = String(id); if (!eliminados[tipo]) eliminados[tipo] = []; if (!eliminados[tipo].some(x => eqId(x, s))) eliminados[tipo].push(s); eliminados._ts[s] = Date.now(); LS.set('eliminados', eliminados); }
 setInterval(actualizarIndicator, 1000);
 
-/* ===== PAPELERA ===== */
 function moverPapelera(tipo, item) { papelera.push({ tipo, item: JSON.parse(JSON.stringify(item)), fecha: Date.now() }); LS.set('papelera', papelera); marcarElim(tipo, item.id); purgarPapelera(); }
 function purgarPapelera() { const l = Date.now() - PAPELERA_TTL, a = papelera.length; papelera = papelera.filter(p => p.fecha > l); if (papelera.length !== a) LS.set('papelera', papelera); }
 function restaurar(idx) { const p = papelera[idx]; if (!p) return; papelera.splice(idx, 1); LS.set('papelera', papelera); eliminados[p.tipo] = (eliminados[p.tipo] || []).filter(x => !eqId(x, p.item.id)); LS.set('eliminados', eliminados); if (p.tipo === 'notas') notas.unshift(p.item); if (p.tipo === 'tareas') tareas.unshift(p.item); if (p.tipo === 'personas') personas.unshift(p.item); LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas); syncDebounced(); renderPapelera(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); toast('♻️ Restaurado'); }
-async function eliminarDef(idx) { const p = papelera[idx]; if (!p) return; if (!confirm('¿Eliminar definitivo?')) return; try { if (p.item && p.item.adjuntos) for (const a of p.item.adjuntos) { try { await dbDelete('archivos', a.id); } catch(e){} } } catch(e){} papelera.splice(idx, 1); LS.set('papelera', papelera); syncDebounced(); renderPapelera(); toast('Eliminado'); }
+async function eliminarDef(idx) {
+  const p = papelera[idx]; if (!p) return;
+  if (!(await confirmar('Esta acción es permanente y no se puede deshacer.', '¿Eliminar definitivamente?', '🗑️', true))) return;
+  try { if (p.item && p.item.adjuntos) for (const a of p.item.adjuntos) { try { await dbDelete('archivos', a.id); } catch(e){} } } catch(e){}
+  papelera.splice(idx, 1); LS.set('papelera', papelera); syncDebounced(); renderPapelera(); toast('Eliminado');
+}
 function renderPapelera() { const c = $('listaPapelera'); if (!c) return; purgarPapelera(); if (!papelera.length) { c.innerHTML = '<p class="hint">Vacía</p>'; return; } c.innerHTML = papelera.map((p, i) => { const tL = { notas: '📝', tareas: '✅', personas: '👥' }[p.tipo] || ''; const tit = p.item.titulo || p.item.descripcion || p.item.nombre || '(sin título)'; const d = Math.ceil((p.fecha + PAPELERA_TTL - Date.now()) / (24*60*60*1000)); return `<div class="papelera-item"><div class="title">${tL} ${escapeHtml(String(tit).slice(0,60))}</div><div class="body">Quedan ${d}d</div><div class="btns"><button class="btn primary small" data-rest="${i}">♻️</button><button class="btn danger small" data-def="${i}">🗑️</button></div></div>`; }).join(''); c.querySelectorAll('[data-rest]').forEach(b => { b.onclick = () => restaurar(+b.dataset.rest); }); c.querySelectorAll('[data-def]').forEach(b => { b.onclick = () => eliminarDef(+b.dataset.def); }); }
 
-/* ===== EXPORT/IMPORT ===== */
-function exportJSON() { const d = { version: 4, fecha: new Date().toISOString(), notas, tareas, personas, eliminados, papelera }; const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = `jarvis-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(u); toast('📥 Descargado'); }
-async function importJSON(f) { try { const txt = await f.text(); const d = JSON.parse(txt); if (!d.notas && !d.tareas && !d.personas) throw new Error('Formato inválido'); if (!confirm('Reemplazar TODO. ¿Continuar?')) return; notas = d.notas || []; tareas = d.tareas || []; personas = d.personas || []; eliminados = d.eliminados || { notas: [], tareas: [], personas: [], _ts: {} }; ['notas','tareas','personas'].forEach(t => { eliminados[t] = (eliminados[t]||[]).map(String); }); papelera = d.papelera || []; LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas); LS.set('eliminados', eliminados); LS.set('papelera', papelera); ultimoHashSync = ''; pendingPush = true; syncDebounced(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderPapelera(); toast('📤 Importado'); } catch(e) { toast('❌ ' + e.message); } }
+function exportJSON() { const d = { version: 5, fecha: new Date().toISOString(), notas, tareas, personas, eliminados, papelera }; const b = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = `jarvis-${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(u); toast('📥 Descargado'); }
+async function importJSON(f) {
+  try {
+    const tx = await f.text(); const d = JSON.parse(tx);
+    if (!d.notas && !d.tareas && !d.personas) throw new Error('Formato inválido');
+    if (!(await confirmar('Esto reemplazará TODOS los datos actuales. ¿Continuar?', 'Importar JSON', '📤', true))) return;
+    notas = d.notas || []; tareas = d.tareas || []; personas = d.personas || []; eliminados = d.eliminados || { notas: [], tareas: [], personas: [], _ts: {} }; ['notas','tareas','personas'].forEach(t => { eliminados[t] = (eliminados[t]||[]).map(String); }); papelera = d.papelera || []; LS.set('notas', notas); LS.set('tareas', tareas); LS.set('personas', personas); LS.set('eliminados', eliminados); LS.set('papelera', papelera); ultimoHashSync = ''; pendingPush = true; syncDebounced(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderPapelera(); toast('📤 Importado');
+  } catch(e) { toast('❌ ' + e.message); }
+}
 function exportICS() { const t = tareas.filter(x => x.fecha && !x.hecha); if (!t.length) return toast('Sin tareas'); const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Jarvis//ES']; t.forEach(x => { const f = x.fecha.replace(/-/g, ''); const h = (x.hora || '09:00').replace(':', '') + '00'; lines.push('BEGIN:VEVENT','UID:' + String(x.id) + '@jarvis','DTSTART:' + f + 'T' + h,'SUMMARY:' + (x.descripcion || 'Tarea'),'END:VEVENT'); }); lines.push('END:VCALENDAR'); const b = new Blob([lines.join('\r\n')], { type: 'text/calendar' }); const u = URL.createObjectURL(b); const a = document.createElement('a'); a.href = u; a.download = `jarvis-${new Date().toISOString().slice(0,10)}.ics`; a.click(); URL.revokeObjectURL(u); toast('📅 Exportadas'); }
 
-/* ===== TAGS ===== */
 function parseTags(s) { if (!s) return []; return s.split(',').map(x => x.trim()).filter(Boolean).slice(0, 5); }
 function renderTags(tags) { if (!tags || !tags.length) return ''; return '<div class="tags-row">' + tags.map(t => `<span class="tag">🏷️ ${escapeHtml(t)}</span>`).join('') + '</div>'; }
 let tagN = '', tagT = '';
 function renderTagFilters() { const r = { notas: Array.from(new Set(notas.flatMap(n => n.tags||[]))), tareas: Array.from(new Set(tareas.flatMap(t => t.tags||[]))) }; const build = (tags, filtro, cont) => { if (!tags.length) { cont.innerHTML = ''; return; } cont.innerHTML = tags.map(t => `<button class="tag" data-tag="${escapeHtml(t)}" style="${filtro === t ? 'background:#5a3a10' : ''}">🏷️ ${escapeHtml(t)}</button>`).join(''); cont.querySelectorAll('[data-tag]').forEach(b => { b.onclick = () => { const t = b.dataset.tag; if (cont.id === 'tagsFilterNotas') tagN = tagN === t ? '' : t; else tagT = tagT === t ? '' : t; renderTagFilters(); renderNotas(); renderTareas(); }; }); }; build(r.notas, tagN, $('tagsFilterNotas')); build(r.tareas, tagT, $('tagsFilterTareas')); }
-function editarTagsN(nota) { const n = prompt('Etiquetas (coma):', (nota.tags||[]).join(', ')); if (n === null) return; nota.tags = parseTags(n); nota.fecha = new Date().toISOString(); LS.set('notas', notas); syncDebounced(); renderNotas(); renderTagFilters(); toast('🏷️ Actualizado'); }
-function editarTagsT(t) { const n = prompt('Etiquetas (coma):', (t.tags||[]).join(', ')); if (n === null) return; t.tags = parseTags(n); LS.set('tareas', tareas); syncDebounced(); renderTareas(); renderTagFilters(); toast('🏷️ Actualizado'); }
+async function editarTagsN(nota) {
+  const n = await preguntar('Separa con comas:', 'Etiquetas', '🏷️', 'trabajo, urgente', (nota.tags||[]).join(', '));
+  if (n === null) return;
+  nota.tags = parseTags(n); nota.fecha = new Date().toISOString(); LS.set('notas', notas); syncDebounced(); renderNotas(); renderTagFilters(); toast('🏷️');
+}
+async function editarTagsT(t) {
+  const n = await preguntar('Separa con comas:', 'Etiquetas', '🏷️', 'trabajo', (t.tags||[]).join(', '));
+  if (n === null) return;
+  t.tags = parseTags(n); LS.set('tareas', tareas); syncDebounced(); renderTareas(); renderTagFilters(); toast('🏷️');
+}
 function proximaFecha(fs, rec) { if (!fs) return ''; const f = new Date(fs + 'T12:00:00'); if (rec === 'diario') f.setDate(f.getDate() + 1); else if (rec === 'semanal') f.setDate(f.getDate() + 7); else if (rec === 'mensual') f.setMonth(f.getMonth() + 1); else if (rec === 'anual') f.setFullYear(f.getFullYear() + 1); return f.toISOString().slice(0,10); }
 
-/* ===== BUSCAR/STATS ===== */
 function buscar(q) { const q2 = (q || '').toLowerCase().trim(); if (!q2) return { notas: [], tareas: [], personas: [] }; return { notas: notas.filter(n => (n.titulo||'').toLowerCase().includes(q2) || (n.texto||'').toLowerCase().includes(q2)), tareas: tareas.filter(t => (t.descripcion||'').toLowerCase().includes(q2) || (t.persona||'').toLowerCase().includes(q2)), personas: personas.filter(p => (p.nombre||'').toLowerCase().includes(q2)) }; }
 function renderBuscar() { const q = $('buscarGlobal').value, c = $('resultadosBusqueda'); const r = buscar(q); if (!q.trim()) { c.innerHTML = '<p class="hint">Escribe algo.</p>'; return; } const total = r.notas.length + r.tareas.length + r.personas.length; if (!total) { c.innerHTML = '<p class="hint">Sin resultados</p>'; return; } let h = ''; if (r.notas.length) { h += `<h3 style="color:var(--gold);font-size:.85rem;margin:14px 0 8px">📝 Notas (${r.notas.length})</h3>`; h += r.notas.map(n => `<div class="nota-card"><h3>${escapeHtml(n.titulo)}</h3><div class="texto">${escapeHtml((n.texto||'').slice(0,200))}</div></div>`).join(''); } if (r.tareas.length) { h += `<h3 style="color:var(--gold);font-size:.85rem;margin:14px 0 8px">✅ Tareas (${r.tareas.length})</h3>`; h += r.tareas.map(renderTareaHTML).join(''); } if (r.personas.length) { h += `<h3 style="color:var(--gold);font-size:.85rem;margin:14px 0 8px">👥 Personas (${r.personas.length})</h3>`; h += r.personas.map(p => `<div class="persona-card"><h3>${escapeHtml(p.nombre)}</h3></div>`).join(''); } c.innerHTML = h; }
 function renderStats() { const tot = notas.length + tareas.length + personas.length; const tP = tareas.filter(t => !t.hecha).length, tH = tareas.filter(t => t.hecha).length; const nH = notas.filter(n => new Date(n.fecha).toDateString() === new Date().toDateString()).length; const nS = notas.filter(n => Date.now() - new Date(n.fecha).getTime() < 7*24*60*60*1000).length; const adj = notas.reduce((s, n) => s + (n.adjuntos?.length || 0), 0); const borr = notas.filter(n => !n.proposito).length; $('statContenido').innerHTML = `<div class="stat-grid"><div class="stat-card"><div class="num">${tot}</div><div class="lbl">Total</div></div><div class="stat-card"><div class="num">${notas.length}</div><div class="lbl">📝 Notas</div></div><div class="stat-card"><div class="num">${borr}</div><div class="lbl">📄 Borradores</div></div><div class="stat-card"><div class="num">${tareas.length}</div><div class="lbl">✅ Tareas</div></div><div class="stat-card"><div class="num">${personas.length}</div><div class="lbl">👥 Personas</div></div><div class="stat-card"><div class="num">${tP}</div><div class="lbl">⏳ Pendientes</div></div><div class="stat-card"><div class="num">${tH}</div><div class="lbl">✓ Completadas</div></div><div class="stat-card"><div class="num">${nH}</div><div class="lbl">Hoy</div></div><div class="stat-card"><div class="num">${adj}</div><div class="lbl">📎 Adjuntos</div></div><div class="stat-card"><div class="num">${papelera.length}</div><div class="lbl">🗑️ Papelera</div></div></div>`; }
 
-/* ===== NOTIFICACIONES ===== */
-async function pedirNotif() { if (!('Notification' in window)) { toast('Sin notif'); return; } if (Notification.permission === 'granted') { toast('Ya activadas'); iniciarNotif(); return; } const p = await Notification.requestPermission(); if (p === 'granted') { toast('🔔 Activadas'); iniciarNotif(); $('notifInfo').textContent = '✅ Activadas'; } else { toast('❌ Denegadas'); $('notifInfo').textContent = '❌ Denegadas'; } }
+async function pedirNotif() { if (!('Notification' in window)) { alerta('Este navegador no soporta notificaciones', 'Sin notificaciones', '🔔'); return; } if (Notification.permission === 'granted') { toast('Ya activadas'); iniciarNotif(); return; } const p = await Notification.requestPermission(); if (p === 'granted') { toast('🔔 Activadas'); iniciarNotif(); $('notifInfo').textContent = '✅ Activadas'; } else { toast('❌ Denegadas'); $('notifInfo').textContent = '❌ Denegadas'; } }
 let notifTimer = null;
 function iniciarNotif() { if (notifTimer) clearInterval(notifTimer); if (!('Notification' in window) || Notification.permission !== 'granted') return; notifTimer = setInterval(chequearNotif, 60000); chequearNotif(); }
 function chequearNotif() { if (!('Notification' in window) || Notification.permission !== 'granted') return; const y = LS.get('notifHechas', []); const a = Date.now(); tareas.forEach(t => { if (t.hecha || !t.fecha || y.some(x => eqId(x, t.id))) return; const fh = new Date(`${t.fecha}T${t.hora||'09:00'}:00`).getTime(); const d = (fh - a) / 60000; if (d > 0 && d <= 15) { try { new Notification('⏰ ' + (t.descripcion || 'Tarea'), { body: t.hora || t.fecha, tag: 'j' + t.id }); } catch(e){} y.push(String(t.id)); LS.set('notifHechas', y); } }); }
 
-/* ===== VINCULAR ===== */
 function buscarPersona(n) { if (!n) return null; const l = String(n).toLowerCase().trim(); if (!l) return null; const e = personas.filter(p => (p.nombre||'').toLowerCase() === l); if (e.length === 1) return e[0]; const pa = personas.filter(p => (p.nombre||'').toLowerCase().includes(l) || l.includes((p.nombre||'').toLowerCase().split(' ')[0])); if (pa.length === 1) return pa[0]; return null; }
 function vincularPers(nota) { if (!nota || !nota.texto) return []; const v = new Set(nota.personasVinculadas || []); personas.forEach(p => { if (!p.nombre) return; const pn = p.nombre.split(' ')[0]; if (pn.length < 3) return; if (new RegExp('\\b' + pn + '\\b', 'i').test(nota.texto)) v.add(String(p.id)); }); return Array.from(v); }
 function getPersona(id) { return personas.find(p => eqId(p.id, id)); }
 function notasDePersona(pid) { return notas.filter(n => (n.personasVinculadas||[]).some(id => eqId(id, pid))); }
 function tareasDePersona(pid) { const p = getPersona(pid); if (!p) return []; const n = (p.nombre||'').toLowerCase(); return tareas.filter(t => eqId(t.personaId, pid) || (t.persona && t.persona.toLowerCase().includes(n.split(' ')[0].toLowerCase()))); }
 
-/* ===== FOCUS ===== */
 let focusActivo = false, focusIdx = 0, focusLista = [];
-function abrirFocus() { focusLista = tareas.filter(t => !t.hecha).sort((a,b) => ((a.fecha||'9999')+(a.hora||'99:99')).localeCompare((b.fecha||'9999')+(b.hora||'99:99'))); if (!focusLista.length) return toast('Sin pendientes'); focusIdx = 0; focusActivo = true; $('focusOverlay').classList.add('show'); renderFocus(); }
+function abrirFocus() { focusLista = tareas.filter(t => !t.hecha).sort((a,b) => ((a.fecha||'9999')+(a.hora||'99:99')).localeCompare((b.fecha||'9999')+(b.hora||'99:99'))); if (!focusLista.length) { alerta('No tienes tareas pendientes', 'Todo al día', '🎉'); return; } focusIdx = 0; focusActivo = true; $('focusOverlay').classList.add('show'); renderFocus(); }
 function cerrarFocus() { focusActivo = false; $('focusOverlay').classList.remove('show'); }
 function renderFocus() { if (!focusActivo) return; const c = $('focusContenido'); if (!focusLista.length) { c.innerHTML = '<div class="empty">🎉 ¡Listo!</div>'; $('focusContador').textContent = 'Completado'; return; } if (focusIdx >= focusLista.length) focusIdx = focusLista.length - 1; if (focusIdx < 0) focusIdx = 0; const t = focusLista[focusIdx]; $('focusContador').textContent = (focusIdx+1) + '/' + focusLista.length; c.innerHTML = `<div class="tarea-foco"><h2>${escapeHtml(t.descripcion)}</h2>${t.persona ? `<div class="detail">👤 <b>${escapeHtml(t.persona)}</b></div>` : ''}${t.fecha ? `<div class="detail">📅 ${t.fecha}${t.hora ? ' · 🕐 ' + t.hora : ''}</div>` : ''}<div class="btns"><button class="btn primary" id="focusComp">✅ Completar</button><button class="btn" id="focusPrev" ${focusIdx === 0 ? 'disabled' : ''}>⏮ Anterior</button><button class="btn" id="focusNext" ${focusIdx >= focusLista.length - 1 ? 'disabled' : ''}>Siguiente ⏭</button></div></div>`; const bc = $('focusComp'); if (bc) bc.onclick = () => { const tr = tareas.find(x => eqId(x.id, t.id)); if (!tr) return; tr.hecha = true; tr.completadaEn = new Date().toISOString(); tr.fecha = tr.fecha || new Date().toISOString(); if (tr.recurrencia && tr.fecha) tareas.unshift({ ...tr, id: nuevoId(), fecha: proximaFecha(tr.fecha, tr.recurrencia), hecha: false, completadaEn: null }); LS.set('tareas', tareas); syncDebounced(); focusLista = focusLista.filter(x => !eqId(x.id, t.id)); renderTareas(); renderCalendario(); toast('✅'); if (focusIdx >= focusLista.length) focusIdx = Math.max(0, focusLista.length - 1); renderFocus(); }; if ($('focusPrev')) $('focusPrev').onclick = () => { if (focusIdx > 0) { focusIdx--; renderFocus(); } }; if ($('focusNext')) $('focusNext').onclick = () => { if (focusIdx < focusLista.length - 1) { focusIdx++; renderFocus(); } }; }
 $('btnFocusMode').onclick = abrirFocus;
 $('focusExit').onclick = cerrarFocus;
 
-/* ===== ADJUNTOS ===== */
 let adjNota = null;
 function abrirAdjuntar(id) { adjNota = id; $('modalAdjuntar').classList.add('show'); }
 $('adjCancelar').onclick = () => $('modalAdjuntar').classList.remove('show');
 $('adjOpcFoto').onclick = () => { $('adjInput').accept = 'image/*'; $('adjInput').click(); };
 $('adjOpcAudio').onclick = () => { $('adjInput').accept = 'audio/*'; $('adjInput').click(); };
 $('adjOpcArchivo').onclick = () => { $('adjInput').accept = '*/*'; $('adjInput').click(); };
-$('adjInput').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; e.target.value = ''; $('modalAdjuntar').classList.remove('show'); const n = notas.find(x => eqId(x.id, adjNota)); if (!n) return; if (f.size > 15*1024*1024) return toast('Máx 15 MB'); const id = 'adj-' + nuevoId(); let tipo = 'file'; if (f.type.startsWith('image/')) tipo = 'image'; else if (f.type.startsWith('audio/')) tipo = 'audio'; let thB = null, bF = f; if (tipo === 'image') { try { bF = await comprimir(f, 1600, 0.85); thB = await blobToURL(await comprimir(f, 320, 0.65)); } catch(e) { bF = f; } } else if (f.size < 500*1024) { try { thB = await blobToURL(f); } catch(e){} } try { await dbPut('archivos', id, bF); } catch(e) { return toast('❌'); } n.adjuntos = n.adjuntos || []; n.adjuntos.push({ id, tipo, nombre: f.name, size: bF.size, mime: bF.type || f.type, thumb: thB }); n.fecha = new Date().toISOString(); LS.set('notas', notas); syncDebounced(); renderNotas(); toast(`📎 ${thB ? 'Sync' : 'Local'}`); };
+$('adjInput').onchange = async (e) => { const f = e.target.files[0]; if (!f) return; e.target.value = ''; $('modalAdjuntar').classList.remove('show'); const n = notas.find(x => eqId(x.id, adjNota)); if (!n) return; if (f.size > 15*1024*1024) { alerta('El archivo es demasiado grande (máx 15 MB)', 'Archivo muy grande', '📎'); return; } const id = 'adj-' + nuevoId(); let tipo = 'file'; if (f.type.startsWith('image/')) tipo = 'image'; else if (f.type.startsWith('audio/')) tipo = 'audio'; let thB = null, bF = f; if (tipo === 'image') { try { bF = await comprimir(f, 1600, 0.85); thB = await blobToURL(await comprimir(f, 320, 0.65)); } catch(e) { bF = f; } } else if (f.size < 500*1024) { try { thB = await blobToURL(f); } catch(e){} } try { await dbPut('archivos', id, bF); } catch(e) { alerta('No se pudo guardar el archivo', 'Error', '❌'); return; } n.adjuntos = n.adjuntos || []; n.adjuntos.push({ id, tipo, nombre: f.name, size: bF.size, mime: bF.type || f.type, thumb: thB }); n.fecha = new Date().toISOString(); LS.set('notas', notas); syncDebounced(); renderNotas(); toast(`📎 ${thB ? 'Sync' : 'Local'}`); };
 async function renderAdjuntosHTML(n) { if (!n.adjuntos || !n.adjuntos.length) return ''; let h = '<div class="adjuntos-grid">'; for (const a of n.adjuntos) { let src = null, loc = false; if (a.tipo === 'image') { try { const b = await dbGet('archivos', a.id); if (b) { src = URL.createObjectURL(b); loc = true; } } catch(e){} if (!src && a.thumb) src = a.thumb; h += `<div class="adjunto" data-adj="${a.id}">${src ? `<img src="${src}">` : '<span style="color:var(--muted);font-size:.7rem">sin img</span>'}${loc ? '<span class="local-badge">HD</span>' : '<span class="sync-badge">Sync</span>'}<button class="x-adj" data-delAdj="${a.id}" data-notaId="${n.id}">✕</button></div>`; } else if (a.tipo === 'audio') h += `<div class="adjunto audio" data-adj="${a.id}"><div class="icono">🎵</div><div class="nombre">${escapeHtml(a.nombre.slice(0,20))}</div><button class="x-adj" data-delAdj="${a.id}" data-notaId="${n.id}">✕</button></div>`; else h += `<div class="adjunto audio" data-adj="${a.id}"><div class="icono">📄</div><div class="nombre">${escapeHtml(a.nombre.slice(0,20))}</div><button class="x-adj" data-delAdj="${a.id}" data-notaId="${n.id}">✕</button></div>`; } h += '</div>'; return h; }
-async function abrirVisor(id) { try { let b = await dbGet('archivos', id); if (!b) { for (const n of notas) { const a = (n.adjuntos||[]).find(x => x.id === id); if (a && a.thumb) { b = await urlToBlob(a.thumb); break; } } } if (!b) return toast('No disp'); const c = $('visorContenido'); c.innerHTML = ''; if (b.type.startsWith('image/')) c.innerHTML = `<img src="${URL.createObjectURL(b)}">`; else if (b.type.startsWith('audio/')) c.innerHTML = `<audio controls autoplay src="${URL.createObjectURL(b)}"></audio>`; else c.innerHTML = `<a href="${URL.createObjectURL(b)}" download style="color:var(--gold);text-decoration:underline">⬇️ Descargar</a>`; $('visorAdjunto').classList.add('show'); } catch(e) { toast('Error'); } }
+async function abrirVisor(id) { try { let b = await dbGet('archivos', id); if (!b) { for (const n of notas) { const a = (n.adjuntos||[]).find(x => x.id === id); if (a && a.thumb) { b = await urlToBlob(a.thumb); break; } } } if (!b) { alerta('El adjunto no está disponible en este dispositivo', 'Adjunto no disponible', '📎'); return; } const c = $('visorContenido'); c.innerHTML = ''; if (b.type.startsWith('image/')) c.innerHTML = `<img src="${URL.createObjectURL(b)}">`; else if (b.type.startsWith('audio/')) c.innerHTML = `<audio controls autoplay src="${URL.createObjectURL(b)}"></audio>`; else c.innerHTML = `<a href="${URL.createObjectURL(b)}" download style="color:var(--gold);text-decoration:underline">⬇️ Descargar</a>`; $('visorAdjunto').classList.add('show'); } catch(e) { toast('Error'); } }
 $('visorCerrar').onclick = () => $('visorAdjunto').classList.remove('show');
-async function eliminarAdj(notaId, adjId) { if (!confirm('¿Eliminar adjunto?')) return; const n = notas.find(x => eqId(x.id, notaId)); if (!n) return; n.adjuntos = (n.adjuntos||[]).filter(a => a.id !== adjId); n.fecha = new Date().toISOString(); try { await dbDelete('archivos', adjId); } catch(e){} LS.set('notas', notas); syncDebounced(); renderNotas(); toast('Eliminado'); }
+async function eliminarAdj(notaId, adjId) {
+  if (!(await confirmar('Se eliminará este archivo adjunto.', '¿Eliminar adjunto?', '📎', true))) return;
+  const n = notas.find(x => eqId(x.id, notaId)); if (!n) return;
+  n.adjuntos = (n.adjuntos||[]).filter(a => a.id !== adjId); n.fecha = new Date().toISOString();
+  try { await dbDelete('archivos', adjId); } catch(e){}
+  LS.set('notas', notas); syncDebounced(); renderNotas(); toast('Eliminado');
+}
 
-/* ===== COMPARTIR ===== */
 function abrirCompartir(id) { const n = notas.find(x => eqId(x.id, id)); if (!n) return; const c = $('compartirOpciones'); c.innerHTML = `<div class="opcion" data-c="share"><span class="ico">📱</span> Compartir</div><div class="opcion" data-c="email"><span class="ico">📧</span> Correo</div><div class="opcion" data-c="whatsapp"><span class="ico">💬</span> WhatsApp</div><div class="opcion" data-c="copiar"><span class="ico">📋</span> Copiar</div>`; c.querySelectorAll('[data-c]').forEach(b => { b.onclick = async () => { $('modalCompartir').classList.remove('show'); await compartir(n, b.dataset.c); }; }); $('modalCompartir').classList.add('show'); }
 $('compartirCancelar').onclick = () => $('modalCompartir').classList.remove('show');
 async function compartir(n, modo) { const t = `${n.titulo}\n\n${n.texto}`; if (modo === 'share' && navigator.share) { try { await navigator.share({ title: n.titulo, text: n.texto }); toast('📤 Compartido'); return; } catch(e) { if (e.name === 'AbortError') return; } } if (modo === 'email') { window.location.href = `mailto:?subject=${encodeURIComponent(n.titulo)}&body=${encodeURIComponent(t)}`; return; } if (modo === 'whatsapp') { window.open(`https://wa.me/?text=${encodeURIComponent(t)}`, '_blank'); return; } if (modo === 'copiar') { copiar(t); return; } if (navigator.share) { try { await navigator.share({ title: n.titulo, text: n.texto }); } catch(e){} } else { copiar(t); } }
 
-/* ===== TRADUCIR ===== */
 $('btnTraducir').onclick = () => { if (!txt.value.trim()) return toast('No hay texto'); detenerTodo(); TTS.stop(); $('modalTraducir').classList.add('show'); };
 $('tradCancelar').onclick = () => $('modalTraducir').classList.remove('show');
 document.querySelectorAll('#modalTraducir [data-lang]').forEach(b => { b.onclick = async () => { $('modalTraducir').classList.remove('show'); await traducirYMostrar(b.dataset.lang); }; });
@@ -777,45 +836,51 @@ $('btnCerrarTrad').onclick = () => { $('traduccionBox').classList.remove('show')
 async function traducirYMostrar(code) { detenerTodo(); TTS.stop(); const t = txt.value.trim(); const nom = code === 'en' ? 'Inglés' : 'Español'; const box = $('traduccionBox'), out = $('traduccionTexto'); $('traduccionLabel').textContent = `${code === 'en' ? '🇬🇧' : '🇪🇸'} Traducción a ${nom}`; box.classList.add('show'); out.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⏳...</div>'; try { const trad = await traducir(t, code); out.innerHTML = `<div class="traduccion-result">${escapeHtml(trad)}</div><div class="traduccion-actions"><button class="btn primary small" data-trad="play">▶</button><button class="btn small" data-trad="pause">⏸</button><button class="btn small" data-trad="stop">⏹</button><button class="btn small" data-trad="copiar">📋</button></div>`; out.querySelectorAll('[data-trad]').forEach(b => { b.onclick = () => { const a = b.dataset.trad; if (a === 'play') TTS.play(trad, code); else if (a === 'pause') TTS.pauseToggle(); else if (a === 'stop') TTS.stop(); else if (a === 'copiar') copiar(trad); }; }); } catch(e) { out.innerHTML = '<div style="color:#ff8a80;padding:10px">❌ ' + escapeHtml(e.message) + '</div>'; } }
 async function traducir(t, lang) { const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${lang}&dt=t&q=${encodeURIComponent(t)}`; const r = await fetch(url); if (!r.ok) throw new Error('HTTP ' + r.status); const d = await r.json(); if (Array.isArray(d) && d[0] && Array.isArray(d[0][0])) return d[0].map(s => s[0]).join(' '); throw new Error('Inválida'); }
 
-/* ===== NAV + SWIPE ===== */
 const TABS = ['grabar','notas','calendario','tareas','personas','buscar','stats','config'];
 document.querySelectorAll('nav button').forEach(b => { b.onclick = () => { document.querySelectorAll('nav button').forEach(x => x.classList.remove('active')); document.querySelectorAll('main section').forEach(x => x.classList.remove('active')); b.classList.add('active'); $('tab-'+b.dataset.tab).classList.add('active'); if (b.dataset.tab === 'notas') renderNotas(); if (b.dataset.tab === 'tareas') renderTareas(); if (b.dataset.tab === 'calendario') { renderCalendario(); llenarSelectores(); } if (b.dataset.tab === 'personas') renderPersonas(); if (b.dataset.tab === 'buscar') renderBuscar(); if (b.dataset.tab === 'stats') renderStats(); if (b.dataset.tab === 'config') { renderPapelera(); actualizarIndicator(); actualizarKeyUI(); actualizarPass(); actualizarBanner(); } }; });
 let tSX = 0, tSY = 0, tST = 0;
-const MODALES = ['modalAdjuntar','modalCompartir','modalTraducir','visorAdjunto','focusOverlay','panelDia','panelGuardado','modalPassword','modalNombrar','modalDiag'];
+const MODALES = ['modalAdjuntar','modalCompartir','modalTraducir','visorAdjunto','focusOverlay','panelDia','panelGuardado','modalPassword','modalNombrar','modalDiag','modalDialog'];
 document.addEventListener('touchstart', (e) => { if (MODALES.some(id => $(id)?.classList.contains('show'))) return; if (e.target.closest('textarea') || e.target.closest('input') || e.target.closest('select')) return; if (e.target.closest('nav') || e.target.closest('.tabs-tareas') || e.target.closest('.tags-filter') || e.target.closest('.adjuntos-grid') || e.target.closest('.cal-grid') || e.target.closest('.nota-actions-grid') || e.target.closest('.action-bar') || e.target.closest('.config-acc')) return; tSX = e.touches[0].clientX; tSY = e.touches[0].clientY; tST = Date.now(); }, { passive: true });
 document.addEventListener('touchend', (e) => { if (!tSX) return; const dx = e.changedTouches[0].clientX - tSX, dy = e.changedTouches[0].clientY - tSY, dt = Date.now() - tST; tSX = 0; tSY = 0; if (Math.abs(dx) < 80 || Math.abs(dx) < Math.abs(dy) * 1.5 || dt > 600) return; const a = document.querySelector('nav button.active'); if (!a) return; const c = TABS.indexOf(a.dataset.tab); if (c === -1) return; const n = dx < 0 ? Math.min(c + 1, TABS.length - 1) : Math.max(c - 1, 0); if (n !== c) { document.querySelector(`nav button[data-tab="${TABS[n]}"]`).click(); if (navigator.vibrate) navigator.vibrate(15); } }, { passive: true });
 
-/* ===== VOZ ===== */
 let permPrimed = false;
-async function permMic() { if (permPrimed) return true; if (!navigator.mediaDevices?.getUserMedia) return true; try { const s = await navigator.mediaDevices.getUserMedia({ audio: true }); s.getTracks().forEach(t => t.stop()); permPrimed = true; return true; } catch(e) { alert('Sin micrófono. Abre por HTTPS.'); return false; } }
+async function permMic() { if (permPrimed) return true; if (!navigator.mediaDevices?.getUserMedia) return true; try { const s = await navigator.mediaDevices.getUserMedia({ audio: true }); s.getTracks().forEach(t => t.stop()); permPrimed = true; return true; } catch(e) { alerta('No se pudo acceder al micrófono. Si usas archivo local, abre la página con HTTPS.', 'Micrófono bloqueado', '🎤'); return false; } }
 const ES_MOVIL = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 function smartAppend(ex, nu) { const c = String(nu || '').trim(); if (!c) return ex; if (!ex) return c; const eL = ex.toLowerCase(), cL = c.toLowerCase(); if (eL.endsWith(cL)) return ex; if (cL.includes(eL) && ex.length > 0) { const i = cL.lastIndexOf(eL); if (i !== -1) { const r = c.slice(i + ex.length).replace(/^[\s,.;:!?]+/, '').trim(); if (!r) return ex; return ex + (/[.,;:!?]$/.test(ex) ? ' ' : ', ') + r; } } const mK = Math.min(ex.length, c.length); for (let k = mK; k >= 4; k--) { if (eL.endsWith(cL.slice(0, k))) { const r = c.slice(k).replace(/^[\s,.;:!?]+/, '').trim(); if (!r) return ex; return ex + (/[.,;:!?]$/.test(ex) ? ' ' : ', ') + r; } } return ex + (/[.,;:!?]$/.test(ex) ? ' ' : ', ') + c; }
 let escuchando = false, capturando = false, modo = 'idle', bufferFinal = '', interimActual = '';
 function renderTxt() { const t = bufferFinal + (interimActual ? (bufferFinal ? ' ' : '') + interimActual : ''); txt.value = t; txt.scrollTop = txt.scrollHeight; }
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 let rec = null, reiniciando = false, ultRes = Date.now();
-function crearRec() { if (!SR) return null; const r = new SR(); r.lang = 'es-CL'; r.continuous = true; r.interimResults = true; r.onstart = () => { reiniciando = false; ultRes = Date.now(); }; r.onresult = (e) => { ultRes = Date.now(); let inter = ''; for (let i = e.resultIndex; i < e.results.length; i++) { const res = e.results[i], alt = res[0], t = alt.transcript; const esFin = res.isFinal && !(ES_MOVIL && alt.confidence === 0); if (esFin) { bufferFinal = smartAppend(bufferFinal, t); interimActual = ''; } else inter += t; } interimActual = inter; renderTxt(); }; r.onend = () => { if (!escuchando) { actUI(); return; } if (reiniciando) return; if (interimActual) { bufferFinal = smartAppend(bufferFinal, interimActual); interimActual = ''; renderTxt(); } reiniciando = true; setTimeout(() => { reiniciando = false; if (escuchando) { try { r.start(); } catch (e) { setTimeout(() => { if (escuchando) { try { r.start(); } catch (e2) { detenerVivo(); } } }, 500); } } }, 700); }; r.onerror = (e) => { if (e.error === 'not-allowed') { alert('Permiso denegado'); detenerVivo(); } }; return r; }
-async function iniciarVivo() { if (!SR) { alert('Sin reconocimiento'); return; } if (!(await permMic())) return; if (!rec) rec = crearRec(); modo = 'continuo'; bufferFinal = (txt.value || '').trim(); capturando = true; interimActual = ''; reiniciando = false; escuchando = true; ultRes = Date.now(); try { rec.start(); } catch(e) { setTimeout(() => { try { rec.start(); } catch(e2){} }, 300); } actUI(); }
+function crearRec() { if (!SR) return null; const r = new SR(); r.lang = 'es-CL'; r.continuous = true; r.interimResults = true; r.onstart = () => { reiniciando = false; ultRes = Date.now(); }; r.onresult = (e) => { ultRes = Date.now(); let inter = ''; for (let i = e.resultIndex; i < e.results.length; i++) { const res = e.results[i], alt = res[0], t = alt.transcript; const esFin = res.isFinal && !(ES_MOVIL && alt.confidence === 0); if (esFin) { bufferFinal = smartAppend(bufferFinal, t); interimActual = ''; } else inter += t; } interimActual = inter; renderTxt(); }; r.onend = () => { if (!escuchando) { actUI(); return; } if (reiniciando) return; if (interimActual) { bufferFinal = smartAppend(bufferFinal, interimActual); interimActual = ''; renderTxt(); } reiniciando = true; setTimeout(() => { reiniciando = false; if (escuchando) { try { r.start(); } catch (e) { setTimeout(() => { if (escuchando) { try { r.start(); } catch (e2) { detenerVivo(); } } }, 500); } } }, 700); }; r.onerror = (e) => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { alerta('Necesitas permitir el micrófono para usar el reconocimiento de voz.', 'Micrófono denegado', '🎤'); detenerVivo(); } }; return r; }
+async function iniciarVivo() { if (!SR) { alerta('Este navegador no soporta reconocimiento de voz. Prueba con Chrome o Edge.', 'Sin reconocimiento', '🎤'); return; } if (!(await permMic())) return; if (!rec) rec = crearRec(); modo = 'continuo'; bufferFinal = (txt.value || '').trim(); capturando = true; interimActual = ''; reiniciando = false; escuchando = true; ultRes = Date.now(); try { rec.start(); } catch(e) { setTimeout(() => { try { rec.start(); } catch(e2){} }, 300); } actUI(); }
 function detenerVivo() { escuchando = false; capturando = false; modo = 'idle'; reiniciando = false; try { rec && rec.stop(); } catch(e){} actUI(); }
 let mr = null, chunks = [], stream = null, grabandoEst = false;
-async function iniciarEst() { if (!(await permMic())) return; const k = LS.get('apiKey', '') || $('apiKey').value.trim(); if (!k) { toast('Falta API key'); return; } try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch(e) { alert('Sin mic'); return; } chunks = []; const mt = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : ''; try { mr = mt ? new MediaRecorder(stream, { mimeType: mt }) : new MediaRecorder(stream); } catch(e) { toast('No soportado'); stream.getTracks().forEach(t => t.stop()); return; } mr.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); }; mr.onstop = async () => { const b = new Blob(chunks, { type: mr.mimeType || 'audio/webm' }); chunks = []; stream.getTracks().forEach(t => t.stop()); stream = null; btnPTT.classList.remove('rec'); btnPTT.classList.add('proc'); $('fabLabel').textContent = 'TRANSCRIBIENDO'; $('fabSub').textContent = '...'; try { const t = await whisper(b); if (t && t.trim()) { bufferFinal = smartAppend(bufferFinal, t.trim()); renderTxt(); toast('✅'); } else toast('Sin voz'); } catch(e) { toast('❌ ' + e.message); } grabandoEst = false; btnPTT.classList.remove('proc'); actUI(); }; mr.start(); grabandoEst = true; btnPTT.classList.add('rec'); $('fabLabel').textContent = 'GRABANDO'; $('fabSub').textContent = 'toca para parar'; }
+async function iniciarEst() { if (!(await permMic())) return; const k = LS.get('apiKey', '') || $('apiKey').value.trim(); if (!k) { alerta('Necesitas la API Key de Groq para el modo Estable (transcribe con Whisper).', 'Falta API Key', '🔑'); return; } try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch(e) { alerta('No se pudo acceder al micrófono.', 'Error micrófono', '🎤'); return; } chunks = []; const mt = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : ''; try { mr = mt ? new MediaRecorder(stream, { mimeType: mt }) : new MediaRecorder(stream); } catch(e) { alerta('Este navegador no soporta grabación de audio.', 'No soportado', '🎤'); stream.getTracks().forEach(t => t.stop()); return; } mr.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); }; mr.onstop = async () => { const b = new Blob(chunks, { type: mr.mimeType || 'audio/webm' }); chunks = []; stream.getTracks().forEach(t => t.stop()); stream = null; btnPTT.classList.remove('rec'); btnPTT.classList.add('proc'); $('fabLabel').textContent = 'TRANSCRIBIENDO'; $('fabSub').textContent = '...'; try { const t = await whisper(b); if (t && t.trim()) { bufferFinal = smartAppend(bufferFinal, t.trim()); renderTxt(); toast('✅ Transcrito'); } else toast('Sin voz'); } catch(e) { toast('❌ ' + e.message); } grabandoEst = false; btnPTT.classList.remove('proc'); actUI(); }; mr.start(); grabandoEst = true; btnPTT.classList.add('rec'); $('fabLabel').textContent = 'GRABANDO'; $('fabSub').textContent = 'toca para parar'; actUI(); }
 function detenerEst() { if (mr && mr.state === 'recording') mr.stop(); grabandoEst = false; actUI(); }
 async function whisper(b) { const k = LS.get('apiKey', '') || $('apiKey').value.trim(); if (!k) throw new Error('Falta key'); const f = new FormData(); f.append('file', b, 'audio.webm'); f.append('model', 'whisper-large-v3-turbo'); f.append('language', 'es'); f.append('response_format', 'json'); const r = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + k }, body: f }); if (!r.ok) throw new Error('Whisper ' + r.status); return (await r.json()).text || ''; }
 btnPTT.onclick = async () => { TTS.stop(); if (modoGrabacion === 'estable') { if (grabandoEst) detenerEst(); else await iniciarEst(); } else { if (escuchando) detenerVivo(); else await iniciarVivo(); } };
 function detenerTodo() { if (modoGrabacion === 'estable') detenerEst(); else detenerVivo(); }
-function actUI() { const g = (modoGrabacion === 'vivo' && escuchando) || grabandoEst; btnPTT.classList.toggle('rec', g); if (!g && !btnPTT.classList.contains('proc')) { $('fabLabel').textContent = 'GRABAR'; $('fabSub').textContent = modoGrabacion === 'estable' ? 'graba y transcribe' : 'toca para hablar'; } }
+function actUI() {
+  const g = (modoGrabacion === 'vivo' && escuchando) || grabandoEst;
+  btnPTT.classList.toggle('rec', g);
+  if (g) {
+    $('fabLabel').textContent = 'GRABANDO';
+    $('fabSub').textContent = 'toca para parar';
+  } else if (!btnPTT.classList.contains('proc')) {
+    $('fabLabel').textContent = 'GRABAR';
+    $('fabSub').textContent = modoGrabacion === 'estable' ? 'graba y transcribe' : 'toca para hablar';
+  }
+}
 setInterval(() => { if (modoGrabacion !== 'vivo' || !escuchando || !rec || reiniciando) return; if (Date.now() - ultRes > 25000) { try { rec.stop(); } catch(e){} } }, 10000);
 txt.addEventListener('input', () => { bufferFinal = txt.value; interimActual = ''; });
 let draftTimer = null;
 txt.addEventListener('input', () => { clearTimeout(draftTimer); draftTimer = setTimeout(() => { const t = txt.value.trim(); if (t) LS.set('draft', { texto: t, fecha: Date.now() }); else localStorage.removeItem('jarvis_draft'); }, 2000); });
 
-/* ===== ACCIONES GRABAR ===== */
 $('btnBorrar').onclick = () => { bufferFinal = ''; interimActual = ''; txt.value = ''; $('traduccionBox').classList.remove('show'); localStorage.removeItem('jarvis_draft'); toast('Borrado'); };
-async function copiar(t) { if (!t) return toast('Nada'); try { await navigator.clipboard.writeText(t); toast('📋'); } catch(e) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('📋'); } catch(err) { toast('❌'); } document.body.removeChild(ta); } }
+async function copiar(t) { if (!t) return toast('Nada'); try { await navigator.clipboard.writeText(t); toast('📋 Copiado'); } catch(e) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); toast('📋 Copiado'); } catch(err) { toast('❌'); } document.body.removeChild(ta); } }
 $('btnCopiar').onclick = () => copiar(txt.value);
-$('btnPegar').onclick = async () => { try { const t = await navigator.clipboard.readText(); if (t) { bufferFinal = (bufferFinal ? bufferFinal + ' ' : '') + t; renderTxt(); toast('📥'); } else toast('Vacío'); } catch(e) { toast('Permite acceso'); } };
+$('btnPegar').onclick = async () => { try { const t = await navigator.clipboard.readText(); if (t) { bufferFinal = (bufferFinal ? bufferFinal + ' ' : '') + t; renderTxt(); toast('📥 Pegado'); } else toast('Vacío'); } catch(e) { alerta('Debes permitir el acceso al portapapeles.', 'Portapapeles bloqueado', '📋'); } };
 
-/* ===== GUARDAR ===== */
 function guardar() {
   const t = txt.value.trim(); if (!t) return toast('Sin texto');
   detenerTodo(); TTS.stop();
@@ -842,7 +907,6 @@ $('btnPasar').onclick = () => {
   document.querySelector('nav button[data-tab="notas"]').click();
 };
 
-/* ===== NOTAS ===== */
 let seleccionadas = new Set();
 async function renderNotas() {
   const f = ($('buscarNotas').value || '').toLowerCase();
@@ -894,32 +958,41 @@ async function renderNotas() {
     });
   });
   c.querySelectorAll('[data-accion]').forEach(b => {
-    b.onclick = (e) => {
+    b.onclick = async (e) => {
       e.stopPropagation();
       const n = notas.find(x => eqId(x.id, b.dataset.id));
       if (!n) { toast('⚠ No encontrada'); renderNotas(); return; }
       const a = b.dataset.accion;
       if (a === 'editar') { abrirModalNombrar(n, 'editar'); return; }
-      ejecutarAccion(n, a);
+      await ejecutarAccion(n, a);
     };
   });
 }
 function renderBarraSel() { const n = seleccionadas.size, b = $('barraSeleccion'); if (n >= 2) { b.classList.add('show'); $('selCount').textContent = n + ' sel.'; } else b.classList.remove('show'); }
 $('btnCancelarSel').onclick = () => { seleccionadas.clear(); renderBarraSel(); renderNotas(); };
-$('btnUnirSel').onclick = () => { if (seleccionadas.size < 2) return; const tit = prompt('Título unificado:'); if (!tit || !tit.trim()) return toast('Obligatorio'); const sN = notas.filter(n => seleccionadas.has(String(n.id))); const tU = sN.map(n => `[${n.titulo}]\n${n.texto}`).join('\n\n---\n\n'); const nu = { id: nuevoId(), titulo: tit.trim(), texto: tU, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [], adjuntos: [], proposito: 'nota' }; notas.unshift(nu); LS.set('notas', notas); syncDebounced(); seleccionadas.clear(); renderBarraSel(); renderNotas(); toast('Unificada'); };
+$('btnUnirSel').onclick = async () => {
+  if (seleccionadas.size < 2) return;
+  const tit = await preguntar('', 'Título unificado', '🔗', 'Escribe un título');
+  if (!tit || !tit.trim()) { toast('Obligatorio'); return; }
+  const sN = notas.filter(n => seleccionadas.has(String(n.id)));
+  const tU = sN.map(n => `[${n.titulo}]\n${n.texto}`).join('\n\n---\n\n');
+  const nu = { id: nuevoId(), titulo: tit.trim(), texto: tU, fecha: new Date().toISOString(), concatenadaDe: [...seleccionadas], tags: [], adjuntos: [], proposito: 'nota' };
+  notas.unshift(nu); LS.set('notas', notas); syncDebounced();
+  seleccionadas.clear(); renderBarraSel(); renderNotas(); toast('Unificada');
+};
 $('buscarNotas').oninput = renderNotas;
 
-function ejecutarAccion(n, a) {
+async function ejecutarAccion(n, a) {
   switch (a) {
     case 'copiar': copiar(n.texto); break;
     case 'leer': TTS.play(n.texto, detectarIdioma(n.texto)); toast('🔊'); break;
     case 'analizar': analizarN(n); break;
     case 'resumir': resumirN(n); break;
     case 'compartir': abrirCompartir(n.id); break;
-    case 'concatenar': concatenar(n); break;
-    case 'tags': editarTagsN(n); break;
-    case 'eliminar':
-      if (!confirm('¿Mover a papelera?')) return;
+    case 'concatenar': await concatenar(n); break;
+    case 'tags': await editarTagsN(n); break;
+    case 'eliminar': {
+      if (!(await confirmar(`"${n.titulo}"\n\nSe moverá a la papelera donde estará 30 días.`, '¿Mover a papelera?', '🗑️'))) return;
       const idx = notas.findIndex(x => eqId(x.id, n.id));
       if (idx === -1) { toast('⚠ Ya no existe'); renderNotas(); return; }
       const idT = String(notas[idx].id);
@@ -927,26 +1000,26 @@ function ejecutarAccion(n, a) {
       moverPapelera('notas', copia);
       const antes = notas.length;
       notas = notas.filter(x => String(x.id) !== idT);
-      if (notas.length === antes) { toast('❌ ERROR: no se borró'); return; }
-      LS.set('notas', notas);
-      renderNotas(); renderPapelera();
+      if (notas.length === antes) { toast('❌ ERROR'); return; }
+      LS.set('notas', notas); renderNotas(); renderPapelera();
       syncImmediate();
       toast('🗑️ Eliminada');
       break;
+    }
   }
 }
 
-function concatenar(n) {
+async function concatenar(n) {
   const otras = notas.filter(x => !eqId(x.id, n.id));
-  if (!otras.length) return toast('No hay otras');
+  if (!otras.length) { alerta('No hay otras notas para unir.', 'Sin notas', '🔗'); return; }
   const lista = otras.map((x, i) => `${i+1}. ${x.titulo}`).join('\n');
-  const el = prompt(`¿Con qué unir "${n.titulo}"?\n\n${lista}\n\nNúmero:`);
+  const el = await preguntar(`Notas disponibles:\n\n${lista}\n\nEscribe el número de la nota con la que quieres unir:`, 'Unir con otra nota', '🔗', 'Número');
   if (!el) return;
   const idx = parseInt(el) - 1;
-  if (idx < 0 || idx >= otras.length) return toast('Número inválido');
+  if (idx < 0 || idx >= otras.length) { alerta('El número ingresado no es válido.', 'Número inválido', '⚠️'); return; }
   const o = otras[idx];
-  const tit = prompt('Título unificado:');
-  if (!tit || !tit.trim()) return toast('Obligatorio');
+  const tit = await preguntar('', 'Título de la nota unificada', '🔗', 'Escribe un título');
+  if (!tit || !tit.trim()) { toast('Obligatorio'); return; }
   const nu = { id: nuevoId(), titulo: tit.trim(), texto: `[${n.titulo}]\n${n.texto}\n\n---\n\n[${o.titulo}]\n${o.texto}`, fecha: new Date().toISOString(), concatenadaDe: [n.id, o.id], tags: [], adjuntos: [], proposito: 'nota' };
   notas.unshift(nu); LS.set('notas', notas); syncDebounced(); renderNotas(); toast('Unificada');
 }
@@ -986,197 +1059,62 @@ function bindAnalisis(panel, d, n) {
   panel.querySelectorAll('[data-at]').forEach(b => { b.onclick = () => { const i = +b.dataset.at, tp = b.dataset.tp, t = d.tareas[i]; if (!t) return; const p = t.persona ? buscarPersona(t.persona) : null; tareas.unshift({ id: nuevoId(), descripcion: t.descripcion, persona: t.persona || '', contacto: '', personaId: p ? p.id : null, fecha: tp === 'cal' ? (t.fecha || new Date().toISOString().slice(0,10)) : '', hora: t.hora || '', hecha: false, completadaEn: null, notaId: n.id, fechaCreacion: Date.now(), tags: [] }); LS.set('tareas', tareas); syncDebounced(); renderTareas(); renderCalendario(); toast(tp === 'cal' ? '📅 Tarea' : '✅ Tarea'); b.textContent = '✓'; b.disabled = true; }; });
   panel.querySelectorAll('[data-af]').forEach(b => { b.onclick = () => { const a = b.dataset.af; if (a === 'escuchar') { const txts = Array.from(panel.querySelectorAll('.seccion')).map(sec => { const t = sec.querySelector('h4')?.textContent || ''; const c = Array.from(sec.querySelectorAll('.txt, .tarea-item')).map(el => el.textContent).join('. '); return t + '. ' + c; }).filter(Boolean).join('. '); TTS.play(txts, detectarIdioma(txts)); } if (a === 'copiar') copiar(panel.textContent); if (a === 'cerrar') panel.classList.remove('show'); }; });
 }
-async function resumirN(n) { const p = $('panel-' + n.id); p.classList.add('show'); p.innerHTML = '<div class="txt">⏳ Resumiendo...</div>'; try { const raw = await groq(`Resume en máx 5 puntos:\n\n${n.texto}`); p.innerHTML = `<div class="seccion"><h4>📝 RESUMEN</h4><div class="txt">${escapeHtml(raw)}</div></div><div class="acciones-finales"><button class="btn primary" data-res="esc"><button class="btn primary" data-res="esc">🔊</button><button class="btn" data-res="cop">📋</button><button class="btn ghost" data-res="cer">❌</button></div>`; p.querySelectorAll('[data-res]').forEach(b => { b.onclick = () => { const a = b.dataset.res; if (a === 'esc') TTS.play(raw, detectarIdioma(raw)); if (a === 'cop') copiar(raw); if (a === 'cer') p.classList.remove('show'); }; }); } catch(e) { p.innerHTML = '<div class="txt">❌ ' + escapeHtml(e.message) + '</div>'; } }
+async function resumirN(n) { const p = $('panel-' + n.id); p.classList.add('show'); p.innerHTML = '<div class="txt">⏳ Resumiendo...</div>'; try { const raw = await groq(`Resume en máx 5 puntos:\n\n${n.texto}`); p.innerHTML = `<div class="seccion"><h4>📝 RESUMEN</h4><div class="txt">${escapeHtml(raw)}</div></div><div class="acciones-finales"><button class="btn primary" data-res="esc">🔊</button><button class="btn" data-res="cop">📋</button><button class="btn ghost" data-res="cer">❌</button></div>`; p.querySelectorAll('[data-res]').forEach(b => { b.onclick = () => { const a = b.dataset.res; if (a === 'esc') TTS.play(raw, detectarIdioma(raw)); if (a === 'cop') copiar(raw); if (a === 'cer') p.classList.remove('show'); }; }); } catch(e) { p.innerHTML = '<div class="txt">❌ ' + escapeHtml(e.message) + '</div>'; } }
 
-/* ===== MODAL NOMBRAR ===== */
 let notaActual = null, propSel = null, accionPend = null;
-
-function abrirModalNombrar(n, accion) {
-  notaActual = n; propSel = n.proposito || null; accionPend = accion;
-  $('nomNombre').value = n.titulo || '';
-  $('nomAnalisisBox').innerHTML = '';
-  $('nomFecha').value = ''; $('nomHora').value = '';
-  $('nomPersona').value = ''; $('nomRecur').value = ''; $('nomNotif').checked = false;
-  $('nomStep1').style.display = 'block';
-  $('nomStep2').style.display = 'none';
-  $('nomStep3').style.display = 'none';
-  actualizarPropUI();
-  $('modalNombrar').classList.add('show');
-  setTimeout(() => $('nomNombre').focus(), 200);
-}
-
-function actualizarPropUI() {
-  document.querySelectorAll('#nomStep3 [data-prop]').forEach(b => b.classList.toggle('sel', b.dataset.prop === propSel));
-  const needs = propSel === 'tarea' || propSel === 'evento';
-  $('nomExtraFields').style.display = needs ? 'block' : 'none';
-  $('nomPersonaWrap').style.display = propSel === 'tarea' ? 'block' : 'none';
-  $('nomRecurWrap').style.display = propSel === 'tarea' ? 'block' : 'none';
-}
-
+function abrirModalNombrar(n, accion) { notaActual = n; propSel = n.proposito || null; accionPend = accion; $('nomNombre').value = n.titulo || ''; $('nomAnalisisBox').innerHTML = ''; $('nomFecha').value = ''; $('nomHora').value = ''; $('nomPersona').value = ''; $('nomRecur').value = ''; $('nomNotif').checked = false; $('nomStep1').style.display = 'block'; $('nomStep2').style.display = 'none'; $('nomStep3').style.display = 'none'; actualizarPropUI(); $('modalNombrar').classList.add('show'); setTimeout(() => $('nomNombre').focus(), 200); }
+function actualizarPropUI() { document.querySelectorAll('#nomStep3 [data-prop]').forEach(b => b.classList.toggle('sel', b.dataset.prop === propSel)); const needs = propSel === 'tarea' || propSel === 'evento'; $('nomExtraFields').style.display = needs ? 'block' : 'none'; $('nomPersonaWrap').style.display = propSel === 'tarea' ? 'block' : 'none'; $('nomRecurWrap').style.display = propSel === 'tarea' ? 'block' : 'none'; }
 document.querySelectorAll('#nomStep3 [data-prop]').forEach(b => { b.onclick = () => { propSel = b.dataset.prop; actualizarPropUI(); }; });
-
 $('btnCancelarNom').onclick = () => { $('modalNombrar').classList.remove('show'); notaActual = null; };
 $('btnVolver1').onclick = () => { $('nomStep2').style.display = 'none'; $('nomStep1').style.display = 'block'; };
 $('btnVolver2').onclick = () => { $('nomStep3').style.display = 'none'; $('nomStep1').style.display = 'block'; };
-
-$('btnAnalizarNom').onclick = async () => {
-  const nom = $('nomNombre').value.trim();
-  if (!nom) { toast('Escribe un nombre'); return; }
-  if (!notaActual) return;
-  notaActual.titulo = nom;
-  $('nomStep1').style.display = 'none';
-  $('nomStep2').style.display = 'block';
-  $('nomAnalisisBox').innerHTML = '⏳ Analizando con IA...';
-  try {
-    const hoy = new Date().toISOString().slice(0,10);
-    const prompt2 = `Analiza esta nota y devuelve SOLO JSON: {"resumen":"1-2 líneas","tipo_sugerido":"nota|tarea|evento","tareas":[{"descripcion":"qué","persona":"","fecha":"YYYY-MM-DD o vacío","hora":"HH:MM o vacío"}],"soluciones":["op"],"recordatorios":["rec"],"riesgos":["rie"]}\nHoy: ${hoy}\nNOTA:\n"""${notaActual.texto}"""`;
-    const raw = await groq(prompt2);
-    let limpio = raw.replace(/```json|```/g, '').trim();
-    const ini = limpio.indexOf('{'), fin = limpio.lastIndexOf('}');
-    if (ini !== -1 && fin !== -1) limpio = limpio.slice(ini, fin + 1);
-    let d;
-    try { d = JSON.parse(limpio); } catch(e) { $('nomAnalisisBox').innerHTML = '⚠️ IA no respondió JSON:<br><br>' + escapeHtml(raw); return; }
-    let h = '';
-    if (d.resumen) h += `<h5>📌 Resumen</h5><p>${escapeHtml(d.resumen)}</p>`;
-    if (d.tipo_sugerido) h += `<h5>💡 Sugerencia</h5><p>Parece ser: <b>${escapeHtml(d.tipo_sugerido)}</b></p>`;
-    if (d.tareas && d.tareas.length) { h += `<h5>✅ Tareas detectadas</h5>`; d.tareas.forEach(t => { h += `<p>• ${escapeHtml(t.descripcion)}${t.persona ? ' — ' + escapeHtml(t.persona) : ''}${t.fecha ? ' — 📅 ' + t.fecha : ''}${t.hora ? ' — 🕐 ' + t.hora : ''}</p>`; }); }
-    if (d.soluciones && d.soluciones.length) { h += `<h5>💡 Soluciones</h5>`; d.soluciones.forEach(s => h += `<p>• ${escapeHtml(s)}</p>`); }
-    $('nomAnalisisBox').innerHTML = h || '<p>Sin resultados</p>';
-    $('nomAnalisisBox').dataset.json = JSON.stringify(d);
-  } catch(e) {
-    $('nomAnalisisBox').innerHTML = '❌ ' + escapeHtml(e.message);
-  }
-};
-
-$('btnAceptarAnalisis').onclick = () => {
-  const nom = $('nomNombre').value.trim();
-  if (!nom) { toast('Falta nombre'); return; }
-  if (!notaActual) return;
-  guardarConProp(nom, notaActual.proposito || 'nota');
-};
-
+$('btnAnalizarNom').onclick = async () => { const nom = $('nomNombre').value.trim(); if (!nom) { toast('Escribe un nombre'); return; } if (!notaActual) return; notaActual.titulo = nom; $('nomStep1').style.display = 'none'; $('nomStep2').style.display = 'block'; $('nomAnalisisBox').innerHTML = '⏳ Analizando con IA...'; try { const hoy = new Date().toISOString().slice(0,10); const prompt2 = `Analiza esta nota y devuelve SOLO JSON: {"resumen":"1-2 líneas","tipo_sugerido":"nota|tarea|evento","tareas":[{"descripcion":"qué","persona":"","fecha":"YYYY-MM-DD o vacío","hora":"HH:MM o vacío"}],"soluciones":["op"],"recordatorios":["rec"],"riesgos":["rie"]}\nHoy: ${hoy}\nNOTA:\n"""${notaActual.texto}"""`; const raw = await groq(prompt2); let limpio = raw.replace(/```json|```/g, '').trim(); const ini = limpio.indexOf('{'), fin = limpio.lastIndexOf('}'); if (ini !== -1 && fin !== -1) limpio = limpio.slice(ini, fin + 1); let d; try { d = JSON.parse(limpio); } catch(e) { $('nomAnalisisBox').innerHTML = '⚠️ IA no respondió JSON:<br><br>' + escapeHtml(raw); return; } let h = ''; if (d.resumen) h += `<h5>📌 Resumen</h5><p>${escapeHtml(d.resumen)}</p>`; if (d.tipo_sugerido) h += `<h5>💡 Sugerencia</h5><p>Parece ser: <b>${escapeHtml(d.tipo_sugerido)}</b></p>`; if (d.tareas && d.tareas.length) { h += `<h5>✅ Tareas detectadas</h5>`; d.tareas.forEach(t => { h += `<p>• ${escapeHtml(t.descripcion)}${t.persona ? ' — ' + escapeHtml(t.persona) : ''}${t.fecha ? ' — 📅 ' + t.fecha : ''}${t.hora ? ' — 🕐 ' + t.hora : ''}</p>`; }); } if (d.soluciones && d.soluciones.length) { h += `<h5>💡 Soluciones</h5>`; d.soluciones.forEach(s => h += `<p>• ${escapeHtml(s)}</p>`); } $('nomAnalisisBox').innerHTML = h || '<p>Sin resultados</p>'; } catch(e) { $('nomAnalisisBox').innerHTML = '❌ ' + escapeHtml(e.message); } };
+$('btnAceptarAnalisis').onclick = () => { const nom = $('nomNombre').value.trim(); if (!nom) { toast('Falta nombre'); return; } if (!notaActual) return; guardarConProp(nom, notaActual.proposito || 'nota'); };
 $('btnIrGestionar').onclick = () => { $('nomStep2').style.display = 'none'; $('nomStep3').style.display = 'block'; };
 $('btnSaltarAnalisis').onclick = () => { const nom = $('nomNombre').value.trim(); if (!nom) { toast('Escribe un nombre'); return; } $('nomStep1').style.display = 'none'; $('nomStep3').style.display = 'block'; };
-
-$('btnGuardarNom').onclick = () => {
-  const nom = $('nomNombre').value.trim();
-  if (!nom) { toast('Falta nombre'); return; }
-  if (!propSel) { toast('Elige Nota, Tarea o Evento'); return; }
-  guardarConProp(nom, propSel);
-};
-
+$('btnGuardarNom').onclick = () => { const nom = $('nomNombre').value.trim(); if (!nom) { toast('Falta nombre'); return; } if (!propSel) { toast('Elige Nota, Tarea o Evento'); return; } guardarConProp(nom, propSel); };
 function guardarConProp(nombre, prop) {
   const n = notaActual; if (!n) return;
-  n.titulo = nombre;
-  n.proposito = prop;
-  n.fecha = new Date().toISOString();
+  n.titulo = nombre; n.proposito = prop; n.fecha = new Date().toISOString();
   if (prop === 'tarea' || prop === 'evento') {
-    const fecha = $('nomFecha').value;
-    const hora = $('nomHora').value;
-    const pTxt = $('nomPersona').value.trim();
-    const pObj = pTxt ? buscarPersona(pTxt) : null;
-    const recur = $('nomRecur').value;
-    const notif = $('nomNotif').checked;
+    const fecha = $('nomFecha').value, hora = $('nomHora').value;
+    const pTxt = $('nomPersona').value.trim(); const pObj = pTxt ? buscarPersona(pTxt) : null;
+    const recur = $('nomRecur').value, notif = $('nomNotif').checked;
     tareas.unshift({ id: nuevoId(), descripcion: nombre, persona: pTxt, contacto: pObj ? (pObj.whatsapp || pObj.telefono || '') : '', personaId: pObj ? pObj.id : null, fecha, hora, hecha: false, completadaEn: null, notaId: n.id, fechaCreacion: Date.now(), recurrencia: recur, notificar: notif, tags: [] });
-    LS.set('tareas', tareas);
-    n.tareaId = tareas[0].id;
+    LS.set('tareas', tareas); n.tareaId = tareas[0].id;
   }
-  LS.set('notas', notas);
-  syncImmediate();
+  LS.set('notas', notas); syncImmediate();
   $('modalNombrar').classList.remove('show');
   renderNotas(); renderTareas(); renderCalendario();
   toast(`✅ "${nombre}" (${prop})`);
-  const a = accionPend;
-  notaActual = null; accionPend = null;
+  const a = accionPend; notaActual = null; accionPend = null;
   if (a && a !== 'editar') setTimeout(() => { const nu = notas.find(x => x.titulo === nombre); if (nu) ejecutarAccion(nu, a); }, 200);
 }
 
-/* ===== GROQ ===== */
-async function groq(p) {
-  const k = LS.get('apiKey', '') || $('apiKey').value.trim(); if (!k) throw new Error('Falta API key');
-  const tryM = async (model) => {
-    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k }, body: JSON.stringify({ model, messages: [{ role: 'system', content: 'Eres JARVIS. Respondes en español.' }, { role: 'user', content: p }], temperature: 0.4, max_tokens: 1500 }) });
-    if (!r.ok) { const e = await r.text(); if (r.status === 404) throw new Error('MODEL_NOT_FOUND'); throw new Error('Error ' + r.status); }
-    const d = await r.json();
-    return (d.choices?.[0]?.message?.content || '').trim() || '(sin respuesta)';
-  };
-  try { return await tryM('openai/gpt-oss-120b'); } catch(e) { if (e.message === 'MODEL_NOT_FOUND') return await tryM('llama-3.1-8b-instant'); throw e; }
-}
+async function groq(p) { const k = LS.get('apiKey', '') || $('apiKey').value.trim(); if (!k) throw new Error('Falta API key'); const tryM = async (model) => { const r = await fetch('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + k }, body: JSON.stringify({ model, messages: [{ role: 'system', content: 'Eres JARVIS. Respondes en español.' }, { role: 'user', content: p }], temperature: 0.4, max_tokens: 1500 }) }); if (!r.ok) { const e = await r.text(); if (r.status === 404) throw new Error('MODEL_NOT_FOUND'); throw new Error('Error ' + r.status); } const d = await r.json(); return (d.choices?.[0]?.message?.content || '').trim() || '(sin respuesta)'; }; try { return await tryM('openai/gpt-oss-120b'); } catch(e) { if (e.message === 'MODEL_NOT_FOUND') return await tryM('llama-3.1-8b-instant'); throw e; } }
 
-/* ===== CALENDARIO ===== */
 let calAnio, calMes; { const h = new Date(); calAnio = h.getFullYear(); calMes = h.getMonth(); }
 function fmtISO(d){ const p = n => String(n).padStart(2,'0'); return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate()); }
-function llenarSelectores() {
-  const sM = $('calSelMes'), sA = $('calSelAnio');
-  const m = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-  if (sM.options.length !== 12) sM.innerHTML = m.map((x, i) => `<option value="${i}">${x}</option>`).join('');
-  sM.value = calMes;
-  const aA = new Date().getFullYear();
-  if (sA.options.length === 0) { const an = []; for (let a = aA - 3; a <= aA + 5; a++) an.push(a); sA.innerHTML = an.map(a => `<option value="${a}">${a}</option>`).join(''); }
-  sA.value = calAnio;
-  sM.onchange = () => { calMes = +sM.value; renderCalendario(); };
-  sA.onchange = () => { calAnio = +sA.value; renderCalendario(); };
-}
-function renderCalendario() {
-  const p = new Date(calAnio, calMes, 1);
-  const dM = new Date(calAnio, calMes+1, 0).getDate();
-  const ini = (p.getDay() + 6) % 7;
-  const hoy = fmtISO(new Date());
-  const dw = ['L','M','M','J','V','S','D'];
-  let h = dw.map(d => `<div class="cal-dow">${d}</div>`).join('');
-  for (let i = 0; i < ini; i++) h += '<div></div>';
-  for (let d = 1; d <= dM; d++) {
-    const iso = `${calAnio}-${String(calMes+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const td = tareas.filter(t => t.fecha === iso);
-    const pe = td.filter(t => !t.hecha).length, he = td.filter(t => t.hecha).length;
-    const cl = ['cal-day'];
-    const dow = new Date(iso + 'T12:00:00').getDay();
-    if (dow === 0 || dow === 6) cl.push('finde');
-    if (FERIADOS[iso]) cl.push('feriado');
-    if (cumpleFecha(iso)) cl.push('cumple');
-    if (iso === hoy) cl.push('today');
-    h += `<div class="${cl.join(' ')}" data-iso="${iso}" title="${FERIADOS[iso] || ''}"><span>${d}</span><div class="dots">${Array(Math.min(pe,3)).fill('<span class="dot"></span>').join('')}${Array(Math.min(he,2)).fill('<span class="dot done"></span>').join('')}</div></div>`;
-  }
-  $('calGrid').innerHTML = h;
-  $('calGrid').querySelectorAll('.cal-day').forEach(el => { el.onclick = () => abrirDia(el.dataset.iso); });
-}
+function llenarSelectores() { const sM = $('calSelMes'), sA = $('calSelAnio'); const m = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']; if (sM.options.length !== 12) sM.innerHTML = m.map((x, i) => `<option value="${i}">${x}</option>`).join(''); sM.value = calMes; const aA = new Date().getFullYear(); if (sA.options.length === 0) { const an = []; for (let a = aA - 3; a <= aA + 5; a++) an.push(a); sA.innerHTML = an.map(a => `<option value="${a}">${a}</option>`).join(''); } sA.value = calAnio; sM.onchange = () => { calMes = +sM.value; renderCalendario(); }; sA.onchange = () => { calAnio = +sA.value; renderCalendario(); }; }
+function renderCalendario() { const p = new Date(calAnio, calMes, 1); const dM = new Date(calAnio, calMes+1, 0).getDate(); const ini = (p.getDay() + 6) % 7; const hoy = fmtISO(new Date()); const dw = ['L','M','M','J','V','S','D']; let h = dw.map(d => `<div class="cal-dow">${d}</div>`).join(''); for (let i = 0; i < ini; i++) h += '<div></div>'; for (let d = 1; d <= dM; d++) { const iso = `${calAnio}-${String(calMes+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; const td = tareas.filter(t => t.fecha === iso); const pe = td.filter(t => !t.hecha).length, he = td.filter(t => t.hecha).length; const cl = ['cal-day']; const dow = new Date(iso + 'T12:00:00').getDay(); if (dow === 0 || dow === 6) cl.push('finde'); if (FERIADOS[iso]) cl.push('feriado'); if (cumpleFecha(iso)) cl.push('cumple'); if (iso === hoy) cl.push('today'); h += `<div class="${cl.join(' ')}" data-iso="${iso}" title="${FERIADOS[iso] || ''}"><span>${d}</span><div class="dots">${Array(Math.min(pe,3)).fill('<span class="dot"></span>').join('')}${Array(Math.min(he,2)).fill('<span class="dot done"></span>').join('')}</div></div>`; } $('calGrid').innerHTML = h; $('calGrid').querySelectorAll('.cal-day').forEach(el => { el.onclick = () => abrirDia(el.dataset.iso); }); }
 function cumpleFecha(iso) { const [, m, d] = iso.split('-'); const c = personas.filter(p => p.cumpleanos && p.cumpleanos.slice(5) === m+'-'+d); return c.length ? c.map(p => p.nombre).join(', ') : null; }
-function abrirDia(iso) {
-  $('panelDiaTitulo').textContent = 'Día ' + iso;
-  const td = tareas.filter(t => t.fecha === iso);
-  const cu = cumpleFecha(iso), fe = FERIADOS[iso];
-  let h = '';
-  if (fe) h += `<p class="hint">🎉 ${escapeHtml(fe)}</p>`;
-  if (cu) h += `<p class="hint">🎂 ${escapeHtml(cu)}</p>`;
-  h += `<h4 style="color:var(--gold);font-size:.85rem;margin-top:14px">Tareas del día</h4>`;
-  h += td.length ? td.map(renderTareaHTML).join('') : '<p class="hint">Sin tareas.</p>';
-  h += `<h4 style="color:var(--gold);font-size:.85rem;margin-top:16px">➕ Agregar tarea</h4><input id="pdDesc" placeholder="Descripción"><div class="row"><div><label>Persona</label><input id="pdPersona"></div><div><label>Hora</label><input id="pdHora" type="time"></div></div><label>Etiquetas</label><input id="pdTags" placeholder="trabajo"><button class="btn primary block" id="pdGuardar" style="margin-top:10px">Guardar</button>`;
-  $('panelDiaContenido').innerHTML = h;
-  bindTareas($('panelDiaContenido'), iso);
-  $('pdGuardar').onclick = () => { const d = $('pdDesc').value.trim(); if (!d) return toast('Descripción'); const pt = $('pdPersona').value.trim(); const pO = pt ? buscarPersona(pt) : null; tareas.unshift({ id: nuevoId(), descripcion: d, persona: pt, contacto: pO ? (pO.whatsapp || pO.telefono || '') : '', personaId: pO ? pO.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), tags: parseTags($('pdTags').value) }); LS.set('tareas', tareas); syncDebounced(); renderCalendario(); renderTareas(); renderTagFilters(); abrirDia(iso); toast('✅'); };
-  $('panelDia').classList.add('show');
-}
+function abrirDia(iso) { $('panelDiaTitulo').textContent = 'Día ' + iso; const td = tareas.filter(t => t.fecha === iso); const cu = cumpleFecha(iso), fe = FERIADOS[iso]; let h = ''; if (fe) h += `<p class="hint">🎉 ${escapeHtml(fe)}</p>`; if (cu) h += `<p class="hint">🎂 ${escapeHtml(cu)}</p>`; h += `<h4 style="color:var(--gold);font-size:.85rem;margin-top:14px">Tareas del día</h4>`; h += td.length ? td.map(renderTareaHTML).join('') : '<p class="hint">Sin tareas.</p>'; h += `<h4 style="color:var(--gold);font-size:.85rem;margin-top:16px">➕ Agregar tarea</h4><input id="pdDesc" placeholder="Descripción"><div class="row"><div><label>Persona</label><input id="pdPersona"></div><div><label>Hora</label><input id="pdHora" type="time"></div></div><label>Etiquetas</label><input id="pdTags" placeholder="trabajo"><button class="btn primary block" id="pdGuardar" style="margin-top:10px">Guardar</button>`; $('panelDiaContenido').innerHTML = h; bindTareas($('panelDiaContenido'), iso); $('pdGuardar').onclick = () => { const d = $('pdDesc').value.trim(); if (!d) return toast('Descripción'); const pt = $('pdPersona').value.trim(); const pO = pt ? buscarPersona(pt) : null; tareas.unshift({ id: nuevoId(), descripcion: d, persona: pt, contacto: pO ? (pO.whatsapp || pO.telefono || '') : '', personaId: pO ? pO.id : null, fecha: iso, hora: $('pdHora').value, hecha: false, completadaEn: null, fechaCreacion: Date.now(), tags: parseTags($('pdTags').value) }); LS.set('tareas', tareas); syncDebounced(); renderCalendario(); renderTareas(); renderTagFilters(); abrirDia(iso); toast('✅'); }; $('panelDia').classList.add('show'); }
 $('cerrarPanelDia').onclick = () => $('panelDia').classList.remove('show');
 $('mesPrev').onclick = () => { calMes--; if (calMes < 0) { calMes = 11; calAnio--; } renderCalendario(); llenarSelectores(); };
 $('mesNext').onclick = () => { calMes++; if (calMes > 11) { calMes = 0; calAnio++; } renderCalendario(); llenarSelectores(); };
 
-/* ===== TAREAS ===== */
-function renderTareaHTML(t) {
-  const hechaTag = (t.hecha && t.completadaEn) ? `<div class="t-done-tag">✓ ${new Date(t.completadaEn).toLocaleString('es-CL')}</div>` : '';
-  const pObj = t.personaId ? getPersona(t.personaId) : null;
-  return `<div class="task-item ${t.hecha ? 'done' : ''}" data-id="${t.id}"><input type="checkbox" ${t.hecha ? 'checked' : ''} data-check="${t.id}"><div style="flex:1"><div class="t-desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄</span>` : ''}</div>${renderTags(t.tags)}<div class="t-meta">${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}${t.fecha ? `<span>📅 ${t.fecha}</span>` : ''}</div>${hechaTag}</div><div style="display:flex;flex-direction:column;gap:4px"><button class="btn ghost small" data-tags-t="${t.id}" style="padding:4px 8px">🏷️</button><button class="btn ghost small" data-del-t="${t.id}" style="padding:4px 8px">✕</button></div></div>`;
-}
+function renderTareaHTML(t) { const hechaTag = (t.hecha && t.completadaEn) ? `<div class="t-done-tag">✓ ${new Date(t.completadaEn).toLocaleString('es-CL')}</div>` : ''; const pObj = t.personaId ? getPersona(t.personaId) : null; return `<div class="task-item ${t.hecha ? 'done' : ''}" data-id="${t.id}"><input type="checkbox" ${t.hecha ? 'checked' : ''} data-check="${t.id}"><div style="flex:1"><div class="t-desc">${escapeHtml(t.descripcion)}${t.recurrencia ? `<span class="recur-badge">🔄</span>` : ''}</div>${renderTags(t.tags)}<div class="t-meta">${t.persona ? `<span>👤 <b>${escapeHtml(t.persona)}</b>${pObj ? ' ✓' : ''}</span>` : ''}${t.hora ? `<span>🕐 ${t.hora}</span>` : ''}${t.fecha ? `<span>📅 ${t.fecha}</span>` : ''}</div>${hechaTag}</div><div style="display:flex;flex-direction:column;gap:4px"><button class="btn ghost small" data-tags-t="${t.id}" style="padding:4px 8px">🏷️</button><button class="btn ghost small" data-del-t="${t.id}" style="padding:4px 8px">✕</button></div></div>`; }
 function bindTareas(c, isoPanel) {
   c.querySelectorAll('[data-check]').forEach(ch => { ch.onchange = () => { const t = tareas.find(x => eqId(x.id, ch.dataset.check)); if (!t) return; t.hecha = ch.checked; t.completadaEn = ch.checked ? new Date().toISOString() : null; t.fecha = t.fecha || new Date().toISOString(); if (ch.checked && t.recurrencia && t.fecha) tareas.unshift({ ...t, id: nuevoId(), fecha: proximaFecha(t.fecha, t.recurrencia), hecha: false, completadaEn: null }); LS.set('tareas', tareas); syncDebounced(); renderCalendario(); renderTareas(); if (isoPanel && $('panelDia').classList.contains('show')) abrirDia(isoPanel); }; });
   c.querySelectorAll('[data-tags-t]').forEach(b => { b.onclick = (e) => { e.stopPropagation(); const t = tareas.find(x => eqId(x.id, b.dataset.tagsT)); if (t) editarTagsT(t); }; });
   c.querySelectorAll('[data-del-t]').forEach(b => {
-    b.onclick = (e) => {
+    b.onclick = async (e) => {
       e.stopPropagation();
-      if (!confirm('¿Mover a papelera?')) return;
       const idT = String(b.dataset.delT);
       if (!idT || idT === 'undefined') { toast('❌ ID vacío'); return; }
       const t = tareas.find(x => eqId(x.id, idT));
-      if (!t) { toast('⚠ Ya no existe'); console.log('IDs:', tareas.map(x => x.id)); return; }
+      if (!t) { toast('⚠ Ya no existe'); return; }
+      if (!(await confirmar(`"${t.descripcion}"\n\nSe moverá a la papelera donde estará 30 días.`, '¿Mover a papelera?', '🗑️'))) return;
       const copia = JSON.parse(JSON.stringify(t));
       moverPapelera('tareas', copia);
       const antes = tareas.length;
@@ -1194,38 +1132,11 @@ let filtroT = 'pend';
 $('tabPend').onclick = () => { filtroT = 'pend'; renderTareas(); };
 $('tabHist').onclick = () => { filtroT = 'hist'; renderTareas(); };
 $('tabTodas').onclick = () => { filtroT = 'todas'; renderTareas(); };
-function renderTareas() {
-  const p = tareas.filter(t => !t.hecha).length, h = tareas.filter(t => t.hecha).length;
-  $('tabPend').textContent = `⏳ Pendientes (${p})`;
-  $('tabHist').textContent = `📜 Historial (${h})`;
-  $('tabTodas').textContent = `📋 Todas (${tareas.length})`;
-  $('tabPend').classList.toggle('activo', filtroT === 'pend');
-  $('tabHist').classList.toggle('activo', filtroT === 'hist');
-  $('tabTodas').classList.toggle('activo', filtroT === 'todas');
-  let lista = [...tareas].sort((a, b) => ((a.fecha || '9999') + (a.hora || '99:99')).localeCompare((b.fecha || '9999') + (b.hora || '99:99')));
-  if (filtroT === 'pend') lista = lista.filter(t => !t.hecha);
-  else if (filtroT === 'hist') lista = lista.filter(t => t.hecha);
-  if (tagT) lista = lista.filter(t => (t.tags || []).includes(tagT));
-  const c = $('listaTareas');
-  if (!lista.length) { c.innerHTML = '<p class="hint">Sin tareas.</p>'; return; }
-  c.innerHTML = lista.map(renderTareaHTML).join('');
-  bindTareas(c, null);
-}
+function renderTareas() { const p = tareas.filter(t => !t.hecha).length, h = tareas.filter(t => t.hecha).length; $('tabPend').textContent = `⏳ Pendientes (${p})`; $('tabHist').textContent = `📜 Historial (${h})`; $('tabTodas').textContent = `📋 Todas (${tareas.length})`; $('tabPend').classList.toggle('activo', filtroT === 'pend'); $('tabHist').classList.toggle('activo', filtroT === 'hist'); $('tabTodas').classList.toggle('activo', filtroT === 'todas'); let lista = [...tareas].sort((a, b) => ((a.fecha || '9999') + (a.hora || '99:99')).localeCompare((b.fecha || '9999') + (b.hora || '99:99'))); if (filtroT === 'pend') lista = lista.filter(t => !t.hecha); else if (filtroT === 'hist') lista = lista.filter(t => t.hecha); if (tagT) lista = lista.filter(t => (t.tags || []).includes(tagT)); const c = $('listaTareas'); if (!lista.length) { c.innerHTML = '<p class="hint">Sin tareas.</p>'; return; } c.innerHTML = lista.map(renderTareaHTML).join(''); bindTareas(c, null); }
 
-/* ===== PERSONAS ===== */
 $('btnNuevaPersona').onclick = () => { $('formPersona').classList.add('show'); $('pId').value = ''; ['pNombre','pTel','pWa','pCorreo','pEmpresa','pCargo','pCumple'].forEach(id => $(id).value = ''); };
 $('btnCancelarPersona').onclick = () => $('formPersona').classList.remove('show');
-$('btnGuardarPersona').onclick = () => {
-  const n = $('pNombre').value.trim(); if (!n) return toast('Nombre');
-  const idR = $('pId').value;
-  const ex = idR ? personas.findIndex(p => eqId(p.id, idR)) : -1;
-  const id = idR && ex >= 0 ? personas[ex].id : nuevoId();
-  const p = { id, nombre: n, telefono: $('pTel').value.trim(), whatsapp: $('pWa').value.trim(), correo: $('pCorreo').value.trim(), empresa: $('pEmpresa').value.trim(), cargo: $('pCargo').value.trim(), cumpleanos: $('pCumple').value, fecha: new Date().toISOString() };
-  if (ex >= 0) personas[ex] = p; else personas.unshift(p);
-  LS.set('personas', personas); syncDebounced();
-  $('formPersona').classList.remove('show');
-  renderPersonas(); renderCalendario(); renderNotas(); toast('👥');
-};
+$('btnGuardarPersona').onclick = () => { const n = $('pNombre').value.trim(); if (!n) { toast('Nombre obligatorio'); return; } const idR = $('pId').value; const ex = idR ? personas.findIndex(p => eqId(p.id, idR)) : -1; const id = idR && ex >= 0 ? personas[ex].id : nuevoId(); const p = { id, nombre: n, telefono: $('pTel').value.trim(), whatsapp: $('pWa').value.trim(), correo: $('pCorreo').value.trim(), empresa: $('pEmpresa').value.trim(), cargo: $('pCargo').value.trim(), cumpleanos: $('pCumple').value, fecha: new Date().toISOString() }; if (ex >= 0) personas[ex] = p; else personas.unshift(p); LS.set('personas', personas); syncDebounced(); $('formPersona').classList.remove('show'); renderPersonas(); renderCalendario(); renderNotas(); toast('👥 Guardada'); };
 function renderPersonas() {
   const c = $('listaPersonas');
   if (!personas.length) { c.innerHTML = '<p class="hint">Sin personas.</p>'; return; }
@@ -1237,12 +1148,13 @@ function renderPersonas() {
   }).join('');
   c.querySelectorAll('[data-edit]').forEach(b => { b.onclick = () => { const p = personas.find(x => eqId(x.id, b.dataset.edit)); if (!p) return; $('pId').value = p.id; $('pNombre').value = p.nombre || ''; $('pTel').value = p.telefono || ''; $('pWa').value = p.whatsapp || ''; $('pCorreo').value = p.correo || ''; $('pEmpresa').value = p.empresa || ''; $('pCargo').value = p.cargo || ''; $('pCumple').value = p.cumpleanos || ''; $('formPersona').classList.add('show'); $('formPersona').scrollIntoView({ behavior: 'smooth' }); }; });
   c.querySelectorAll('[data-del-p]').forEach(b => {
-    b.onclick = () => {
-      if (!confirm('¿Mover a papelera?')) return;
+    b.onclick = async () => {
       const idT = String(b.dataset.delP);
       const idx = personas.findIndex(x => eqId(x.id, idT));
       if (idx === -1) { toast('⚠ Ya no existe'); renderPersonas(); return; }
-      const copia = JSON.parse(JSON.stringify(personas[idx]));
+      const p = personas[idx];
+      if (!(await confirmar(`"${p.nombre}"\n\nSe moverá a la papelera donde estará 30 días.`, '¿Mover a papelera?', '🗑️'))) return;
+      const copia = JSON.parse(JSON.stringify(p));
       moverPapelera('personas', copia);
       const antes = personas.length;
       personas = personas.filter(x => String(x.id) !== idT);
@@ -1255,38 +1167,42 @@ function renderPersonas() {
   });
 }
 
-/* ===== MODOS ===== */
 function actModoToggle() { $('modoVivo').classList.toggle('activo', modoGrabacion === 'vivo'); $('modoEstable').classList.toggle('activo', modoGrabacion === 'estable'); $('modoInfo').textContent = modoGrabacion === 'vivo' ? '⚡ En vivo' : '🎯 Estable'; actUI(); }
 $('modoVivo').onclick = () => { modoGrabacion = 'vivo'; LS.set('modoGrabacion', 'vivo'); detenerTodo(); actModoToggle(); };
 $('modoEstable').onclick = () => { modoGrabacion = 'estable'; LS.set('modoGrabacion', 'estable'); detenerTodo(); actModoToggle(); };
 function actualizarBanner() { const b = $('modoLocalBanner'); if (!b) return; if (modoLocalHasta > Date.now()) { const m = Math.ceil((modoLocalHasta - Date.now()) / 60000); b.style.display = 'block'; b.innerHTML = `⏸ Modo local ${m}min`; } else b.style.display = 'none'; }
 setInterval(actualizarBanner, 30000);
 
-/* ===== CONFIG ===== */
 $('syncToken').value = getToken(); $('syncGistId').value = getGistId();
-$('btnGuardarKey').onclick = async () => { const k = $('apiKey').value.trim(); if (!k) return toast('Escribe la key'); await guardarKey(k); toast('🔑'); };
-$('btnGuardarSync').onclick = async () => { const t = $('syncToken').value.trim(), g = $('syncGistId').value.trim(); if (!t || !g) return toast('Completa'); localStorage.setItem(SYNC_TOKEN_KEY, t); localStorage.setItem(SYNC_GIST_KEY, g); localStorage.removeItem(SYNC_FILE_KEY); modoLocalHasta = 0; LS.set('modoLocalHasta', 0); $('syncStatus').className = 'sync-status info'; $('syncStatus').textContent = '⏳...'; const ok = await sincronizar(true); if (ok) { $('syncStatus').className = 'sync-status ok'; $('syncStatus').textContent = '✅ OK. Archivo: ' + getFile(); } else { $('syncStatus').className = 'sync-status err'; $('syncStatus').textContent = '❌ Error'; } actualizarBanner(); };
-$('btnProbarSync').onclick = async () => { const st = $('syncStatus'); st.className = 'sync-status info'; st.textContent = '⏳...'; const t = $('syncToken').value.trim() || getToken(), g = $('syncGistId').value.trim() || getGistId(); if (!t || !g) { st.className = 'sync-status err'; st.textContent = '❌ Faltan'; return; } try { const r = await fetch(`https://api.github.com/gists/${g}`, { headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' } }); if (!r.ok) { const txt = await r.text(); if (r.status === 403 && /rate limit/i.test(txt)) { modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta); st.className = 'sync-status err'; st.textContent = '⏸ Rate limit. Local.'; actualizarBanner(); return; } throw new Error('HTTP ' + r.status); } const gg = await r.json(); const files = Object.keys(gg.files || {}); st.className = 'sync-status ok'; st.textContent = `✅ OK\n${files.join(', ')}`; } catch(e) { st.className = 'sync-status err'; st.textContent = '❌ ' + e.message; } };
+$('btnGuardarKey').onclick = async () => { const k = $('apiKey').value.trim(); if (!k) { toast('Escribe la key'); return; } await guardarKey(k); toast('🔑 Guardada'); };
+$('btnGuardarSync').onclick = async () => { const t = $('syncToken').value.trim(), g = $('syncGistId').value.trim(); if (!t || !g) { toast('Completa ambos'); return; } localStorage.setItem(SYNC_TOKEN_KEY, t); localStorage.setItem(SYNC_GIST_KEY, g); localStorage.removeItem(SYNC_FILE_KEY); modoLocalHasta = 0; LS.set('modoLocalHasta', 0); $('syncStatus').className = 'sync-status info'; $('syncStatus').textContent = '⏳ Sincronizando...'; const ok = await sincronizar(true); if (ok) { $('syncStatus').className = 'sync-status ok'; $('syncStatus').textContent = '✅ OK. Archivo: ' + getFile(); } else { $('syncStatus').className = 'sync-status err'; $('syncStatus').textContent = '❌ Error'; } actualizarBanner(); };
+$('btnProbarSync').onclick = async () => { const st = $('syncStatus'); st.className = 'sync-status info'; st.textContent = '⏳ Probando...'; const t = $('syncToken').value.trim() || getToken(), g = $('syncGistId').value.trim() || getGistId(); if (!t || !g) { st.className = 'sync-status err'; st.textContent = '❌ Faltan datos'; return; } try { const r = await fetch(`https://api.github.com/gists/${g}`, { headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' } }); if (!r.ok) { const txt = await r.text(); if (r.status === 403 && /rate limit/i.test(txt)) { modoLocalHasta = Date.now() + RATE_LIMIT_PAUSE_MS; LS.set('modoLocalHasta', modoLocalHasta); st.className = 'sync-status err'; st.textContent = '⏸ Rate limit. Local.'; actualizarBanner(); return; } throw new Error('HTTP ' + r.status); } const gg = await r.json(); const files = Object.keys(gg.files || {}); st.className = 'sync-status ok'; st.textContent = `✅ OK\n${files.join(', ')}`; } catch(e) { st.className = 'sync-status err'; st.textContent = '❌ ' + e.message; } };
 $('btnSyncAhora').onclick = async () => { await sincronizar(false); actualizarBanner(); };
-$('btnPausarSync').onclick = () => { if (modoLocalHasta > Date.now()) { modoLocalHasta = 0; LS.set('modoLocalHasta', 0); toast('▶ Reactivado'); } else { modoLocalHasta = Date.now() + 60*60*1000; LS.set('modoLocalHasta', modoLocalHasta); toast('⏸ 1h'); } actualizarIndicator(); actualizarBanner(); };
-$('btnBorrarSync').onclick = () => { if (!confirm('¿Borrar sync?')) return; localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY); localStorage.removeItem(SYNC_FILE_KEY); $('syncToken').value = ''; $('syncGistId').value = ''; $('syncStatus').className = 'sync-status'; $('syncStatus').textContent = ''; modoLocalHasta = 0; LS.set('modoLocalHasta', 0); actualizarIndicator(); actualizarBanner(); toast('Borrado'); };
+$('btnPausarSync').onclick = () => { if (modoLocalHasta > Date.now()) { modoLocalHasta = 0; LS.set('modoLocalHasta', 0); toast('▶ Reactivado'); } else { modoLocalHasta = Date.now() + 60*60*1000; LS.set('modoLocalHasta', modoLocalHasta); toast('⏸ Pausado 1h'); } actualizarIndicator(); actualizarBanner(); };
+$('btnBorrarSync').onclick = async () => { if (!(await confirmar('Se borrará la configuración de sincronización (token y Gist ID). Los datos NO se borran.', '¿Borrar configuración de sync?', '🔄'))) return; localStorage.removeItem(SYNC_TOKEN_KEY); localStorage.removeItem(SYNC_GIST_KEY); localStorage.removeItem(SYNC_FILE_KEY); $('syncToken').value = ''; $('syncGistId').value = ''; $('syncStatus').className = 'sync-status'; $('syncStatus').textContent = ''; modoLocalHasta = 0; LS.set('modoLocalHasta', 0); actualizarIndicator(); actualizarBanner(); toast('Config borrada'); };
 $('btnExportJSON').onclick = exportJSON;
 $('btnImportJSON').onclick = () => $('fileImportJSON').click();
 $('fileImportJSON').onchange = (e) => { const f = e.target.files[0]; if (f) importJSON(f); e.target.value = ''; };
 $('btnExportICS').onclick = exportICS;
 $('btnNotif').onclick = pedirNotif;
-if ('Notification' in window) { if (Notification.permission === 'granted') { $('notifInfo').textContent = '✅'; iniciarNotif(); } else if (Notification.permission === 'denied') { $('notifInfo').textContent = '❌'; } }
+if ('Notification' in window) { if (Notification.permission === 'granted') { $('notifInfo').textContent = '✅ Activadas'; iniciarNotif(); } else if (Notification.permission === 'denied') { $('notifInfo').textContent = '❌ Denegadas'; } }
 $('buscarGlobal').oninput = renderBuscar;
 
-/* ===== CONTRASEÑA ===== */
-$('btnGuardarPass').onclick = async () => { const p1 = $('inputNuevaPass').value, p2 = $('inputConfirmarPass').value; if (p1.length < 4) return toast('Mín 4'); if (p1 !== p2) return toast('No coinciden'); await guardarPass(p1); $('inputNuevaPass').value = ''; $('inputConfirmarPass').value = ''; toast('🔒'); };
-$('btnQuitarPass').onclick = async () => { if (!confirm('¿Quitar contraseña?')) return; await quitarPass(); toast('🔓'); };
+$('btnGuardarPass').onclick = async () => { const p1 = $('inputNuevaPass').value, p2 = $('inputConfirmarPass').value; if (p1.length < 4) { alerta('La contraseña debe tener al menos 4 caracteres.', 'Contraseña corta', '🔒'); return; } if (p1 !== p2) { alerta('Las dos contraseñas no coinciden.', 'No coinciden', '🔒'); return; } await guardarPass(p1); $('inputNuevaPass').value = ''; $('inputConfirmarPass').value = ''; toast('🔒 Configurada'); };
+$('btnQuitarPass').onclick = async () => { if (!(await confirmar('La contraseña ya no protegerá el botón de borrar todo.', '¿Quitar contraseña?', '🔓'))) return; await quitarPass(); toast('🔓 Quitada'); };
 
-/* ===== RESET ===== */
-$('btnReset').onclick = async () => { const hp = await tienePass(); if (hp) { $('inputPassReset').value = ''; $('passError').textContent = ''; $('modalPassword').classList.add('show'); setTimeout(() => $('inputPassReset').focus(), 300); } else { if (!confirm('⚠️ Borrar TODO (datos + config + SW) y recargar?')) return; if (!confirm('⚠️ Confirmar?')) return; await hardReset(); } };
+$('btnReset').onclick = async () => {
+  const hp = await tienePass();
+  if (hp) { $('inputPassReset').value = ''; $('passError').textContent = ''; $('modalPassword').classList.add('show'); setTimeout(() => $('inputPassReset').focus(), 300); }
+  else {
+    if (!(await confirmar('⚠️ Se borrarán TODOS los datos: notas, tareas, personas, papelera, adjuntos, API key, sync, contraseña.\n\nTambién se borrará el Service Worker y la caché. La página se recargará.', 'Borrar TODO', '⚠️', true))) return;
+    if (!(await confirmar('¿Estás completamente seguro? Esta acción no se puede deshacer.', 'Última confirmación', '🚨', true))) return;
+    await hardReset();
+  }
+};
 $('btnCancelarReset').onclick = () => $('modalPassword').classList.remove('show');
-$('btnConfirmarReset').onclick = async () => { const p = $('inputPassReset').value; if (!p) { $('passError').textContent = 'Escribe contraseña'; return; } const ok = await verificarPass(p); if (!ok) { $('passError').textContent = '❌ Incorrecta'; $('inputPassReset').value = ''; return; } $('modalPassword').classList.remove('show'); await hardReset(); };
-$('btnOlvidePass').onclick = async () => { $('modalPassword').classList.remove('show'); if (!confirm('⚠️ Borrar TODO sin contraseña?')) return; if (!confirm('⚠️ Última confirmación?')) return; await hardReset(); };
+$('btnConfirmarReset').onclick = async () => { const p = $('inputPassReset').value; if (!p) { $('passError').textContent = 'Escribe la contraseña'; return; } const ok = await verificarPass(p); if (!ok) { $('passError').textContent = '❌ Contraseña incorrecta'; $('inputPassReset').value = ''; return; } $('modalPassword').classList.remove('show'); await hardReset(); };
+$('btnOlvidePass').onclick = async () => { $('modalPassword').classList.remove('show'); if (!(await confirmar('Vas a borrar TODO sin usar la contraseña.\n\nEsto es irreversible.', '¿Olvidaste la contraseña?', '🚨', true))) return; if (!(await confirmar('¿Confirmas el borrado total sin contraseña?', 'Última confirmación', '🚨', true))) return; await hardReset(); };
 
 async function hardReset() {
   try { const ks = []; for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k) ks.push(k); } ks.forEach(k => localStorage.removeItem(k)); } catch(e){}
@@ -1295,40 +1211,21 @@ async function hardReset() {
   try { if (_db) { _db.close(); _db = null; } indexedDB.deleteDatabase(DB_NAME); } catch(e){}
   try { const regs = await navigator.serviceWorker.getRegistrations(); for (const r of regs) await r.unregister(); } catch(e){}
   try { const c = await window.caches.keys(); for (const k of c) await window.caches.delete(k); } catch(e){}
-  toast('🗑️ Borrado. Recargando...');
+  toast('🗑️ Todo borrado. Recargando...');
   setTimeout(() => { window.location.href = window.location.pathname + '?r=' + Date.now(); }, 800);
 }
 
-/* ===== DIAGNÓSTICO ===== */
 function abrirDiag() { $('modalDiag').classList.add('show'); actualizarDiag(); }
-function actualizarDiag() {
-  const el = $('diagInfo'); if (!el) return;
-  const idsN = notas.map(n => String(n.id)), idsT = tareas.map(t => String(t.id)), idsP = personas.map(p => String(p.id));
-  const dN = idsN.filter((x, i) => idsN.indexOf(x) !== i), dT = idsT.filter((x, i) => idsT.indexOf(x) !== i), dP = idsP.filter((x, i) => idsP.indexOf(x) !== i);
-  let ls = [];
-  try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.includes('jarvis')) ls.push(k); } } catch(e){}
-  el.textContent = `📊 ESTADO:\n\n` +
-    `📝 Notas: ${notas.length} (${notas.filter(n => !n.proposito).length} borradores)\n` +
-    `✅ Tareas: ${tareas.length} (${tareas.filter(t => !t.hecha).length} pendientes)\n` +
-    `👥 Personas: ${personas.length}\n` +
-    `🗑️ Papelera: ${papelera.length}\n` +
-    `❌ Eliminados: ${eliminados.notas.length + eliminados.tareas.length + eliminados.personas.length}\n\n` +
-    `⚠️ DUPLICADOS:\n  Notas: ${dN.length ? dN.slice(0, 3).join(', ') : 'ninguno'}\n  Tareas: ${dT.length ? dT.slice(0, 3).join(', ') : 'ninguno'}\n  Personas: ${dP.length ? dP.slice(0, 3).join(', ') : 'ninguno'}\n\n` +
-    `🔑 Claves LS:\n${ls.length ? ls.map(k => '  ' + k).join('\n') : 'ninguna'}\n\n` +
-    `🔄 Sync: ${tieneSync() ? 'configurado' : 'NO'}\n` +
-    `⏸ Modo local: ${modoLocalHasta > Date.now() ? 'SÍ' : 'no'}\n`;
-}
+function actualizarDiag() { const el = $('diagInfo'); if (!el) return; const idsN = notas.map(n => String(n.id)), idsT = tareas.map(t => String(t.id)), idsP = personas.map(p => String(p.id)); const dN = idsN.filter((x, i) => idsN.indexOf(x) !== i), dT = idsT.filter((x, i) => idsT.indexOf(x) !== i), dP = idsP.filter((x, i) => idsP.indexOf(x) !== i); let ls = []; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.includes('jarvis')) ls.push(k); } } catch(e){} el.textContent = `📊 ESTADO ACTUAL:\n\n` + `📝 Notas: ${notas.length} (${notas.filter(n => !n.proposito).length} borradores)\n` + `✅ Tareas: ${tareas.length} (${tareas.filter(t => !t.hecha).length} pendientes)\n` + `👥 Personas: ${personas.length}\n` + `🗑️ Papelera: ${papelera.length}\n` + `❌ Eliminados: ${eliminados.notas.length + eliminados.tareas.length + eliminados.personas.length}\n\n` + `⚠️ DUPLICADOS:\n  Notas: ${dN.length ? dN.slice(0, 3).join(', ') : 'ninguno'}\n  Tareas: ${dT.length ? dT.slice(0, 3).join(', ') : 'ninguno'}\n  Personas: ${dP.length ? dP.slice(0, 3).join(', ') : 'ninguno'}\n\n` + `🔑 Claves LS:\n${ls.length ? ls.map(k => '  ' + k).join('\n') : 'ninguna'}\n\n` + `🔄 Sync: ${tieneSync() ? 'configurado' : 'NO'}\n` + `⏸ Modo local: ${modoLocalHasta > Date.now() ? 'SÍ' : 'no'}\n`; }
 $('btnAbrirDiag').onclick = abrirDiag;
 $('diagCerrar').onclick = () => $('modalDiag').classList.remove('show');
 $('diagReparar').onclick = () => { const r = migrar(); renderNotas(); renderTareas(); renderPersonas(); renderCalendario(); renderPapelera(); actualizarDiag(); toast(r > 0 ? `🔧 ${r} reparados` : '✅ Sin duplicados'); };
-$('diagHardReset').onclick = async () => { if (!confirm('⚠️ HARD RESET TOTAL. ¿Continuar?')) return; if (!confirm('⚠️ Última confirmación?')) return; await hardReset(); };
+$('diagHardReset').onclick = async () => { if (!(await confirmar('Se borrará TODO y la página se recargará.', 'HARD RESET TOTAL', '💥', true))) return; if (!(await confirmar('¿Última confirmación?', 'Confirmar', '🚨', true))) return; await hardReset(); };
 
-/* ===== EVENTOS ===== */
 window.addEventListener('pagehide', () => { if (tieneSync() && !operacionCritica && modoLocalHasta <= Date.now() && pendingPush) sincronizar(true); });
 window.addEventListener('beforeunload', () => { if (tieneSync() && !operacionCritica && modoLocalHasta <= Date.now() && pendingPush) sincronizar(true); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { MODALES.forEach(id => { if ($(id)?.classList.contains('show')) $(id).classList.remove('show'); }); if (focusActivo) cerrarFocus(); } });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if ($('modalDialog')?.classList.contains('show') && dialogActive) { dialogActive(); return; } MODALES.forEach(id => { if ($(id)?.classList.contains('show')) $(id).classList.remove('show'); }); if (focusActivo) cerrarFocus(); } });
 
-/* ===== INIT ===== */
 (async function init() {
   const k = await cargarKey();
   if (k) $('apiKey').value = k;
